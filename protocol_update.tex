@@ -206,3 +206,15 @@ The construction of the velvet suffix prover is given in Algorithm
 \vspace{4mm}
 
 In conclusion the Verify algorithm for the NIPoPoW suffix protocol remains the same as in the case of hard or soft fork.
+
+After these changes the honest prover cannot contain any thorny blokcs in his suffix NIPoPow even if these blocks are part of $\mathcal{C}_B$. Therefore the adversary could try to supress honestly generated blocks in $\mathcal{C}_B$ in order to reduce the blocks that can represent the honest chain in a proof. In parallel, while the adversary mines suppressive thorny blocks on $\mathcal{C}_B$ she can still use her blocks in her NIPoPoW proofs, by chainsewing them. Consequently, even if a suppression attempt does not succeed, in case for example that a second honestly generated block is soon enough published, she does not drop the thorny block she generated but include it in her proof. 
+
+More in detail, consider that the adversary wishes to attack a specific block level $\mu_B$ and generate a NIPoPow proof containing a block $b$ which contains a double spending transaction. Then she acts as follows. She may mine on her fork chain $\mathcal{C}_\mathcal{A}$ but when she observes a $\mu_B$-level block in $\mathcal{C}_B$ she mines a thorny block on $\mathcal{C}_B$ which jumps onto her fork chain, in order to suppress this $\mu_B$ block. If the suppression succeeds she has managed to damage the $\mu_B$ superchain and mine a block that she can afterwards use in her proof. If the suppression does not succeed she can still use the thorny in her proof. The above are illustrated in Figure \ref{fig:attack_after_update}.
+
+\begin{figure}[h!]
+	\begin{center}
+    \includegraphics[scale=0.65]{figures/attack_after_update-crop.pdf}
+	\end{center}
+	\caption{\textit{The adversary suppress honestly generated blocks and chainsew thorny blocks in $\mathcal{C}_B$. Blue blocks are honestly generated blocks of a specific level of attack. The adversary tries to suppress them. If the suppression is not successful, the adversary can still use the block she mined in her proof.}}
+	\label{fig:attack_after_update}
+\end{figure}
