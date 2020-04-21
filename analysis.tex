@@ -1,15 +1,16 @@
+\section{Analysis}
 \begin{theorem}[Suffix Proofs Security under velvet fork]
 	Assuming honest majority under velvet fork conditions (\ref{defn:velvet_honest_majority}) such that $t \leq (1 - \delta) \dfrac{n_h}{2}$ where $n_h$ the number of upgraded honest players, the non-interactive proofs-of-proof-of-work construction for computable k-stable monotonic suffix-sensitive predicates under velvet fork conditions in a typical execution is secure.
-\end{theorem}
 \textit{Proof.} By contradiction. Let $Q$ be a k-stable monotonic suffix-sensitive chain predicate. Assume for contradiction that NIPoPoWs under velvet fork on $Q$ is insecure. Then, during an execution at some round  $r_3$, $Q(\mathcal{C})$ is defined and the verifier $V$ disagrees with some honest participant. $V$ communicates with adversary $\mathcal{A}$ and honest prover $B$. The verifier receives proofs $\pi_\mathcal{A}, \pi_B$ which are of valid structure. Because $B$ is honest, $\pi_B$ is a proof constructed based on underlying blockchain $\mathcal{C}_B$ (with $\pi_B \subseteq \mathcal{C}_B$), which $B$ has adopted during round $r_3$ at which $\pi_B$ was generated. Consider $\widetilde{\mathcal{C}}_\mathcal{A}$ the set of blocks defined as $\widetilde{C}_\mathcal{A} = \pi_\mathcal{A} \cup \{ \bigcup \{\mathcal{C}_h^r\{:b_\mathcal{A}\}:  b_\mathcal{A} \in \pi_\mathcal{A}, \exists h,r : b_\mathcal{A} \in \mathcal{C}_{h}^{r}\}  \}$ where $\mathcal{C}_h^r$ the chain  that the honest player $h$ has at round $r$.
+\end{theorem}
 
 The verifier outputs $\neg Q(\mathcal{C}_B)$. Thus it is necessary that $\pi_\mathcal{A} {\geq}_m \pi_B$. We show that $\pi_\mathcal{A} {\geq}_m \pi_B$ is a negligible event.
 
 Let the levels of comparison decided by the verifier be $\mu_\mathcal{A}$ and $\mu_B$ respectively. Let $b_0 = LCA(\pi_\mathcal{A}, \pi_B)$. Let $\mu'_B$ be the adequate level of proof $\pi_B$  with respect to block $b_0$. Call $\alpha_\mathcal{A} = \pi_\mathcal{A} \uparrow^{\mu_\mathcal{A}}\{b_0:\}$, $\alpha'_B = \pi_B \uparrow^{\mu'_B}\{b_0:\}$.
 
-From Corollary \ref{cor:adversarial_proof_scheme} we have that the adversarial proof consists of a smooth interlink subchain followed by a thorny interlink subchain. We will refer to the smooth part of $\alpha_\mathcal{A}$ as $\alpha^{\mathcal{S}}_\mathcal{A}$ and to the thorny part as $\alpha^{\mathcal{T}}_\mathcal{A}$.   
+From Corollary \ref{cor:adversarial_proof_scheme} we have that the adversarial proof consists of a smooth interlink subchain followed by a thorny interlink subchain. We will refer to the smooth part of $\alpha_\mathcal{A}$ as $\alpha^{\mathcal{S}}_\mathcal{A}$ and to the thorny part as $\alpha^{\mathcal{T}}_\mathcal{A}$.
 
-Our proof construction is based on the following intuition: we consider that $\alpha_\mathcal{A}$ consists of three distinct parts $\alpha_\mathcal{A}^1, \alpha_\mathcal{A}^2, \alpha_\mathcal{A}^3$ with the following properties. 
+Our proof construction is based on the following intuition: we consider that $\alpha_\mathcal{A}$ consists of three distinct parts $\alpha_\mathcal{A}^1, \alpha_\mathcal{A}^2, \alpha_\mathcal{A}^3$ with the following properties.
 
 Consider $b_0 = LCA(\pi_\mathcal{A}, \pi_B)$ the fork point between $\pi_\mathcal{A} \uparrow^{\mu_\mathcal{A}}, \pi_B \uparrow^{\mu_B}$ and $b_1 = LCA (\alpha^{\mathcal{S}}_\mathcal{A}, \mathcal{C}_B)$ the fork point between $\pi^{\mathcal{S}}_\mathcal{A} \uparrow^{\mu_\mathcal{A}}, \mathcal{C}_B $ at the zero level as the honest prover could observe. Part
 $\alpha_\mathcal{A}^1$ contains the blocks between $b_0$ exclusive and $b_1$ inclusive generated during the set of consecutive rounds $\mathcal{S}_1$ and $\vert  \alpha_\mathcal{A}^1 \vert = k_1$.
@@ -21,7 +22,7 @@ The above are illustrated, among other, in Parts I, II of Figure \ref{fig:proof_
 	\begin{center}
     \includegraphics[scale=0.65]{figures/proof_velvet-crop.pdf}
 	\end{center}
-	\caption{\textit{ Wavy lines imply one or more blocks. Dashed lines and arrows imply interlink pointers to superblocks. \textbf{I}: the three round sets in two competing proofs at different levels, \textbf{II}: the corresponding 0-level blocks implied by the two proofs, \textbf{III}: blocks participating in chain $\mathcal{C}_B$ and block set $\widetilde{\mathcal{C}}_\mathcal{A}$ from the verifier's perspective.}}	
+	\caption{\textit{ Wavy lines imply one or more blocks. Dashed lines and arrows imply interlink pointers to superblocks. \textbf{I}: the three round sets in two competing proofs at different levels, \textbf{II}: the corresponding 0-level blocks implied by the two proofs, \textbf{III}: blocks participating in chain $\mathcal{C}_B$ and block set $\widetilde{\mathcal{C}}_\mathcal{A}$ from the verifier's perspective.}}
     \label{fig:proof_velvet}
 \end{figure}
 
