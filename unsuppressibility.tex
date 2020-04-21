@@ -1,0 +1,16 @@
+\begin{definition}[block property, $\mathcal{Q}$-block]
+    \cite{dionyziz}
+    A block property is a predicate $\mathcal{Q}$ defined on a hash output $h \in \{ 0, 1 \}^\kappa$. Given  a block property $\mathcal{Q}$, a valid block with hash h is called a $\mathcal{Q}$-block if $\mathcal{Q}(h)$ is true.
+\end{definition}
+
+\begin{lemma}[Unsuppressibility]\cite{dionyziz}
+    In a typical execution every set of consecutive rounds U has a subset S of uniquely successful rounds such that
+    \begin{itemize}
+        \item $\vert S \vert \geq Y(U) - 2Z(U) - 2 \lambda f (\dfrac{t}{n-t} \cdot \dfrac{1}{1-f} + \epsilon)$
+        \item after the last round in S the blocks corresponding to S belong to the chain of any honest party.
+    \end{itemize}
+\end{lemma}
+
+\begin{lemma}
+    Let $\mathcal{C}_B$ be the chain of an honest party at some round $r$. Consider the blocks $b' = \mathcal{C}_B[-k]$ and $b = \{b: b \in \mathcal{C}_B \wedge \mathcal{C}_B\{b:b'\} > k\}$. Let $S$ the set of consecutive rounds during which all blocks in $\mathcal{C}_B\{b:b'\}$ are generated. Let set $\widetilde{\mathcal{C}}_B$ contain the blocks of $\mathcal{C}_B$ generated during $S$ which satisfy property $\mathcal{Q}$.  Consider $\widetilde{\mathcal{C}}_\mathcal{A}$ the set of adversarially blocks generated during $S$. Then for any block $b$ it holds that $ \vert \widetilde{\mathcal{C}}_B \vert $
+\end{lemma} 
