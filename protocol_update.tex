@@ -1,59 +1,35 @@
-In order to eliminate the Chainsewing Attack we propose an update to the velvet
-NIPoPoW protocol. The core problem is that in her suffix proof the adversary
-is able to claim not only blocks of forked chains,  which are in majority adversarially
-generated due to the Common Prefix property, but also arbitrarily long parts of the
-chain adopted by an honest player. Since thorny blocks are accepted as valid,
-the verifier cannot distinguish blocks that actually belong in a chain from
-blocks that only seem to belong in the same chain because they are pointed to
-via a non-smooth pointer. \\
-
-
-%% first reference to 1/3 adversary
-\subsubsection{Honest Majority Assumption}
-Compared to the typical setting of $1/2$-bounded adversary, the protocol we
-propose requires stronger honest majority assumptions to be provably secure. 
-In particular, our protocol is secure for adversary of total hashing power 
-less than $1/2$ of the upgraded honest miners, meaning less than $1/3$ of the total number of miners generating blocks with interlinks. Therefore we define the Velvet Honest Majority assumption, which will be used in our security proof.
-
-\begin{defn}{\textbf{Velvet Honest Majority}}
-	\textit{Let $n_h$ be the number of upgraded honest miners. Then $t$ out of total $n$
-	parties are corrupted such that $\dfrac{t}{n_h} < \dfrac{1 - \delta}{2} $. }
-	\label{defn:velvet_honest_majority}
-\end{defn}
+In order to eliminate the Chainsewing Attack we propose an update to the velvet NIPoPoW protocol. The core problem is that in her suffix proof the adversary is able to claim not only blocks of forked chains,  which are in majority adversarially generated due to the Common Prefix property, but also arbitrarily long parts of the chain adopted by an honest player. Since thorny blocks are accepted as valid, the verifier cannot distinguish blocks that actually belong in a chain from blocks that only seem to belong in the same chain because they are pointed to via a non-smooth pointer.
 
 We describe a protocol patch that operates as follows. The NIPoPoW protocol under velvet fork works as usual but each miner constructs smooth blocks. This means that  a block's interlink is constructed excluding thorny blocks. In this way, although thorny blocks are accepted in the chain, they are not taken into consideration when updating the interlink structure for the next block to be mined. No honest block could now point to a thorny superblock that may act as the passing point to the fork chain in an adversarial suffix proof. Thus, after this protocol update the adversary is only able to inject adversarially generated blocks from an honestly adopted chain to her own fork.
 At the same time, thorny blocks cannot participate in an honestly
-generated suffix proof except for some blocks in the proof's suffix $(\chi)$. This arguments holds because thorny blocks do not form a valid chain along with honestly mined blocks anymore. Consequently, as far as the blocks included in a suffix proof is concerned, we can think of thorny blocks as belonging in the adversary's fork chain for the $\pi$ part of the proof,  which is the comparing part between proofs. Figure 
+generated suffix proof except for some blocks in the proof's suffix $(\chi)$. This argument holds because thorny blocks do not form a valid chain along with honestly mined blocks anymore. Consequently, as far as the blocks included in a suffix proof is concerned, we can think of thorny blocks as belonging in the adversary's fork chain for the $\pi$ part of the proof,  which is the comparing part between proofs. Figure 
 \ref{fig:injection} illustrates this remark.\\
 
 \begin{figure}[h!]
 	\begin{center}
 		\includegraphics[scale=0.5]{figures/injection.png}
 	\end{center}
-	\caption{\textit{The adversarial fork chain $C_A$ and chain $C_B$ of an honest
-	player. Thorny blocks are colored black. Dashed arrows represent interlink
-	pointers. Wavy lines imply one or more blocks. When an adversarially generated
-	block is sewed from $C_B$ into the adversary's suffix proof the verifier
-	conceives $C_A$ as longer and $C_B$ as shorter.  \textbf{I:} The real picture
-	of the chains. \textbf{II:} Equivalent picture from the verifier's perspective
-	considering the blocks included in the corresponding suffix proof for each chain.}}
+	\caption{\textit{The adversarial fork chain $C_A$ and chain $C_B$ of an honest player. Thorny blocks are colored black. Dashed arrows represent interlink pointers. Wavy lines imply one or more blocks. After the protocol update, when an adversarially generated block is sewed from $C_B$ into the adversary's suffix proof the verifier conceives $C_A$ as longer and $C_B$ as shorter. \textbf{I:} The real picture of the chains. \textbf{II:} Equivalent picture from the verifier's perspective considering the blocks included in the corresponding suffix proof for each chain.}}
 	\label{fig:injection}
 \end{figure}
 
-
+\subsection{The patch}
 The protocol patch we suggest can be summarized as follows:\\
 
-
-\subsubsection*{Protocol Patch for NIPoPows suffix proofs under velvet fork.} In order
-to make NIPoPoWs safe under velvet fork conditions we suggest:
+In order to make NIPoPoWs safe under velvet fork conditions we suggest:
 \begin{enumerate}
-\item Strengthen the Honest Majority Assumption so that $t < \dfrac{1 - \delta}{2}n_h$,
-where $n_h$ is the number of upgraded honest players.
-%%% TODO: also provide short algorithm for the intrlink construction after the patch 
-\item The NIPoPoW protocol under velvet fork works as usual but a miner constructs
-a block's interlink without pointers to thorny blocks.
+\item Strengthen the Honest Majority Assumption so that $t < \dfrac{1 - \delta}{3}n_h$, where $n_h$ is the number of upgraded honest players.
+\item The NIPoPoW protocol under velvet fork works as usual but a miner constructs a block's interlink without pointers to thorny blocks.
 \end{enumerate}
 
+\subsection{Analysis}
+
+We now give the formal definition of the Honest Majority Assumption for (1/4)-bounded adversary under velvet fork, some Lemmas that will be used in our security proof as well as the updated algorithms for the honest miner, prover and verifier.
+\begin{definition}[Velvet Honest Majority]
+	\textit{Let $n_h$ be the number of upgraded honest miners. Then $t$ out of total $n$
+	parties are corrupted such that $\dfrac{t}{n_h} < \dfrac{1 - \delta}{2} $.}
+	\label{defn:velvet_honest_majority}
+\end{definition}
 
 The following Lemmas come as immediate results from the suggested protocol
 update.\\
@@ -66,38 +42,24 @@ update.\\
 
 \begin{lemma} 
 	\textit{Let $\mathcal{P_A} = (\pi_\mathcal{A}, \chi_\mathcal{A})$
-	be a velvet suffix proof constructed by the adversary and block $b_s$, generated
-	at round $r_s$, be the most recent smooth block in the proof. Then $\forall r:r < r_s$ no thorny blocks generated at round $r$ can be included in $\mathcal{P_A}$.}
+	be a velvet suffix proof constructed by the adversary and block $b_s$, generated at round $r_s$, be the most recent smooth block in the proof. Then $\forall r:r < r_s$ no thorny blocks generated at round $r$ can be included in $\mathcal{P_A}$.}
 	\label{lemm:smooths_before_smooth}
 \end{lemma}
-\textit{Proof.} By contradiction. Let $b_t$ be a thorny block generated at
-some round $r_t < r_s$. Suppose for contradiction that $b_t$ is included in
-the proof. Then, because $\mathcal{P_A}$ is a valid chain as for interlink
-pointers, there exist a block path made by interlink pointers starting from $b_s$
-and resulting to $b_t$. Let $b'$ be the most recently generated thorny block
-after $b_t$ and before $b_s$ included in $\mathcal{P_A}$. 
-Then $b'$ has been generated at a round $r'$ such that $r_t \leq r' < r_s$. Then
-the block right after block $b'$ in $\mathcal{P_A}$ must be a thorny block since
-it points to $b'$ which is thorny. But $b'$ is the most recent thorny block after
-$b_t$, thus we have reached a contradiction.
+\textit{Proof.} By contradiction. Let $b_t$ be a thorny block generated at some round $r_t < r_s$. Suppose for contradiction that $b_t$ is included in the proof. Then, because $\mathcal{P_A}$ is a valid chain as for interlink pointers, there exist a block path made by interlink pointers starting from $b_s$ and resulting to $b_t$. Let $b'$ be the most recently generated thorny block after $b_t$ and before $b_s$ included in $\mathcal{P_A}$. Then $b'$ has been generated at a round $r'$ such that $r_t \leq r' < r_s$. Then the block right after block $b'$ in $\mathcal{P_A}$ must be a thorny block since it points to $b'$ which is thorny. But $b'$ is the most recent thorny block after $b_t$, thus we have reached a contradiction.
 \begin{flushright}
 $\square$
 \end{flushright}
 
 \begin{lemma}
-	\textit{Let $\mathcal{P_A} = (\pi_\mathcal{A}, \chi_\mathcal{A})$
-	be a velvet suffix proof constructed by the adversary. Let $b_t$ be the oldest
-	thorny bock included in $\mathcal{P_A}$ which is generated at round $r_t$. Then any block $b = \{b: b \in \mathcal{P_A} \wedge \text{b generated at }r \geq r_t \}$ is thorny.}
+	\textit{Let $\mathcal{P_A} = (\pi_\mathcal{A}, \chi_\mathcal{A})$ be a velvet suffix proof constructed by the adversary. Let $b_t$ be the oldest thorny bock included in $\mathcal{P_A}$ which is generated at round $r_t$. Then any block $b = \{b: b \in \mathcal{P_A} \wedge \text{b generated at }r \geq r_t \}$ is thorny.}
 	\label{lemm:thorny_after_thorny}
 \end{lemma}
-\textit{Proof.} By contradiction. Suppose for contradiciton that $b_s$ is a smooth block generated at round $r_s > r_t$. Then from Lemma 
-\ref{lemm:smooths_before_smooth} any block generated at round $r < r_s$ is smooth. But $b_t$ is generated at round $r_t < r_s$ and is thorny, thus we have reached a contradiction.
+\textit{Proof.} By contradiction. Suppose for contradiciton that $b_s$ is a smooth block generated at round $r_s > r_t$. Then from Lemma \ref{lemm:smooths_before_smooth} any block generated at round $r < r_s$ is smooth. But $b_t$ is generated at round $r_t < r_s$ and is thorny, thus we have reached a contradiction.
 \begin{flushright}
 $\square$
 \end{flushright}
 
-The following corollary emerges immediately from Lemmas 
-\ref{lemm:smooths_before_smooth}, \ref{lemm:thorny_after_thorny}. This result is illustrated in Figure \ref{fig:adversarial_velvet_proof}.
+The following corollary emerges immediately from Lemmas \ref{lemm:smooths_before_smooth}, \ref{lemm:thorny_after_thorny}. This result is illustrated in Figure \ref{fig:adversarial_velvet_proof}.
 
 \begin{corollary}
 	\textit{Any adversarial proof $\mathcal{P_A} = (\pi_\mathcal{A}, \chi_\mathcal{A})$ containing both smooth and thorny blocks consists of a prefix smooth subchain followed by a suffix thorny subchain.}
@@ -111,14 +73,11 @@ The following corollary emerges immediately from Lemmas
 	\caption{\textit{In the general case the adversarial velvet suffix proof $\mathcal{P_A} = (\pi_\mathcal{A}, \chi_\mathcal{A})$ consists of an initial part of smooth blocks followed by thorny blocks.}}
 	\label{fig:adversarial_velvet_proof}
 \end{figure}
+We now describe the algorithms needed by the upgraded miner, prover and verifier. The upgraded miner acts as usual except for including the interlink of the newborn block in the coinbase transaction. In order to construct an interlink containing only the smooth blocks, the miner keeps a copy of the ``smooth chain'' ($\mathcal{C}_S$) which consists of the smooth blocks existing in the original chain $\mathcal{C}$. The algorithm for extracting the smooth chain out of $\mathcal{C}$ is given in Algorithm \ref{alg:smooth_chain}. Function \textit{isSmoothBlock(B)} checks whether a block \textit{B} is a smooth velvet by calling \textit{isSmoothPointer(B,p)} for every pointer \textit{p} in \textit{B}'s interlink. Function \textit{isSmoothPointer(B,p)} returns \emph{true} if $p$ is a valid pointer, in essence a pointer to the most recent \emph{smooth velvet} for the level denoted by the pointer itself. The \textit{updateInterlink} algorithm is given in Algorithm \ref{alg:updateInterlink}, which is essentially the same as in the case of a hard/soft fork, except for working on the smooth chain $\mathcal{C}_S$ instead of $\mathcal{C}$.
 
-We now describe the algorithms needed by the upgraded miner, prover and verifier. The upgraded miner acts as usual except for including the interlink of the newborn block in the coinbase transaction. In order to construct an interlink containing only the smooth blocks, the miner keeps a copy of the ``smooth chain'' ($\mathcal{C}_S$) which consists of the smooth blocks existing in the original chain $\mathcal{C}$. The algorithm for extracting the smooth chain out of $\mathcal{C}$ is given in Algorithm 
-\ref{alg:smooth_chain}. Function \textit{isSmoothBlock(B)} checks whether a
-block \textit{B} is a smooth velvet by calling \textit{isSmoothPointer(B,p)}
-for every pointer \textit{p} in \textit{B}'s interlink. Function
-\textit{isSmoothPointer(B,p)} returns \emph{true} if $p$ is a valid 
-pointer, in essence a pointer to the most recent \emph{smooth velvet}
-for the level denoted by the pointer itself. The \textit{updateInterlink} algorithm is given in Algorithm \ref{alg:updateInterlink}, which is essentially the same as in the case of a hard/soft fork, except for working on the smooth chain $\mathcal{C}_S$ instead of $\mathcal{C}$.
+The construction of the velvet suffix prover is given in Algorithm \ref{alg:velvet_suffix_prover}, which is essentially the same to that of a hard/soft fork except for working on smooth chain $\mathcal{C}_S$ instead of $\mathcal{C}$.
+
+In conclusion the Verify algorithm for the NIPoPoW suffix protocol remains the same as in the case of hard or soft fork.
 
 \begin{algorithm}
 	\SetAlgoNoLine
@@ -182,9 +141,6 @@ for the level denoted by the pointer itself. The \textit{updateInterlink} algori
  	\label{alg:updateInterlink}
 \end{algorithm}
 
-The construction of the velvet suffix prover is given in Algorithm 
-\ref{alg:velvet_suffix_prover}, which is essentially the same to that of a hard/soft fork except for working on smooth chain $\mathcal{C}_S$ instead of $\mathcal{C}$.
-
 \begin{algorithm}[h!]
 	\SetAlgoNoLine
 	\DontPrintSemicolon
@@ -202,8 +158,3 @@ The construction of the velvet suffix prover is given in Algorithm
  	\caption{Velvet Suffix Prover}
  	\label{alg:velvet_suffix_prover}
 \end{algorithm}
-
-\vspace{4mm}
-
-In conclusion the Verify algorithm for the NIPoPoW suffix protocol remains the same as in the case of hard or soft fork.
-
