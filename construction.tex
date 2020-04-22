@@ -146,12 +146,12 @@ In conclusion the Verify algorithm for the NIPoPoW suffix protocol remains the s
 	\SetKwProg{Fn}{function}{:}{\text{end function}}
 	\Fn{$ProveVelvet_{m,k}(\mathcal{C}_S$)}{
 		$B \leftarrow \mathcal{C}_S[0]$\;
-		\For{$\mu = \lvert \mathcal{C}_S[-k].interlink \rvert$ down to 0}{
-			$\alpha \leftarrow \mathcal{C}_S[:-k] \{ B: \} \upchain^\mu$\;
+		\For{$\mu = \lvert \mathcal{C}_S[-k].interlink\rvert$ down to 0}{
+			$\alpha \leftarrow \mathcal{C}_S[{:}-k] \{ B: \} \upchain^\mu$\;
 			$\pi \leftarrow \pi \cup \alpha$\;
 			$B \leftarrow \alpha[-m]$\;
 		}
-		$\chi \leftarrow \mathcal{C}_S[-k:]$\;
+		$\chi \leftarrow \mathcal{C}_S[-k{:}]$\;
 		\Return $\pi\chi$
 	}
  	\caption{Velvet Suffix Prover}
