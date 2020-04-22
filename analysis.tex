@@ -1,8 +1,9 @@
 \section{Analysis}
 \begin{theorem}[Suffix Proofs Security under velvet fork]
 	Assuming honest majority under velvet fork conditions (\ref{defn:velvet_honest_majority}) such that $t \leq (1 - \delta) \dfrac{n_h}{2}$ where $n_h$ the number of upgraded honest players, the non-interactive proofs-of-proof-of-work construction for computable k-stable monotonic suffix-sensitive predicates under velvet fork conditions in a typical execution is secure.
-\textit{Proof.} By contradiction. Let $Q$ be a k-stable monotonic suffix-sensitive chain predicate. Assume for contradiction that NIPoPoWs under velvet fork on $Q$ is insecure. Then, during an execution at some round  $r_3$, $Q(\mathcal{C})$ is defined and the verifier $V$ disagrees with some honest participant. $V$ communicates with adversary $\mathcal{A}$ and honest prover $B$. The verifier receives proofs $\pi_\mathcal{A}, \pi_B$ which are of valid structure. Because $B$ is honest, $\pi_B$ is a proof constructed based on underlying blockchain $\mathcal{C}_B$ (with $\pi_B \subseteq \mathcal{C}_B$), which $B$ has adopted during round $r_3$ at which $\pi_B$ was generated. Consider $\widetilde{\mathcal{C}}_\mathcal{A}$ the set of blocks defined as $\widetilde{C}_\mathcal{A} = \pi_\mathcal{A} \cup \{ \bigcup \{\mathcal{C}_h^r\{:b_\mathcal{A}\}:  b_\mathcal{A} \in \pi_\mathcal{A}, \exists h,r : b_\mathcal{A} \in \mathcal{C}_{h}^{r}\}  \}$ where $\mathcal{C}_h^r$ the chain  that the honest player $h$ has at round $r$.
 \end{theorem}
+\begin{proof}
+By contradiction. Let $Q$ be a k-stable monotonic suffix-sensitive chain predicate. Assume for contradiction that NIPoPoWs under velvet fork on $Q$ is insecure. Then, during an execution at some round  $r_3$, $Q(\mathcal{C})$ is defined and the verifier $V$ disagrees with some honest participant. $V$ communicates with adversary $\mathcal{A}$ and honest prover $B$. The verifier receives proofs $\pi_\mathcal{A}, \pi_B$ which are of valid structure. Because $B$ is honest, $\pi_B$ is a proof constructed based on underlying blockchain $\mathcal{C}_B$ (with $\pi_B \subseteq \mathcal{C}_B$), which $B$ has adopted during round $r_3$ at which $\pi_B$ was generated. Consider $\widetilde{\mathcal{C}}_\mathcal{A}$ the set of blocks defined as $\widetilde{C}_\mathcal{A} = \pi_\mathcal{A} \cup \{ \bigcup \{\mathcal{C}_h^r\{:b_\mathcal{A}\}:  b_\mathcal{A} \in \pi_\mathcal{A}, \exists h,r : b_\mathcal{A} \in \mathcal{C}_{h}^{r}\}  \}$ where $\mathcal{C}_h^r$ the chain  that the honest player $h$ has at round $r$.
 
 The verifier outputs $\neg Q(\mathcal{C}_B)$. Thus it is necessary that $\pi_\mathcal{A} {\geq}_m \pi_B$. We show that $\pi_\mathcal{A} {\geq}_m \pi_B$ is a negligible event.
 
@@ -71,7 +72,4 @@ Consequently we have:
 \end{equation}
 
 Therefore we have proven that $2^{\mu'_B} \vert \pi_B \upchain^{\mu'_B} \vert > 2^{\mu_\mathcal{A}} \vert \pi_\mathcal{A}^{\mu_\mathcal{A}} \vert$. From the definition of $\mu_B$, we know that $2^{\mu_B} \vert \pi_B \upchain^{\mu_B} \vert > 2^{\mu'_B} \vert \pi_B \upchain^{\mu'_B} \vert$ because it was chosen $\mu_B$ as level of comparison by the Verifier. So we conclude that $2^{\mu_B} \vert \pi_B \upchain^{\mu_B} \vert > 2^{\mu_\mathcal{A}} \vert \pi_\mathcal{A} \upchain^{\mu_\mathcal{A}} \vert$.
-
-\begin{flushright}
-	$\square$
-\end{flushright}
+\end{proof}
