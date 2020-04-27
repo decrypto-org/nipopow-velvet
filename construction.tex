@@ -72,83 +72,79 @@ The construction of the velvet suffix prover is given in Algorithm \ref{alg:velv
 
 In conclusion the Verify algorithm for the NIPoPoW suffix protocol remains the same as in the case of hard or soft fork.
 
-\begin{algorithm}
-	\SetAlgoNoLine
-	\DontPrintSemicolon
-	\SetKwProg{Fn}{function}{:}{\text{end function}}
-	\Fn{smoothChain($\chain$)}{
-		$\chain_S = \{ \mathcal{G} \}$\;
-		$k \leftarrow 1$ \;
-		\While{$\chain[-k] \neq \mathcal{G}$}{
-			\If{isSmoothBlock($\chain[-k]$)}{
-				$\chain_S \leftarrow \chain_S \cup \chain[-k]$\;
-			}
-			$k \leftarrow k + 1$\;
-		}
-		return $\chain_S$
-	}
+\begin{algorithm}[H]
+	\caption{\label{alg:smooth_chain}The computation of a smooth chain}
+	\begin{algorithmic}[1]
+			\Function{\sf smoothChain}{$\chain$}
+				\Let{\chain_S}{\{\mathcal{G}\}}
+				\Let{k}{1}
+				\While{$\chain[-k] \neq \mathcal{G}$}
+						\If{$\textsf{isSmoothBlock}(\chain[-k])$}
+							\Let{\chain_S}{\chain_S \cup \chain[-k]}
+						\EndIf
+						\Let{k}{k + 1}
+				\EndWhile
+				\State\Return{$\chain_S$}
+			\EndFunction
+	\end{algorithmic}
 	\vspace{4mm}
-	\Fn{isSmoothBlock(B)}{
-		\If{$B = \mathcal{G}$}{
-			\Return true\;
-		}
- 		\For{p $\in$ B.interlink} {
-     		\If{$\neg$isSmoothPointer(B, p)}{
-     			\Return false\;
-     		}
- 		}
- 		\Return true\;
-	}
+	\begin{algorithmic}[1]
+			\Function{\sf isSmoothBlock}{$B$}
+				\If{$B = \mathcal{G}$}
+					\State\Return{$\true$}
+				\EndIf
+				\For{$p \in B.\textsf{interlink}$}
+						\If{$\lnot \textsf{isSmoothPointer}(B, p)$}
+							\State\Return{$\false$}
+						\EndIf
+				\EndFor
+				\State\Return{$\true$}
+			\EndFunction
+	\end{algorithmic}
 	\vspace{4mm}
-	\Fn{isSmoothPointer(B, p)}{
-		$b \leftarrow Block(B.prevId)$\;
- 		\While{b $\not =$ p} {
-     		\If{$ level(b) \geq level(p) \wedge
-     			\text{isSmoothBlock(b)} $}{
-     			\Return false\;
-     		}
-     		\If{$b = \mathcal{G}$}{
-     			\Return false\;
-     		}
-     		$b \leftarrow Block(b.prevId)$
- 		}
-		 \Return $\textit{isSmoothBlock(b)}$ \;
-	}
- 	\caption{Compute smooth chain}
- 	\label{alg:smooth_chain}
+	\begin{algorithmic}[1]
+			\Function{\sf isSmoothPointer}{$B, p$}
+				\Let{b}{\textsf{Block}(B.\textsf{prevId})}
+				\While{$b \neq p$}
+						\If{$\textsf{level}(b) \geq \textsf{level}(p) \land \textsf{isSmoothBlock}(b)$}
+							\State\Return{$\false$}
+						\EndIf
+						\If{$b = \mathcal{G}$}
+							\State\Return{$\false$}
+						\EndIf
+						\Let{b}{\textsf{Block}(b.\textsf{prevId})}
+				\EndWhile
+				\State\Return{$\textsf{isSmoothBlock}(b)$}
+			\EndFunction
+	\end{algorithmic}
 \end{algorithm}
 
 \begin{algorithm}[h!]
-	\SetAlgoNoLine
-	\DontPrintSemicolon
-	\SetKwProg{Fn}{function}{:}{\text{end function}}
-	\Fn{updateInterlinkVelvet($\chain_S$)}{
-		B' $\leftarrow \chain_S[-1]$\;
-		interlink $\leftarrow$ B'.interlink\;
- 		\For{$\mu = 0$ to level(B')}{
- 			interlink$[\mu]\leftarrow id(B')$
-		 }
- 		\Return interlink\;
-	}
- 	\caption{Velvet updateInterlink}
- 	\label{alg:updateInterlink}
+		\caption{\label{alg:updateInterlink}Velvet updateInterlink}
+		\begin{algorithmic}[1]
+				\Function{\sf updateInterlinkVelvet}{$\chain_S$}
+						\Let{B'}{\chain_S[-1]}
+						\Let{\textsf{interlink}}{B'.\textsf{interlink}}
+						\For{$\mu = 0$ to $\textsf{level}(B')$}
+								\Let{\textsf{interlink}[\mu]}{\textsf{id}(B')}
+						\EndFor
+						\State\Return$\textsf{interlink}$
+				\EndFunction
+		\end{algorithmic}
 \end{algorithm}
 
 \begin{algorithm}[h!]
-	\SetAlgoNoLine
-	\DontPrintSemicolon
-	\SetKwProg{Fn}{function}{:}{\text{end function}}
-	\Fn{$ProveVelvet_{m,k}(\chain_S$)}{
-		$B \leftarrow \chain_S[0]$\;
-		\For{$\mu = \lvert \chain_S[-k].interlink
-\rvert$ down to 0}{
-			$\alpha \leftarrow \chain_S[{:}-k] \{ B: \} \upchain^\mu$\;
-			$\pi \leftarrow \pi \cup \alpha$\;
-			$B \leftarrow \alpha[-m]$\;
-		}
-		$\chi \leftarrow \chain_S[-k{:}]$\;
-		\Return $\pi\chi$
-	}
- 	\caption{Velvet Suffix Prover}
- 	\label{alg:velvet_suffix_prover}
+		\caption{\label{alg:velvet_suffix_prover}Velvet Suffix Prover}
+		\begin{algorithmic}
+				\Function{\sf ProveVelvet$_{m,k}$}{$\chain_S$}
+					\Let{B}{\chain_S[0]}
+					\For{$\mu = \lvert \chain_S[-k].\textsf{interlink} \rvert$ down to $0$}
+						\Let{\alpha}{\chain_S[{:}-k]\{B{:}\}\upchain^\mu}
+						\Let{\pi}{\pi \cup \alpha}
+						\Let{B}{\alpha[-m]}
+					\EndFor
+					\Let{\chi}{\chain_S[-k{:}]}
+					\State\Return$\pi\chi$
+				\EndFunction
+		\end{algorithmic}
 \end{algorithm}
