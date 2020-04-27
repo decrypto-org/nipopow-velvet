@@ -59,10 +59,108 @@ has $tq$ queries per round while the honest parties have $(n - t)q$ queries per
 round. When an honest party discovers a new block, they extend their chain with
 it and broadcast the new chain. Upon receiving a new chain $\chain'$ from the
 network, an honest party compares its length $|\chain'|$ against its currently
-adopted chain $\chain$ and adopts the newly received chain if it is longer.
+adopted chain $\chain$ and adopts the newly received chain if it is longer. It
+is assumed that the honest parties control the majority of the computational
+power of the network. This \emph{honest majority assumption} states that there
+is some $\delta$ such that $t < (1 -  \delta)(n - t)$. If so, the protocol
+ensures consensus among the honest parties: There is a constant $k$, the
+\emph{Common Prefix} parameter, such that, at any round, all the chains
+belonging to honest parties share a common prefix of blocks; the chains can
+deviate only up to $k$ blocks at the end of each chain~\cite{backbone}.
+Concretely, if at some round $r$ two honest parties have $\chain_1$ and
+$\chain_2$ respectively, then either $\chain_1[{:}-k]$ is a prefix of $\chain_2$
+or vice versa.
 
 Some valid blocks satisfy the proof-of-work equation better than required. If
 a block $b$ satisfies $H(b) \leq 2^{-\mu} T$ for some natural number
 $\mu \in \mathbb{N}$ we say that $b$ is a \emph{$\mu$-superblock} or a block
 \emph{of level} $\mu$. The probability of a new valid block achieving level
-$\mu$ is $2^{-\mu}$.
+$\mu$ is $2^{-\mu}$. The number of levels in the chain will be $\log|\chain|$
+with high probability~\cite{popow}. Given a chain $\chain$, we denote
+$\chain\upchain^\mu$ the subset of $\mu$-superblocks of $\chain$.
+
+Non-Interactive Proofs of Proof-of-Work (NIPoPoW) protocols allow verifiers to
+learn the most recent $k$ blocks of the blockchain adopted by an honest full
+node without downloading the whole chain. The challenge lies in building a
+verifier who can find the suffix of the longest chain between claims of both
+honest and adversarial provers, while not downloading all block headers. Towards
+that goal, the \emph{superblock} approach uses superblocks as samples of
+proof-of-work. The prover sends superblocks to the verifier to convince them
+that proof-of-work has taken place without actually presenting all this
+proof-of-work. The protocol is parametrized by a constant security parameter
+$m$. The parameter determines how many superblocks will be sent by the prover to
+the verifier and security is proven with overwhelming probability in $m$.
+
+The prover selects various levels $\mu$ and for each such level sends a
+carefully chosen portion of its $\mu$-level \emph{superchain}
+$\chain\upchain^\mu$ to the verifier. In standard blockchain protocols such as
+Bitcoin and Ethereum, each block $\chain[i + 1]$ in $\chain$ points to its
+previous block $\chain[i]$, but each $\mu$-superblock $\chain\upchain^\mu[i +
+1]$ does not point to its previous $\mu$-superblock $\chain\upchain^\mu[i]$. It
+is imperative that an adversarial prover does not reorder the blocks within a
+superchain, but the verifier cannot verify this unless each $\mu$-superblock
+points to its most recently preceding $\mu$-superblock. The proposal is
+therefore to \emph{interlink} the chain by having each $\mu$-superblock include
+an extra pointer to its most recently preceding $\mu$-superblock. To ensure
+integrity, this pointer must be included in the block header and verified by
+proof-of-work. However, the miner does not know which level a candidate block
+will attain prior to mining it. For this purpose, each block is proposed to
+include a pointer to the most recently preceding $\mu$-superblock, for every
+$\mu$, as illustrated in Figure~\ref{fig.hierarchy}. As these levels are only
+$\log|\chain|$, this does not add much extra data to the block.
+
+\begin{figure}[ht]
+    \caption{The interlinked blockchain. Each superblock is drawn taller
+    according to its achieved level. Each block links to all the blocks that are
+    not being overshadowed by their descendants. The most recent (right-most)
+    block links to the four blocks it has direct line-of-sight to.}
+    \centering
+    \includegraphics[width=0.9\columnwidth,keepaspectratio]{figures/level-shadows.pdf}
+    \label{fig.hierarchy}
+\end{figure}
+
+To ensure the block header is of constant size, instead of including all these
+superblock pointers in the block header individually, they are organized into a
+Merkle Tree of interlink pointers and only the root of the Merkle Tree is
+included in the block header. In this manner, a blockchain can be \emph{hard
+forked} to include interlinks. In this case, the NIPoPoW prover that wishes to
+show a $\mu$-superblock $b$ in their proof is connected to its more recently
+preceding $\mu$-superblock $b'$, also includes a Merkle Tree proof proving that
+$H(b')$ is a leaf in the interlink Merkle Tree root included in the block header
+of $b$.
+
+To include interlinks in a \emph{soft fork}, the interlink Merkle Tree root is
+placed in the \emph{coinbase} transaction instead of the block header. Upgraded
+miners include the correct interlink Merkle Tree root in their coinbase.
+Upgraded miners receiving a new block validate that the interlink Merkle Tree
+root is correct before accepting a block as valid. As this root can be
+calculated in a deterministic manner from the previous blocks in the chain, it
+can easily be validated. Whenever the NIPoPoW prover wishes to show that a
+$\mu$-superblock $b$ contains a pointer to its most recently preceding
+$\mu$-superblock $b'$, it must then accompany the block header of $b = s \conc
+\overline{x} \conc ctr$ with the coinbase transaction $\coinbase$ of $b$ as well
+as two Merkle Tree proofs: One proving that the coinbase transaction $\coinbase$
+is in $\overline{x}$, and one proving that $H(b')$ is a leaf in the interlink
+Merkle Tree whose root is included in $\coinbase$.
+
+The exact NIPoPoW protocol works like this: The prover holds a full chain
+$\chain$. When the verifier requests a proof, the prover sends the last $k$
+blocks of their chain, the suffix $\chi = \chain[-k{:}]$, in full. From the
+larger prefix $\chain[{:}-k]$, the prover constructs a proof $\pi$ by selecting
+certain superblocks as representative samples of the proof-of-work that took
+place. The blocks are picked as follows. The prover selects the \emph{highest}
+level $\mu^*$ that has at least $m$ blocks in it and includes all these blocks
+in their proof (if no such level exists, the chain is small and can be sent in
+full). The prover then iterates from level $\mu = \mu^* - 1$ down to $0$. For
+every level $\mu$, it includes sufficient $\mu$-superblocks to cover the last
+$m$ blocks of level $\mu + 1$, as illustrated in
+Algorithm~\ref{alg.nipopow-prover}. Because the density of blocks doubles as
+levels are descended, the proof will contain in expectation $2m$ blocks for each
+level below $\mu^*$. As such, the total proof size $\pi \chi$ will be
+$\Theta(m\log|\chain| + k)$. Such proofs that are polylogarithmic in the chain
+size constitute an exponential improvement over traditional SPV clients and are
+called \emph{succinct}.
+
+\import{./}{algorithms/alg.nipopow-prover.tex}
+
+% TODO: velvet
