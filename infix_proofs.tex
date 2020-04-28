@@ -1,0 +1,77 @@
+\section{Infix Proofs}
+NIPoPoWs infix proofs are proofs that answer any predicate which depends on blocks appearing anywhere in the chain, except for the $k$ suffix for stability reasons. For example, consider the case where a client has received a transaction inclusion proof for a block $b$ and requests an infix proof so as to verify that $b$ is included in the current chain.
+
+Because of the described protocol update for secure NIPoPoW suffix proofs, the infix proofs construction has to be altered as well. In order to construct secure infix proofs under velvet fork conditions, we suggest the following additional protocol patch: each updated miner constructs and updates an authenticated data structure for all the blocks in the chain. Our suggestion for this structure is Merkle Mountain Range \emph{(MMR)}. Now a block's header additionally includes the root of this MMR. An updated prover also keeps an updated blocks' MMR locally. Smooth blocks are now considered the blocks that contain smooth interlinks but also valid MMR root. A valid MMR root denotes the MMR that contains all the blocks in the chain of an honest full node.
+
+Considering this addtional patch we can now define the final algorithms for the honest miner, infix and suffix prover, as well as for the infix verifier. Because of the new definition of a smooth block, Algorithm \ref{alg:smooth_chain_suffix} needs to be updated, so as to also check for the validity of the included MMR. The complete algorithm for the computation of the smooth chain is given in Algorithm \ref{alg:smooth_chain_infix} . Now considering that input $\chain_S$ is computed with Algorithm , \emph{Velvet updateInterlink} and \emph{Velvet Suffix Prover} algorithms need no changes and are described in Algorithms \ref{alg:updateInterlink}, \ref{alg:velvet_suffix_prover} repsectively. The velvet infix prover and infix verifier algorithms are given in Algorithms \ref{alg:velvet_infix_prover}, \ref{alg:velvet_infix_verifier} respectively.
+
+\begin{algorithm}[H]
+	\caption{\label{alg:smooth_chain_infix}Smooth chain for suffix and infix proofs}
+	\begin{algorithmic}[1]
+			\Function{\sf smoothChain}{$\chain$}
+				\Let{\chain_S}{\{\mathcal{G}\}}
+				\Let{k}{1}
+				\While{$\chain[-k] \neq \mathcal{G}$}
+						\If{$\textsf{isSmoothBlock}(\chain[-k])$}
+							\Let{\chain_S}{\chain_S \cup \chain[-k]}
+						\EndIf
+						\Let{k}{k + 1}
+				\EndWhile
+				\State\Return{$\chain_S$}
+			\EndFunction
+	\end{algorithmic}
+	\vspace{4mm}
+	\begin{algorithmic}[1]
+			\Function{\sf isSmoothBlock}{$B$}
+				\If{$B = \mathcal{G}$}
+					\State\Return{$\true$}
+				\EndIf
+				\For{$p \in B.\textsf{interlink}$}
+						\If{$\lnot \textsf{isSmoothPointer}(B, p)$}
+							\State\Return{$\false$}
+						\EndIf
+				\EndFor
+				\State\Return{$\textsf{containsValidMMR}(B)$}
+			\EndFunction
+	\end{algorithmic}
+	\vspace{4mm}
+	\begin{algorithmic}[1]
+			\Function{\sf isSmoothPointer}{$B, p$}
+				\Let{b}{\textsf{Block}(B.\textsf{prevId})}
+				\While{$b \neq p$}
+						\If{$\textsf{level}(b) \geq \textsf{level}(p) \land \textsf{isSmoothBlock}(b)$}
+							\State\Return{$\false$}
+						\EndIf
+						\If{$b = \mathcal{G}$}
+							\State\Return{$\false$}
+						\EndIf
+						\Let{b}{\textsf{Block}(b.\textsf{prevId})}
+				\EndWhile
+				\State\Return{$\textsf{isSmoothBlock}(b)$}
+			\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+	\caption{\label{alg:velvet_infix_prover}Velvet Infix Prover}
+	\begin{algorithmic}[1]
+			\Function{\sf ProveInfixVelvet}{$b$}
+				\Let{(\pi,\chi)}{\textsf{ProveVelvet}(\chain_S)}
+				\Let{\textsf{tip}}{\pi[-1]}
+				\Let{\pi_b}{\textsf{MMRinclusionProof}(tip, b)}
+				\State\Return{$(\pi_b,(\pi, \chi))$}
+			\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+	\caption{\label{alg:velvet_infix_verifier}Velvet Infix Verifier}
+	\begin{algorithmic}[1]
+			\Function{\sf VerifyInfixVelvet}{$b, (\pi_b,(\pi,\chi))$}
+				\Let{\textsf{tip}}{\pi[-1]}
+				\State\Return{\textsf{VerifyInclProof(tip.$root_{MMR}$, $\pi_b$, $b$)}}
+			\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+
+Note that equivalent solution could be formed by using any authenticated data structure that provides inclusion proofs of size logarithmic to the size of the chain. We choose MMRs because of their efficiency while updating, since they support efficient node addition and deletion functionality.
