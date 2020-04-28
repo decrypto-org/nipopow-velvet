@@ -115,7 +115,8 @@ proof-of-work. However, the miner does not know which level a candidate block
 will attain prior to mining it. For this purpose, each block is proposed to
 include a pointer to the most recently preceding $\mu$-superblock, for every
 $\mu$, as illustrated in Figure~\ref{fig.hierarchy}. As these levels are only
-$\log|\chain|$, this does not add much extra data to the block.
+$\log|\chain|$, this only adds $\log|\chain|$ extra pointers to each block
+header.
 
 \begin{figure}[ht]
     \caption{The interlinked blockchain. Each superblock is drawn taller
