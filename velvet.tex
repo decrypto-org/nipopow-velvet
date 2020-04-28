@@ -1,9 +1,13 @@
 \section{Velvet Interlinks}
 \subsection{Velvet fork parameter}
-A velvet fork suggest that only a minority of upgraded parties needs to support the protocol changes. Let $g$ express the percentage of honest upgraded parties to the total number of miners. We will refer to $g$ as the ``velvet parameter''.
+In a velvet fork, only a minority of honest parties needs to support the protocol
+changes. We refer to this percentage as the ``velvet parameter''.
 
 \begin{definition}[Velvet Parameter]
-	Let $g$ be the velvet parameter for NIPoPoW protocols. Then if $n_h$ the upgraded honest miners and $n$ the total number of miners $t$ out of which are corrupted, it holds that $n_h = g (n - t)$.
+	The \emph{velvet parameter} $g$ is defined as the percentage of honest parties
+	that have upgraded to the new protocol. The absolute number of honest upgraded
+	parties is denoted $n_h$ and it holds that
+	$n_h = g (n - t)$.
 	\label{defn:velvet_honest_majority}
 \end{definition}
 
