@@ -171,4 +171,33 @@ called \emph{succinct}.
 
 \import{./}{algorithms/alg.nipopow-prover.tex}
 
+Upon receiving two proofs $\pi_1\chi_1, \pi_2\chi_2$ of this form, the NIPoPoW verifier
+first checks that $\lvert \chi_1 \rvert = \lvert \chi_2 \rvert = k$ and that
+$\pi_1 \chi_1$ and $\pi_2 \chi_2$ form valid chains. To check that they are
+valid chains, the verifier ensures every block in the
+proof contains a pointer to its previous block inside the proof through either
+the \emph{previd} pointer in the block header, or a leaf in the interlink Merkle Tree
+included in the coinbase transaction. In this latter case, Merkle proofs must be
+provided as discussed previously. If any of these checks fail, the proof is
+rejected. It then
+compares $\pi_1$ against $\pi_2$ using
+the $\leq_m$ operator, which works as follows. It finds the
+lowest common ancestor block $b = (\pi_1 \cap \pi_2)[-1]$; that is, $b$ is the
+most recent block shared among the two proofs. Subsequently, it
+chooses the level $\mu_1$ for $\pi_1$ such that
+$\lvert \pi_1\{b{:}\}\upchain^{\mu_1} \rvert \geq m$
+(i.e., $\pi_1$ has at least $m$ superblocks of level $\mu_1$ following block
+$b$) and the value
+$2^{\mu_1} \lvert \pi_1\{b{:}\}\upchain^{\mu_1} \rvert$
+is maximized.
+It chooses a level $\mu_2$ for $\pi_2$ in the same fashion. The two proofs are
+compared
+by checking whether
+$2^{\mu_1} \lvert \pi_1\{b{:}\}\upchain^{\mu_1} \rvert \geq
+ 2^{\mu_2} \lvert \pi_2\{b{:}\}\upchain^{\mu_2} \rvert$
+and the proof with the largest score is deemed the winner. The comparison is
+illustrated in Algorithm~\ref{alg.nipopow-maxchain}.
+
+\import{./}{algorithms/alg.nipopow-maxchain.tex}
+
 % TODO: velvet
