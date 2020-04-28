@@ -61,14 +61,14 @@ The following corollary emerges immediately from Lemmas \ref{lemm:smooths_before
 	\caption{In the general case the adversarial velvet suffix proof $\mathcal{P_A} = (\pi_\mathcal{A}, \chi_\mathcal{A})$ consists of an initial part of smooth blocks followed by thorny blocks.}
 	\label{fig:adversarial_velvet_proof}
 \end{figure}
-We now describe the algorithms needed by the upgraded miner, prover and verifier. The upgraded miner acts as usual except for including the interlink of the newborn block in the coinbase transaction. In order to construct an interlink containing only the smooth blocks, the miner keeps a copy of the ``smooth chain'' ($\chain_S$) which consists of the smooth blocks existing in the original chain $\chain$. The algorithm for extracting the smooth chain out of $\chain$ is given in Algorithm \ref{alg:smooth_chain}. Function \textit{isSmoothBlock(B)} checks whether a block \textit{B} is a smooth velvet by calling \textit{isSmoothPointer(B,p)} for every pointer \textit{p} in \textit{B}'s interlink. Function \textit{isSmoothPointer(B,p)} returns \emph{true} if $p$ is a valid pointer, in essence a pointer to the most recent \emph{smooth velvet} for the level denoted by the pointer itself. The \textit{updateInterlink} algorithm is given in Algorithm \ref{alg:updateInterlink}, which is essentially the same as in the case of a hard/soft fork, except for working on the smooth chain $\chain_S$ instead of $\chain$.
+We now describe the algorithms needed by the upgraded miner, prover and verifier. The upgraded miner acts as usual except for including the interlink of the newborn block in the coinbase transaction. In order to construct an interlink containing only the smooth blocks, the miner keeps a copy of the ``smooth chain'' ($\chain_S$) which consists of the smooth blocks existing in the original chain $\chain$. The algorithm for extracting the smooth chain out of $\chain$ is given in Algorithm \ref{alg:smooth_chain_suffix}. Function \textit{isSmoothBlock(B)} checks whether a block \textit{B} is a smooth velvet by calling \textit{isSmoothPointer(B,p)} for every pointer \textit{p} in \textit{B}'s interlink. Function \textit{isSmoothPointer(B,p)} returns \emph{true} if $p$ is a valid pointer, in essence a pointer to the most recent \emph{smooth velvet} for the level denoted by the pointer itself. The \textit{updateInterlink} algorithm is given in Algorithm \ref{alg:updateInterlink}, which is essentially the same as in the case of a hard/soft fork, except for working on the smooth chain $\chain_S$ instead of $\chain$.
 
 The construction of the velvet suffix prover is given in Algorithm \ref{alg:velvet_suffix_prover}, which is essentially the same to that of a hard/soft fork except for working on smooth chain $\chain_S$ instead of $\chain$.
 
 In conclusion the Verify algorithm for the NIPoPoW suffix protocol remains the same as in the case of hard or soft fork.
 
 \begin{algorithm}[H]
-	\caption{\label{alg:smooth_chain}The computation of a smooth chain}
+	\caption{\label{alg:smooth_chain_suffix}Smooth chain for suffix proofs}
 	\begin{algorithmic}[1]
 			\Function{\sf smoothChain}{$\chain$}
 				\Let{\chain_S}{\{\mathcal{G}\}}
