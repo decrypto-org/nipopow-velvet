@@ -7,10 +7,10 @@ The general form of this attack for an adversary sewing blocks to one forked cha
 
 \begin{figure}[h]
 	\begin{center}
-		\includegraphics[scale=0.63
+		\includegraphics[width=0.95\columnwidth
 		]{figures/generic_chainsewing_attack.pdf}
 	\end{center}
-	\caption{\textit{Generic Chainsewing Attack. $\chain_B$ is the chain of an honest 	player and $\chain_\mathcal{A}$ the adversary's chain. Adversarially generated blocks are 	colored black. Dashed arrows represent interlink pointers included in the 	adversary's suffix proof. Wavy lines imply one or more blocks.}}
+	\caption{Generic Chainsewing Attack. $\chain_B$ is the chain of an honest 	player and $\chain_\mathcal{A}$ the adversary's chain. Adversarially generated blocks are 	colored black. Dashed arrows represent interlink pointers included in the 	adversary's suffix proof. Wavy lines imply one or more blocks.}
 	\label{fig:generic_attack}
 \end{figure}
 
@@ -21,16 +21,12 @@ At this point the adversary will produce a suffix proof for chain $\chain_\mathc
 
 \begin{figure}[h!]
 	\begin{center}
-		\includegraphics[scale=0.63]{figures/chainsewing_attack.pdf}
+		\includegraphics[width=\columnwidth]{figures/chainsewing_attack.pdf}
 	\end{center}
-	\caption{\textit{
-		Chainsewing Attack. $\chain_B$ represents the chain of an honest 	player. $\chain_\mathcal{A}$ is an adversarial fork. Adversarially generated blocks are colored black. Dashed arrows represent	interlink pointers included in the adversary's suffix proof. Wavy lines imply one or more blocks. Firm lines imply the previousId 	relationship between two sequential blocks.}}
+	\caption{Chainsewing Attack. $\chain_B$ represents the chain of an honest player. $\chain_\mathcal{A}$ is an adversarial fork. Adversarially generated blocks are colored black. Dashed arrows represent interlink pointers included in the adversary's suffix proof. Wavy lines imply one or more blocks. Firm lines imply the previousId relationship between two sequential blocks.}
 	\label{fig:attack}
 \end{figure}
 
 In this attack the adversary uses thorny blocks to ``sew`` portions of the chain adopted by an honest player to her own forked chain. This remark justifies the name given to the attack.
 
 Note that in order to make this attack successful, the adversary has to produce only a few superblocks which let her arrogate an arbitrarily large number of blocks. Thus this attack is expected to succeed with overwhelming probability.
-
-%@TODO
-%Needs to be proven. It is not obvious that the attacker will succeed in high probability, since the most important adversarially generated blocks , $a$ and $a'$, set a limit to the adversarial blocks produced in parallel to the honest blocks of subchain $C\{ab\} \cup C\{b{:}a'\} \cup C\{a'{:}b'\}$ and can take part in the suffix proof.

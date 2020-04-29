@@ -8,7 +8,7 @@ generated suffix proof except for some blocks in the proof's suffix $(\chi)$. Th
 
 \begin{figure}[h!]
 	\begin{center}
-		\includegraphics[scale=0.5]{figures/injection.png}
+		\includegraphics[width=0.9\columnwidth]{figures/injection.pdf}
 	\end{center}
 	\caption{The adversarial fork chain $\chain_A$ and chain $\chain_B$ of an honest player. Thorny blocks are colored black. Dashed arrows represent interlink pointers. Wavy lines imply one or more blocks. After the protocol update, when an adversarially generated block is sewed from $\chain_B$ into the adversary's suffix proof the verifier conceives $\chain_A$ as longer and $\chain_B$ as shorter. \textbf{I:} The real picture of the chains. \textbf{II:} Equivalent picture from the verifier's perspective considering the blocks included in the corresponding suffix proof for each chain.}
 	\label{fig:injection}
@@ -19,7 +19,7 @@ In order to make NIPoPoWs a secure protocol under velvet fork conditions we sugg
 In order to prove the security of the updated protocol we need to strengthen the Honest Majority Assumption to 1/4 adversary with respect to upgraded honest miners.
 
 \begin{definition}[Velvet Honest Majority]
-	\textit{Let $n_h$ be the number of upgraded honest miners. Then $t$ out of total $n$ parties are corrupted such that $\dfrac{t}{n_h} < \dfrac{1 - \delta_v}{3} $.}
+	Let $n_h$ be the number of upgraded honest miners. Then $t$ out of total $n$ parties are corrupted such that $\dfrac{t}{n_h} < \dfrac{1 - \delta_v}{3} $.
 	\label{defn:velvet_honest_majority}
 \end{definition}
 
@@ -56,7 +56,7 @@ The following corollary emerges immediately from Lemmas \ref{lemm:smooths_before
 
 \begin{figure}[h!]
 	\begin{center}
-		\includegraphics[scale=0.75]{figures/adversarial_velvet_proof.pdf}
+		\includegraphics[width=0.9\columnwidth]{figures/adversarial_velvet_proof.pdf}
 	\end{center}
 	\caption{In the general case the adversarial velvet suffix proof $\mathcal{P_A} = (\pi_\mathcal{A}, \chi_\mathcal{A})$ consists of an initial part of smooth blocks followed by thorny blocks.}
 	\label{fig:adversarial_velvet_proof}
