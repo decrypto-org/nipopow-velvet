@@ -77,13 +77,7 @@ A non-smooth pointer may not point to the most recent ancestor of level $\mu$ or
 	\label{fig:false_interlink}
 \end{figure}
 
-In the same manner it is possible that a false interlink contains arbitrary pointers to blocks of any chain as illustrated in Figure~\ref{fig:thorny_block}. The interlink pointing to arbitrary directions resembles a thorny bush, so we will refer to blocks containing false interlink information as \emph{thorny}.
-
-\begin{definition}[Thorny Block]
-	A \emph{thorny block} is a block that contains at least one non-smooth interlink pointer.
-	\label{defn:thorny_block}
-\end{definition}
-
+In the same manner it is possible that a false interlink contains arbitrary pointers to blocks of any chain as illustrated in Figure~\ref{fig:thorny_block}.
 \begin{figure}[h]
 	\begin{center}
 		\includegraphics[width=0.9\columnwidth]{figures/thorny_block.pdf}
@@ -92,13 +86,6 @@ In the same manner it is possible that a false interlink contains arbitrary poin
 	The dashed arrows are interlink pointers.}
 	\label{fig:thorny_block}
 \end{figure}
-
-Contrary to thorny blocks, \emph{smooth} blocks are blocks containing no interlink structure or containing only smooth pointers in their interlink. All blocks produced by honest parties are smooth, as unupgraded honest miners produce blocks with no interlink and upgraded honest miners produce interlinks containing only smooth pointers.
-
-\begin{definition}[Smooth Block]
-	A \emph{smooth block} is any block that is not thorny.
-	\label{defn:smooth_block}
-\end{definition}
 
 \noindent
 \textbf{A na\"ive velvet scheme.}
