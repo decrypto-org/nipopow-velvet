@@ -1,37 +1,99 @@
 \section{Analysis}
-\begin{definition}[block property, $Q$-block]
-    \cite{dionyziz}
-    A \emph{block property} is a predicate $Q$ defined on a hash output $h \in \{ 0, 1 \}^\kappa$. Given  a block property $Q$, a valid block with hash h is called a $Q$-block if $Q(h)$ is true.
+In this section, we prove the security of our scheme. We use the techniques
+developed in the Backbone line of work~\cite{backbone}. Towards that end, we
+follow their definitions and call a round \emph{successful} if at least one
+honest party made a successful random oracle query during the round, i.e., a
+query $b$ such that $H(b) \leq T$. A round in which exactly one honest party
+made a successful query is called \emph{uniquely successful} (the adversary
+could have also made successful queries during a uniquely successful round). Let
+$X_r \in \{0, 1\}$ and $Y_r \in \{0, 1\}$ denote the indicator random variables
+signifying that $r$ was a successful or uniquely successful round respectively,
+and let $Z_r \in \mathbb{N}$ be the random variable counting the number of
+successful queries of the adversary during round $r$. For a set of consecutive
+rounds $U$, we define $Y(U) = \sum_{r \in U} Y_r$ and similarly define $X$ and
+$Z$. We denote $f = \Ex[X_r] < 0.3$ the probability that a round is successful.
+
+Let $\lambda$ denote the security parameter (the output size $\kappa$ of the
+random oracle is taken to be some polynomial of $\lambda$).
+We make use of the following known~\cite{backbone} results.
+It holds that $pqt < \dfrac{t}{n-t} \dfrac{f}{1-f}$. For the Common Prefix
+parameter, it holds that $k \geq 2\lambda f$.
+Additionally, for any set of
+consecutive rounds $U$, it holds that
+$\Ex[Z(U)] < (1 + \frac{\delta}{2})f\frac{t}{n - t}|U|$,
+$\Ex[X(U)] < pq(n - t)|U|$,
+$\Ex[Y(Y)] > f(1 - f)|U|$.
+An execution is called \emph{typical}
+if the random variables $X, Y, Z$ do not deviate significantly (more than some
+error term $\epsilon < 0.3$) from their expectations. It is known that
+executions are typical with overwhelming probability in
+$\lambda$. Typicality ensures that for any set of consecutive
+rounds $U$ with $|U| > \lambda$ it holds that
+$Z(U) < \Ex[Z(U)] - \epsilon\Ex[X(U)]$ and
+$Y(U) > (1 - \epsilon)\Ex[Y(U)]$.
+
+The following definition and lemma are known~\cite{dionyziz} results and will
+allow us to argue that some smooth superblocks will survive in all honestly
+adopted chains. With foresight, we remark that we will take $Q$ to be the
+property of a block being both smooth and having attained some superblock level
+$\mu \in \mathbb{N}$.
+
+\begin{definition}[Block property, $Q$-block]
+    A \emph{block property} is a predicate $Q$ defined on a hash output $h \in \{ 0, 1 \}^\kappa$. Given a block property $Q$, a valid block with hash $h$ is called a $Q$-block if $Q(h)$ is true.
 \end{definition}
 
-\begin{lemma}[Unsuppressibility]\cite{dionyziz}
-    Consider a collection of polynomially many block properties $\mathcal{Q}$. In a typical execution every set of consecutive rounds U has a subset S of uniquely successful rounds such that
+\begin{lemma}[Unsuppressibility]
+    Consider a collection of polynomially many block properties $\mathcal{Q}$. In a typical execution every set of consecutive rounds $U$ has a subset $S$ of uniquely successful rounds such that
     \begin{itemize}
         \item $\lvert S \rvert \geq Y(U) - 2Z(U) - 2 \lambda f (\dfrac{t}{n-t} \cdot \dfrac{1}{1-f} + \epsilon)$
-        \item for any $Q \in \mathcal{Q}$, $Q$-blocks generated during S follow the distribution as in an unsuppressed chain
-        \item after the last round in S the blocks corresponding to S belong to the chain of any honest party.
+        \item for any $Q \in \mathcal{Q}$, $Q$-blocks generated during $S$ follow the distribution as in an unsuppressed chain
+        \item after the last round in $S$ the blocks corresponding to $S$ belong
+        to the chain of any honest party.
     \end{itemize}
 \end{lemma}
 
-\begin{lemma}
-   Consider Algorithm \ref{alg:updateInterlink} under velvet fork with parameter $g$ and (1/4)-bounded velvet honest majority. Let $U$ be a set of consecutive rounds $r_1 \cdots r_2$ and $\chain$ the chain of an honest party at round $r_2$ of a typical execution. Let $\chain^S_U = \{b \in \chain: \text{b is smooth} \wedge \text{b was generated during U} \}$. Let $\mu, \mu' \in \mathbb{N}$. Suppose $\chain'$ a $\mu'$ superchain containing only adversarial blocks generated during $U$ and suppose $\lvert \chain' \rvert > k$. Then it holds that $ 2^{\mu'}\lvert \chain' \rvert < 2^{\mu}\lvert \chain^S_U\upchain^{\mu} \rvert $.
-   \label{lem:claim3_lemma}
-\end{lemma}
-\begin{proof} From the Unsuppressibility Lemma we have that there is a set of uniquely successful rounds $S$, subset of $U$, such that $\lvert S \rvert \geq Y(U) - 2Z(U) - \delta'$, where $\delta' = 2 \lambda f (\dfrac{t}{n-t} \cdot \dfrac{1}{1-f} + \epsilon)$. We also know that $Q$-blocks generated during $S$ are distributed as in an unsuppressed chain. Therefore considering the property $Q$ for blocks of level $\mu$ that contain smooth interlinks we have that  $\lvert \chain^S_U\upchain^{\mu} \rvert \geq (1-\epsilon)g2^{-\mu} \lvert S \rvert$. We also know that for the total number of $\mu'$-blocks the adversary generated during $U$ that $\lvert \chain' \rvert \leq (1+\epsilon)2^{-\mu'}Z(U)$. Then we have to show that $(1-\epsilon)g (Y(U) - 2Z(U) - \delta' ) > (1+\epsilon)Z(U)$ or $((1+\epsilon)+2g(1-\epsilon))Z(U) < g(1-\epsilon)(Y(U) + \delta')$. Let $\alpha_z = (1+\epsilon)+2g(1-\epsilon)$ then we have to show that \begin{equation}\label{eq:lemma_eq1} \alpha_z Z(U) < g(1-\epsilon)(Y(U) + \delta') \end{equation}
+We now apply the above lemma to our construction. The following result lies at
+the heart of our security proof and allows us to argue that an honestly adopted
+chain will have a better superblock score than an adversarially generated chain.
 
-Because of the typical exexution we know that $Y(U), Z(U)$ cannot deviate much from their expected values. In particular, we have that\cite{backbone}: $Z(U) < \mathbb{E}[Z(U)] + \epsilon \mathbb{E}[X(U)]$ and $Y(U) > (1-\epsilon)\mathbb{E}[Y(U)]$. From the Backbone analysis we also know that $\mathbb{E}[Z(U)] < (1+\dfrac{\delta}{2})f\dfrac{t}{n-t} \lvert U \rvert$, $\mathbb{E}[X(U)] < pq(n-t) \lvert U \rvert$ and $\mathbb{E}[Y(U)] > f(1-f) \lvert U \rvert$. We substitute the expectation values to Equation (\ref{eq:lemma_eq1}), so it suffices to show that
+\begin{lemma}\label{lem:claim3_lemma}
+   Consider Algorithm \ref{alg:updateInterlink} under velvet fork with parameter $g$ and (1/4)-bounded velvet honest majority. Let $U$ be a set of consecutive rounds $r_1 \cdots r_2$ and $\chain$ the chain of an honest party at round $r_2$ of a typical execution. Let $\chain^S_U = \{b \in \chain: \text{b is smooth} \land \text{b was generated during U} \}$. Let $\mu, \mu' \in \mathbb{N}$.
+   Let $\chain'$ be a $\mu'$ superchain containing only adversarial blocks generated during $U$ and suppose $\lvert \chain' \rvert > k$. Then it holds that
+   $2^{\mu'}\lvert \chain' \rvert < 2^{\mu}\lvert \chain^S_U\upchain^{\mu} \rvert $.
+\end{lemma}
+\begin{proof}
+  From the Unsuppressibility Lemma we have that there is a set of uniquely
+  successful rounds $S \subseteq U$, such that
+  $\lvert S \rvert \geq Y(U) - 2Z(U) - \delta'$, where
+  $\delta' = 2 \lambda f (\dfrac{t}{n-t} \cdot \dfrac{1}{1-f} + \epsilon)$.
+  We also know that $Q$-blocks generated during $S$ are distributed as in an
+  unsuppressed chain. Therefore considering the property $Q$ for blocks of
+  level $\mu$ that contain smooth interlinks we have that
+  $\lvert \chain^S_U\upchain^{\mu} \rvert \geq (1-\epsilon)g2^{-\mu} \lvert S \rvert$.
+  We also know that for the total number of $\mu'$-blocks the adversary
+  generated during $U$ that
+  $\lvert \chain' \rvert \leq (1+\epsilon)2^{-\mu'}Z(U)$.
+  Then we have to show that
+  $(1-\epsilon)g (Y(U) - 2Z(U) - \delta' ) > (1+\epsilon)Z(U)$ or
+  $((1+\epsilon)+2g(1-\epsilon))Z(U) < g(1-\epsilon)(Y(U) + \delta')$.
+  Let $\alpha_z = (1+\epsilon)+2g(1-\epsilon)$. Then we have to show that
+  $\alpha_z Z(U) < g(1-\epsilon)(Y(U) + \delta')$.
+
+Substituting the bounds of $X$, $Y$, $Z$ discussed above, it suffices to show that
 \begin{equation*}
     \alpha_z[(1+\dfrac{\delta}{2})f \dfrac{t}{n-t} \lvert U \rvert + \epsilon pq(n-t) \lvert U \rvert ] < (1- \epsilon)g[ (1-\epsilon)f(1-f) \lvert U \rvert - \delta' ]
 \end{equation*} or
 \begin{equation*}
-        \alpha_z f \lvert U \rvert \dfrac{t}{n-t}(1 + \dfrac{\delta}{2}) + \alpha_z \epsilon pq(n-t) \lvert U \rvert < (1- \epsilon)g[ (1-\epsilon)f(1-f) \lvert U \rvert - \delta' ] 
+        \alpha_z f \lvert U \rvert \dfrac{t}{n-t}(1 + \dfrac{\delta}{2}) + \alpha_z \epsilon pq(n-t) \lvert U \rvert < (1- \epsilon)g[ (1-\epsilon)f(1-f) \lvert U \rvert - \delta' ]
 \end{equation*} or
 \begin{equation*}
         \dfrac{t}{n-t} < \dfrac{ (1- \epsilon)g[ (1-\epsilon)f(1-f) \lvert U \rvert - \delta' ] - \alpha_z \epsilon pq(n-t) \lvert U \rvert }  { f \lvert U \rvert \alpha_z (1 + \dfrac{\delta}{2})}
 \end{equation*} or
 \begin{equation*}
     \dfrac{t}{n-t} < \dfrac{  (1- \epsilon)g[ (1-\epsilon)f(1-f) - \dfrac{\delta'}{\lvert U \rvert} ] - \alpha_z \epsilon pq(n-t) }  { f \alpha_z (1 + \dfrac{\delta}{2})}
-\end{equation*} But
+\end{equation*}
+
+But
 \begin{equation*}
     \dfrac{\epsilon pq(n-t)}{f(1+\dfrac{\delta}{2})} = \epsilon' \ll 1
 \end{equation*} thus we have to show that
@@ -42,7 +104,8 @@ Because of the typical exexution we know that $Y(U), Z(U)$ cannot deviate much f
     \dfrac{t}{n-t} < g \cdot \dfrac{(1-\epsilon)^2 f(1-f) - \dfrac{(1-\epsilon)\delta'}{\lvert U \rvert} }{(1+\dfrac{\delta}{2})f\alpha_z} - \epsilon'
 \end{equation}
 
-In order to show Equation \ref{eq:lemma_eq2} we are going to use typical bound values for the participating parameters in our setting. We will use $\delta > \dfrac{2}{3}$ since we assume (1/4) adversary and $f \leq \dfrac{1}{10}$. We also need to estimate the value of $\dfrac{\delta'}{\lvert U \rvert}$. Because all blocks in $\chain'$ were generated during $U$ and $\lvert \chain' \rvert > k $, $\lvert U \rvert$ follows negative binomial distribution with probability $pqt$ and number of successes $k$. After applying a Chernoff bound we have that $\lvert U \rvert > (1-\epsilon) \dfrac{k}{pqt}$. But we know from \cite{backbone} that $k \geq 2\lambda f$ and $pqt < \dfrac{t}{n-t} \dfrac{f}{1-f}$ so  $\lvert U \rvert > (1-\epsilon)[\dfrac{2\lambda (n-t)(1-f)}{t}]$. So we have that
+In order to show Equation~\ref{eq:lemma_eq2} we use typical bound values for the parameters in our setting. We use $\delta > \dfrac{2}{3}$ since we assume a (1/4) adversary and $f \leq \dfrac{1}{10}$. We also need to estimate the value of $\dfrac{\delta'}{\lvert U \rvert}$. Because all blocks in $\chain'$ were generated during $U$ and $\lvert \chain' \rvert > k $, $\lvert U \rvert$ follows negative binomial distribution with probability $pqt$ and number of successes $k$.
+Applying a Chernoff bound we have that $\lvert U \rvert > (1-\epsilon) \dfrac{k}{pqt}$. Using the inequalities $k \geq 2\lambda f$ and $pqt < \dfrac{t}{n-t} \dfrac{f}{1-f}$, we deduce that $\lvert U \rvert > (1-\epsilon)[\dfrac{2\lambda (n-t)(1-f)}{t}]$. So we have that
 \begin{equation*}
     \dfrac{\delta'}{\lvert U \rvert} < \dfrac{2\lambda f (\dfrac{t}{n-t} \dfrac{1}{1-f} + \epsilon)}{(1-\epsilon)[\dfrac{2\lambda (n-t)(1-f)}{t}]}
 \end{equation*} or
@@ -59,7 +122,7 @@ But equation (\ref{eq:lemma_final_eq}) is equivalent to $\dfrac{t}{n-t} < \dfrac
 \end{proof}
 
 \begin{theorem}[Suffix Proofs Security under velvet fork]
-	Assuming honest majority under velvet fork conditions (\ref{defn:velvet_honest_majority}) such that $t \leq (1 - \delta_v) \dfrac{n_h}{3}$ where $n_h$ the number of upgraded honest players, the non-interactive proofs-of-proof-of-work construction for computable k-stable monotonic suffix-sensitive predicates under velvet fork conditions in a typical execution is secure.
+	Assuming honest majority under velvet fork conditions (\ref{defn:velvet_honest_majority}) such that $t \leq (1 - \delta_v) \dfrac{n_h}{3}$ where $n_h$ the number of upgraded honest players, the Non-Interactive Proofs of Proof-of-Work construction for computable $k$-stable monotonic suffix-sensitive predicates under velvet fork conditions in a typical execution is secure.
 \end{theorem}
 \begin{proof}
 By contradiction. Let $Q$ be a k-stable monotonic suffix-sensitive chain predicate. Assume for contradiction that NIPoPoWs under velvet fork on $Q$ is insecure. Then, during an execution at some round  $r_3$, $Q(\chain)$ is defined and the verifier $V$ disagrees with some honest participant. $V$ communicates with adversary $\mathcal{A}$ and honest prover $B$. The verifier receives proofs $\pi_\mathcal{A}, \pi_B$ which are of valid structure. Because $B$ is honest, $\pi_B$ is a proof constructed based on underlying blockchain $\chain_B$ (with $\pi_B \subseteq \chain_B$), which $B$ has adopted during round $r_3$ at which $\pi_B$ was generated. Consider $\widetilde{\chain}_\mathcal{A}$ the set of blocks defined as $\widetilde{C}_\mathcal{A} = \pi_\mathcal{A} \cup \{ \bigcup \{\chain_h^r\{{:}b_\mathcal{A}\}:  b_\mathcal{A} \in \pi_\mathcal{A}, \exists h,r : b_\mathcal{A} \in \chain_{h}^{r}\}  \}$ where $\chain_h^r$ the chain that the honest player $h$ has at round $r$.
