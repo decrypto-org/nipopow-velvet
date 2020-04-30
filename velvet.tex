@@ -67,26 +67,6 @@ In the case of velvet forks for interlink purposes, the auxiliary data consists
 of the Merkle Tree containing the interlink pointers to the most recent
 superblock ancestor at every level $\mu$.
 
-A non-smooth pointer may not point to the most recent ancestor of level $\mu$ or even point to a superblock of a fork chain, as shown in Figure~\ref{fig:false_interlink}.
-
-\begin{figure}[h]
-	\begin{center}
-		\includegraphics[width=0.9\columnwidth]{figures/false_interlink.pdf}
-	\end{center}
-    \caption{A non-smooth pointer of an adversarial block, colored black, in an honest party's chain.}
-	\label{fig:false_interlink}
-\end{figure}
-
-In the same manner it is possible that a false interlink contains arbitrary pointers to blocks of any chain as illustrated in Figure~\ref{fig:thorny_block}.
-\begin{figure}[h]
-	\begin{center}
-		\includegraphics[width=0.9\columnwidth]{figures/thorny_block.pdf}
-	\end{center}
-	\caption{A thorny block appended to an honest party's chain.
-	The dashed arrows are interlink pointers.}
-	\label{fig:thorny_block}
-\end{figure}
-
 \noindent
 \textbf{A na\"ive velvet scheme.}
 In previous work~\cite{nipopows}, it was conjectured that superblock NIPoPoWs
