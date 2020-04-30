@@ -102,15 +102,17 @@ A summary of our contributions in this paper is as follows:
 context of superlight clients~\cite{pow,nipopows,flyclient},
 cross-chain communication~\cite{pow-sidechains,burn,crosschain-sok}, as well as
 local data consumption by smart contracts~\cite{derivatives}. Superblock
-NIPoPoWs have been conjectured to work in velvet fork
-conditions~\cite{nipopows}, but we show here that these conjectures are
-ill-informed in the light of our chain-sewing attack. Velvet forks~\cite{velvet}
-have been studied for a variety of other applications. In this work, we focus on
-consensus state compression. Such compression has been explored in the hard-fork
-setting using zk-SNARKS~\cite{coda} as well as in the Proof-of-Stake
-setting~\cite{pos-sidechains}. Complementary to consensus state compression is
-compression of application state, namely the State Trie, the UTXO, or
-transaction history. There is a series of works composable with ours that
+NIPoPoWs have been deployed in production using hard forks~\cite{ergo} and have
+been conjectured to work in velvet fork conditions~\cite{nipopows}, but we show
+here that these conjectures are ill-informed in the light of our chain-sewing
+attack. Velvet forks~\cite{velvet} have been studied for a variety of other
+applications and have been deployed in practice~\cite{gtklocker}. In this work,
+we focus on consensus state compression. Such compression has been explored in
+the hard-fork setting using zk-SNARKS~\cite{coda} as well as in the
+Proof-of-Stake setting~\cite{pos-sidechains}. Complementary to consensus state
+compression (i.e., the compression of block headers and their ancestry) is
+compression of application state (namely the State Trie, the UTXO, or
+transaction history). There is a series of works composable with ours that
 discusses the compression of application state~\cite{edrax,ethanos}.
 
 The structure of the paper is as follows. In Section~\ref{sec:preliminaries}, we
