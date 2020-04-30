@@ -1,4 +1,19 @@
 \section{Velvet Interlinks}\label{sec:velvet}
+More recently, velvet forks have been introduced~\cite{velvet}. In a
+velvet fork, blocks created by upgraded miners (called \emph{velvet blocks}) are
+accepted by unupgraded miners as in a soft fork. Additionally, blocks created by
+unupgraded miners are also accepted by upgraded miners. This allows the protocol
+to upgrade even if only a minority of miners chooses to upgrade. To maintain
+backwards compatibility and to avoid causing forks, the additional data included
+in a block is \emph{advisory} and must be accepted whether it exists or not.
+Even if the additional data is invalid or malicious, upgraded nodes (in this
+context also called \emph{velvet nodes}) are forced to accept the blocks. The
+simplest approach to velvet fork the chain for interlinking purposes is to have
+upgraded miners include the interlink pointer in the blocks they produce, but
+accept blocks with missing or incorrect interlinks. As we show in the next
+section, this approach is flawed and susceptible to unexpected attacks. A
+surgical change in the way velvet blocks are produced is necessary to achieve
+proper security.
 
 In a velvet fork, only a minority of honest parties needs to support the protocol
 changes. We refer to this percentage as the ``velvet parameter''.
