@@ -113,4 +113,27 @@ compression of application state, namely the State Trie, the UTXO, or
 transaction history. There is a series of works composable with ours that
 discusses the compression of application state~\cite{edrax,ethanos}.
 
+The structure of the paper is as follows. In Section~\ref{sec:preliminaries}, we
+give a brief overview of the \emph{backbone model} and its notation; as we
+heavily leverage the machinery of the model, the section is a necessary
+prerequisite to follow the analysis. The rest of the paper is structured in the
+form of \emph{a proof and refutation}~\cite{lakatos}. We believe this form is
+more digestible. In Section~\ref{sec:velvet}, we discuss the velvet model and
+some initial definitions, and we present a first attempt towards a velvet
+NIPoPoW scheme which was presented in previous work. We discuss the informal
+argument of why it seems to be secure, which we \emph{refute} with an attack explored
+in Section~\ref{sec:attack}. In Section~\ref{sec:construction}, we patch the
+scheme and put forth our more elaborate and novel Velvet NIPoPoW construction.
+We analyze it and formally prove it secure in Section~\ref{sec:analysis} (this
+technical section can be omitted without loss of continuity). Our scheme at this
+point allows verifiers to decide which blocks form a \emph{suffix} of the
+longest blockchain and thus the protocol supports \emph{suffix proofs}. We
+extend our scheme to allow any block of interest within the blockchain to be
+demonstrated to a prover in a straight forward manner in
+Section~\ref{sec:infix}, giving a full \emph{infix proof} protocol. The latter
+protocol can be used in practice and can be deployed today in real blockchains,
+including Bitcoin, to confirm payments achieving both decentralization and
+timeliness, solving a major outstanding dilemma in contemporary blockchain
+systems.
+
 \cite{backbone}\cite{selfish}

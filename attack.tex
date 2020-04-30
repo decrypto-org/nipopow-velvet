@@ -1,4 +1,4 @@
-\section{The Chainsewing Attack}
+\section{The Chainsewing Attack}\label{sec:attack}
 We now describe an explicit attack against the NIPoPoW suffix proof construction under velvet fork. As already argued, since the protocol is implemented under velvet fork, any thorny block will be accepted as valid. Taking advantage of such blocks in the chain, the adversary can produce suffix proofs containing an arbitrary number of blocks belonging to several fork chains. The attack works as follows.
 
 Assume chain $\chain_B$ was adopted by an honest party $B$ and chain $\chain_\mathcal{A}$, a fork of $\chain_B$ at some point, is maintained by the adversary $\mathcal{A}$. After the fork point $b = (\chain_B \cap \chain_\mathcal{A})[-1]$, the honest party produces a block extending $b$ in $\chain_B$ containing a transaction $\tx$. The adversary includes a conflicting (double spending) transaction $\tx'$ in a block extending $b$ in $\chain_\mathcal{A}$.

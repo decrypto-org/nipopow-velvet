@@ -1,4 +1,4 @@
-\section{Infix Proofs}
+\section{Infix Proofs}\label{sec:infix}
 NIPoPoWs infix proofs are proofs that answer any predicate which depends on blocks appearing anywhere in the chain, except for the $k$ suffix for stability reasons. For example, consider the case where a client has received a transaction inclusion proof for a block $b$ and requests an infix proof so as to verify that $b$ is included in the current chain.
 
 Because of the described protocol update for secure NIPoPoW suffix proofs, the infix proofs construction has to be altered as well. In order to construct secure infix proofs under velvet fork conditions, we suggest the following additional protocol patch: each upgraded miner constructs and updates an authenticated data structure for all the blocks in the chain. We suggest Merkle Mountain Ranges \emph{(MMR)} for this structure. Now an interlinked block's header additionally includes the root of this MMR. 
