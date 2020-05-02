@@ -1,8 +1,9 @@
 \section{Velvet NIPoPoWs}\label{sec:construction}
 In order to eliminate the Chainsewing Attack we propose an update to the velvet NIPoPoW protocol. The core problem is that, in her suffix proof, the adversary was able to claim not only blocks of shorter forked chains, but also arbitrarily long parts of the chain adopted by an honest party. Since thorny blocks are accepted as valid, the verifier cannot distinguish blocks that actually belong in a chain from blocks that only seem to belong in the same chain because they are pointed to from a thorny block.
 
+
 \begin{definition}[Smooth Pointer]
-  A \emph{smooth pointer} of a block $b$ for a specific level $\mu$ is the interlink pointer to the most recent $\mu$-level ancestor of $b$.
+  A \emph{smooth pointer} of a block $b$ for a specific level $\mu$ is the interlink pointer to the most recent $\mu$-level smooth ancestor of $b$.
 	\label{defn:smooth_pointer}
 \end{definition}
 
