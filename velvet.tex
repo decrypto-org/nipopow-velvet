@@ -76,7 +76,7 @@ soft fork case. In particular, the na\"ive velvet NIPoPoW protocol that was put
 forth works as follows. Each upgraded honest miner attempts to mine a block $b$
 that includes interlink pointers in the form of a Merkle Tree included in its
 coinbase transaction. For each level $\mu$, the interlink contains a pointer to
-the most recent among all the anecestors of $b$ that have achieved at least
+the most recent among all the ancestors of $b$ that have achieved at least
 level $\mu$, regardless of whether the referenced block is upgraded or not and
 regardless of whether its interlinks are valid. Unupgraded honest nodes will
 keep mining blocks on the chain as usual; because the status of a block as
