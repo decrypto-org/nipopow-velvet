@@ -1,6 +1,9 @@
 from graphviz import Digraph
 
-def render(blocks, show_interlinks=True, show_thorny_interlinks=True, show_id=False, scale_superblocks=True):
+def render(blocks,
+           highlights=None,
+           show_interlinks=True, show_thorny_interlinks=True, show_id=False,
+           scale_superblocks=True):
     ids = set([b.id for b in blocks])
     dot = Digraph(comment='Execution')
     dot.graph_attr['rankdir'] = 'LR'
@@ -20,6 +23,9 @@ def render(blocks, show_interlinks=True, show_thorny_interlinks=True, show_id=Fa
                     c.attr('node', fillcolor='white', style='filled', fontcolor='black')
                 if scale_superblocks:
                     c.attr('node', height=str(block.level / 2), fontsize=str(12 + 8*block.level))
+                for highlight_color, highlight_blocks in highlights:
+                    if block in highlight_blocks:
+                        c.attr('node', fillcolor=highlight_color, style='filled', fontcolor='white')
                 label = str(block.level)
                 if show_id:
                     label += '\n' + '(' + str(block.id) + ')'

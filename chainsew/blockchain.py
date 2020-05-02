@@ -68,9 +68,10 @@ class Block:
 
     def __repr__(self):
         block_data = [str(self.id)]
-        block_data.append("mu=" + str(self.level))
         if self.genesis:
             block_data.append('(gen)')
+        else:
+            block_data.append("mu=" + str(self.level))
         if self.adversarial:
             block_data.append('(adv)')
         return '<Block ' + ' '.join(block_data) + '>'
@@ -181,58 +182,3 @@ class Chain:
         for block in self.blocks:
             repr.append('\t' + str(block))
         return '\n'.join(repr)
-
-class NIPoPoW:
-    @classmethod
-    def prove(cls, k, m, C):
-        proof = NIPoPoW(k=k, m=m)
-        if len(C) <= k:
-            proof.chain = C
-            return proof
-
-        chi = C[-k:]
-        stable_C = C[:-k]
-        pi = Chain()
-        b = C[0]
-        for mu in range(len(stable_C[-1].real_interlink) + 1, -1, -1):
-            alpha = stable_C.slice(b).upchain(mu)
-            pi |= alpha
-            if len(alpha) > m:
-                b = alpha[-m]
-
-        proof.chain = pi | chi
-        return proof
-
-    def __init__(self, **kwargs):
-        self.k = kwargs['k']
-        self.m = kwargs['m']
-        self.chain = Chain()
-
-    def best_arg(self, b):
-        k, m = self.k, self.m
-
-        pi = self.chain[:-k]
-        best_score = 0
-        for mu in range(len(pi[-1].real_interlink) + 1):
-            if len(pi.slice(b).upchain(mu)) >= m or mu == 0:
-                best_score = max(best_score, 2**mu * len(pi.slice(b)))
-        return best_score
-
-    def __ge__(self, other):
-        assert self.k == other.k and self.m == other.m, 'Proofs are incomparable'
-        
-        k = self.k
-
-        if not self.chain.is_chained():
-            return False
-        if not other.chain.is_chained():
-            return True
-        if len(self.chain) < k or len(other.chain) < k:
-            return len(self.chain) >= len(other.chain)
-
-        pi_1, chi_1 = self.chain[:-k], self.chain[-k:]
-        pi_2, chi_2 = other.chain[:-k], other.chain[-k:]
-
-        b = (pi_1 & pi_2)[-1]
-
-        return self.best_arg(b) >= other.best_arg(b)

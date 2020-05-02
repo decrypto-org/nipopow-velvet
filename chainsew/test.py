@@ -1,5 +1,6 @@
 import unittest
-from blockchain import Block, Chain, NIPoPoW
+from blockchain import Block, Chain
+from nipopow import NIPoPoW
 from render import render
 
 class TestBlockchain(unittest.TestCase):
@@ -62,6 +63,9 @@ class TestBlockchain(unittest.TestCase):
         self.assertEqual(len(C.upchain(3)), 1 + len(C) // 8)
         self.assertEqual(C.upchain(0), C)
 
+        self.assertEqual(C.upchain(3).upchain(3), C.upchain(3))
+        self.assertTrue(C.upchain(3)[-1].level >= 3)
+
         self.assertEqual(C.upchain(4).intersect(C.upchain(3)), C.upchain(4))
 
         self.assertTrue(C.subchain(C))
@@ -119,7 +123,7 @@ class TestBlockchain(unittest.TestCase):
 
         C1 = self.make_expected_distribution_superchain(2**3, True, fork_point)
         C2 = self.make_expected_distribution_superchain(2**7, True, fork_point)
-        
+
         self.assertTrue(C1.is_chained())
         self.assertTrue(C2.is_chained())
 
@@ -130,7 +134,45 @@ class TestBlockchain(unittest.TestCase):
         self.assertTrue(proof2.chain.is_chained())
 
         self.assertWins(NIPoPoW.prove(k, m, C2), NIPoPoW.prove(k, m, C1))
-    
+
+    def test_at_correct_level(self):
+        k = 1
+        m = 3
+
+        # both chains will compare at level 30
+        # ensure there's at least m = 3 blocks of level 30
+        G = Block.genesis()
+        C1 = Chain(G)
+        C2 = Chain(G)
+
+        # C1 has 3 blocks at 30 and then 10+k blocks at 0
+        for i in range(3):
+            C1.mine()
+            C1[-1].level = 30
+        for i in range(10 + k):
+            C1.mine()
+            C1[-1].level = 0
+
+        # C2 has 6 blocks at 30, then k blocks at 0
+        for i in range(6):
+            C2.mine()
+            C2[-1].level = 30
+        for i in range(k):
+            C2.mine()
+            C2[-1].level = 0
+
+        # Ensure only blocks of the right level count
+        proof1 = NIPoPoW.prove(k, m, C1)
+        proof2 = NIPoPoW.prove(k, m, C2)
+        b, (score1, mu1), (score2, mu2) = NIPoPoW.score(proof1, proof2)
+        self.assertEqual(mu1, 30)
+        self.assertEqual(mu2, 30)
+        self.assertEqual(b, G)
+        self.assertEqual(score1, 2**30 * 3)
+        self.assertEqual(score2, 2**30 * 6)
+        assert(len(C1) > len(C2))
+        self.assertWins(proof2, proof1)
+
     def test_verify_inconsistency(self):
         k = 1
         m = 3
@@ -142,7 +184,7 @@ class TestBlockchain(unittest.TestCase):
             C1.mine()
             C1[-1].level = 30
         C2 = self.make_expected_distribution_superchain(2**7, True, C[-1])
-        
+
         self.assertTrue(C1.is_chained())
         self.assertTrue(C2.is_chained())
 
