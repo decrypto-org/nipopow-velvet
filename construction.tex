@@ -20,9 +20,7 @@ At the same time, thorny blocks cannot participate in an honestly generated suff
 	\label{fig:injection}
 \end{figure}
 
-In order to make NIPoPoWs a secure protocol under velvet fork conditions we suggest that the NIPoPoW protocol under velvet fork works as usual but a miner constructs a block's interlink without pointers to thorny blocks.
-
-In order to prove the security of the updated protocol we need to strengthen the Honest Majority Assumption to 1/4 adversary with respect to upgraded honest miners.
+With this protocol patch we conclude that the adversary cannot usurp honest mining power to her fork chain. This comes with the cost that the honest prover cannot utilize thorny blocks despite belonging in the honest chain. Due to this fact we define the Velvet Honest Majority Assumption for (1/4)-bounded adversary under which the security of the protocol is guaranteed.
 
 \begin{definition}[Velvet Honest Majority]
 	Let $n_h$ be the number of upgraded honest miners. Then $t$ out of total $n$ parties are corrupted such that $\dfrac{t}{n_h} < \dfrac{1 - \delta_v}{3} $.
