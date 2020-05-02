@@ -7,13 +7,14 @@ from enum import IntEnum
 class Party:
     def __init__(self, genesis):
         self.chain = Chain(genesis)
-    
-    def block_arrival(self, block):
-        if block.height > self.chain[-1].height:
-            self.chain = Chain(block)
+
+    def block_arrival(self, chain):
+        if chain[-1].height > self.chain[-1].height:
+            self.chain = Chain.from_chain(chain)
 
     def play(self):
-        return self.chain.mine()
+        self.chain.mine()
+        return self.chain
 
 class AttackPhase(IntEnum):
     # First, create a block that performs a double spend, which extends genesis.
@@ -72,10 +73,10 @@ class Adversary(Party):
             self.adversarial_nipopow.chain.append(self.stitch_block)
             self.attack_phase = AttackPhase.GROW
 
-            return self.stitch_block
-        
+            return self.honest_chain
+
         if self.attack_phase == AttackPhase.GROW:
-            discard = True
+            # discard = True
             if self.need_bypass:
                 b = Block.mine(self.honest_chain[-1])
                 b.adversarial = True
@@ -91,17 +92,19 @@ class Adversary(Party):
                     self.adversarial_nipopow.chain.append(b)
                     # Bypass was successful.
                     self.need_bypass = False
-                    discard = False
+                    # discard = False
+                    return self.honest_chain
                 else:
                     # Unfortunately, we mined a block of high level and this
                     # cannot be used for bypassing (as b would then be included
                     # by the honest prover into their proof), so we have to discard
                     # this block and try again
-                    discard = True
+                    # discard = True
+                    pass
 
-            if not discard:
-                return b
-        
+            # if not discard:
+            #     return b
+
         if self.attack_phase == AttackPhase.SUFFIX:
             b = self.chain.mine(True)
             self.blocks_mined.append(b)
@@ -109,10 +112,12 @@ class Adversary(Party):
             self.suffix_size += 1
             if self.suffix_size >= k and self.growth_completed():
                 self.attack_phase = AttackPhase.DONE
-            
+
             return None # withhold suffix
-  
-    def block_arrival(self, block):
+
+    def block_arrival(self, chain):
+        block = chain[-1]
+
         if self.attack_phase > AttackPhase.STITCH and self.attack_phase < AttackPhase.SUFFIX:
             if block.level >= self.bypass_level:
                 # A superblock has appeared which is of higher level than we want.
@@ -132,21 +137,22 @@ class Adversary(Party):
                     self.last_good_honest_block = block
                     self.adversarial_nipopow.chain.append(block)
 
-        self.honest_chain = Chain(block)
+        self.honest_chain = chain
 
     def growth_completed(self):
         m = self.m
         mu_B = self.mu_B
         C = self.honest_chain.slice(self.stitch_block)
-        if len(C.upchain(mu_B)) < 2*m:
+        if C.count_upchain(mu_B) < 2*m:
             return False
         b = C[0]
         for mu in range(mu_B - 1, 0, -1):
-            b = C.slice(b).upchain(mu + 1)[m]
-            if len(C.slice(b).upchain(mu)) < 2*m:
+            b = C.upchain(mu + 1)[m]
+            C = C.slice(b)
+            if C.count_upchain(mu) < 2*m:
                 return False
         return True
-    
+
     def ready(self):
         return self.attack_phase == AttackPhase.DONE
 
@@ -159,10 +165,13 @@ if __name__ == '__main__':
     m = 3
     k = 3
     mu_B = 4
-    MONTE_CARLO_COUNT = 100
+    monte_carlo_count = 100
+    sample_run = False
+    if sample_run:
+        monte_carlo_count = 1
     adversarial_victories = 0
 
-    for i in range(MONTE_CARLO_COUNT):
+    for i in range(monte_carlo_count):
         G = Block.genesis()
         honest = Honest(G)
         adversary = Adversary(G, k, m, mu_B)
@@ -171,24 +180,28 @@ if __name__ == '__main__':
             r = random()
             adversary_turn = (r < t / n)
             if adversary_turn:
-                b = adversary.play()
-                if b is not None:
-                    honest.block_arrival(b)
+                chain = adversary.play()
+                if chain is not None:
+                    honest.block_arrival(chain)
             else:
-                b = honest.play()
-                adversary.block_arrival(b)
+                chain = honest.play()
+                adversary.block_arrival(chain)
         honest_proof = NIPoPoW.prove(k, m, honest.chain)
-        b, (score1, mu1), (score2, mu2) = NIPoPoW.score(honest_proof, adversary.adversarial_nipopow)
-        # print('LCA = ', b)
-        # print('Honest score = ', score1, ' (at level mu=', mu1, ')')
-        # print('Adversarial score = ', score2, ' (at level mu=', mu2, ')')
+        if sample_run:
+            b, (score1, mu1), (score2, mu2) = NIPoPoW.score(honest_proof, adversary.adversarial_nipopow)
+            print('LCA = ', b)
+            print('Honest score = ', score1, ' (at level mu=', mu1, ')')
+            print('Adversarial score = ', score2, ' (at level mu=', mu2, ')')
         if honest_proof >= adversary.adversarial_nipopow:
-            # print('Honest wins')
-            pass
+            if sample_run:
+                print('Honest wins')
         else:
-            # print('Adversary wins')
+            if sample_run:
+                print('Adversary wins')
             adversarial_victories += 1
-        # render(set(honest.chain) | set(adversary.blocks_mined),
-        #     highlights=[('#4a86e8ff', honest_proof.chain)],
-        #     show_interlinks=False)
-    print('Pr[attack succeeds] ~=', adversarial_victories / MONTE_CARLO_COUNT)
+        if sample_run:
+            render(set(honest.chain) | set(adversary.blocks_mined),
+                highlights=[('#4a86e8ff', honest_proof.chain)],
+                show_interlinks=False)
+    if not sample_run:
+        print('Pr[attack succeeds] ~=', adversarial_victories / monte_carlo_count)

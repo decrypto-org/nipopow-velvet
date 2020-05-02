@@ -25,7 +25,7 @@ class Block:
         G.genesis = True
         G.height = 0
         return G
-    
+
     def set_thorny_interlink(self, thorny_interlink=None):
         assert self.adversarial, 'Honest blocks cannot be thorny'
 
@@ -83,6 +83,13 @@ class Chain:
         ret.replace_blocks_with(blocks)
         return ret
 
+    @classmethod
+    def from_chain(cls, chain):
+        assert isinstance(chain, Chain)
+        ret = cls()
+        ret.blocks = copy(chain.blocks)
+        return ret
+
     def replace_blocks_with(self, blocks):
         self.blocks = list(blocks)
         self.blocks.sort(key=lambda b: b.id)
@@ -129,6 +136,9 @@ class Chain:
 
     def __len__(self):
         return len(self.blocks)
+
+    def count_upchain(self, mu):
+        return sum(b.level >= mu or b.genesis for b in self.blocks)
 
     def upchain(self, mu):
         return self.filter(lambda b: b.level >= mu or b.genesis)

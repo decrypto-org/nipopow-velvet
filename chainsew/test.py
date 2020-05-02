@@ -61,6 +61,9 @@ class TestBlockchain(unittest.TestCase):
         self.assertEqual(len(C.upchain(1)), 1 + len(C) // 2)
         self.assertEqual(len(C.upchain(2)), 1 + len(C) // 4)
         self.assertEqual(len(C.upchain(3)), 1 + len(C) // 8)
+        self.assertEqual(C.count_upchain(1), 1 + len(C) // 2)
+        self.assertEqual(C.count_upchain(2), 1 + len(C) // 4)
+        self.assertEqual(C.count_upchain(3), 1 + len(C) // 8)
         self.assertEqual(C.upchain(0), C)
 
         self.assertEqual(C.upchain(3).upchain(3), C.upchain(3))
