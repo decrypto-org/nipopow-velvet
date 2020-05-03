@@ -16,11 +16,11 @@ $Z$. We denote $f = \Ex[X_r] < 0.3$ the probability that a round is successful.
 Let $\lambda$ denote the security parameter (the output size $\kappa$ of the
 random oracle is taken to be some polynomial of $\lambda$).
 We make use of the following known~\cite{backbone} results.
-It holds that $pqt < \dfrac{t}{n-t} \dfrac{f}{1-f}$. For the Common Prefix
+It holds that $pq(n-t) < \dfrac{f}{1-f}$. For the Common Prefix
 parameter, it holds that $k \geq 2\lambda f$.
 Additionally, for any set of
 consecutive rounds $U$, it holds that
-$\Ex[Z(U)] < (1 + \frac{\delta}{2})f\frac{t}{n - t}|U|$,
+$\Ex[Z(U)] < \frac{t}{n-t} \cdot \frac{f}{1 - f}|U|$,
 $\Ex[X(U)] < pq(n - t)|U|$,
 $\Ex[Y(Y)] > f(1 - f)|U|$.
 An execution is called \emph{typical}
@@ -58,7 +58,7 @@ chain will have a better superblock score than an adversarially generated chain.
 
 \begin{lemma}\label{lem:claim3_lemma}
    Consider Algorithm \ref{alg:updateInterlink} under velvet fork with parameter $g$ and (1/4)-bounded velvet honest majority. Let $U$ be a set of consecutive rounds $r_1 \cdots r_2$ and $\chain$ the chain of an honest party at round $r_2$ of a typical execution. Let $\chain^S_U = \{b \in \chain: \text{b is smooth} \land \text{b was generated during U} \}$. Let $\mu, \mu' \in \mathbb{N}$.
-   Let $\chain'$ be a $\mu'$ superchain containing only adversarial blocks generated during $U$ and suppose $\lvert \chain' \rvert > k$. Then it holds that
+   Let $\chain'$ be a $\mu'$ superchain containing only adversarial blocks generated during $U$ and suppose $\lvert \chain^S_U\upchain^{\mu} \rvert > k$. Then it holds that
    $2^{\mu'}\lvert \chain' \rvert < 2^{\mu}\lvert \chain^S_U\upchain^{\mu} \rvert $.
 \end{lemma}
 \begin{proof}
@@ -76,44 +76,44 @@ chain will have a better superblock score than an adversarially generated chain.
   Then we have to show that
   $(1-\epsilon)g (Y(U) - 2Z(U) - \delta' ) > (1+\epsilon)Z(U)$ or
   $((1+\epsilon)+2g(1-\epsilon))Z(U) < g(1-\epsilon)(Y(U) + \delta')$.
-  Let $\alpha_z = (1+\epsilon)+2g(1-\epsilon)$. Then we have to show that
-  $\alpha_z Z(U) < g(1-\epsilon)(Y(U) + \delta')$.
+  But it holds that $ (1+\epsilon)+2g(1-\epsilon) < 3$. Then it suffices to show that
+  $3Z(U) < g(1-\epsilon)(Y(U) + \delta')$.
 
 Substituting the bounds of $X$, $Y$, $Z$ discussed above, it suffices to show that
 \begin{equation*}
-    \alpha_z[(1+\dfrac{\delta}{2})f \dfrac{t}{n-t} \lvert U \rvert + \epsilon pq(n-t) \lvert U \rvert ] < (1- \epsilon)g[ (1-\epsilon)f(1-f) \lvert U \rvert - \delta' ]
+    3[\dfrac{t}{n-t} \cdot \dfrac{f}{1-f} \lvert U \rvert + \epsilon pq(n-t) \lvert U \rvert ] < (1- \epsilon)g[ (1-\epsilon)f(1-f) \lvert U \rvert - \delta' ]
 \end{equation*} or
 \begin{equation*}
-        \alpha_z f \lvert U \rvert \dfrac{t}{n-t}(1 + \dfrac{\delta}{2}) + \alpha_z \epsilon pq(n-t) \lvert U \rvert < (1- \epsilon)g[ (1-\epsilon)f(1-f) \lvert U \rvert - \delta' ]
+        3f \lvert U \rvert \dfrac{f}{1-f}\cdot \dfrac{t}{n-t} + 3 \epsilon pq(n-t) \lvert U \rvert < (1- \epsilon)g[ (1-\epsilon)f(1-f) \lvert U \rvert - \delta' ]
 \end{equation*} or
 \begin{equation*}
-        \dfrac{t}{n-t} < \dfrac{ (1- \epsilon)g[ (1-\epsilon)f(1-f) \lvert U \rvert - \delta' ] - \alpha_z \epsilon pq(n-t) \lvert U \rvert }  { f \lvert U \rvert \alpha_z (1 + \dfrac{\delta}{2})}
+        \dfrac{t}{n-t} < \dfrac{ (1- \epsilon)g[ (1-\epsilon)f(1-f) \lvert U \rvert - \delta' ] - 3\epsilon pq(n-t) \lvert U \rvert }  { 3 \dfrac{f}{1-f} \lvert U \rvert}
 \end{equation*} or
 \begin{equation*}
-    \dfrac{t}{n-t} < \dfrac{  (1- \epsilon)g[ (1-\epsilon)f(1-f) - \dfrac{\delta'}{\lvert U \rvert} ] - \alpha_z \epsilon pq(n-t) }  { f \alpha_z (1 + \dfrac{\delta}{2})}
+    \dfrac{t}{n-t} < \dfrac{  (1- \epsilon)g[ (1-\epsilon)f(1-f) - \dfrac{\delta'}{\lvert U \rvert} ] - 3 \epsilon pq(n-t) }  { 3\dfrac{f}{1-f}}
 \end{equation*}
 
 But
 \begin{equation*}
-    \dfrac{\epsilon pq(n-t)}{f(1+\dfrac{\delta}{2})} = \epsilon' \ll 1
+    \dfrac{\epsilon pq(n-t)}{\dfrac{f}{1-f}} = \epsilon' \ll 1
 \end{equation*} thus we have to show that
 \begin{equation*}
-    \dfrac{t}{n-t} < \dfrac{  (1- \epsilon)g[ (1-\epsilon)f(1-f) - \dfrac{\delta'}{\lvert U \rvert} ] }  { f \alpha_z (1 + \dfrac{\delta}{2})} - \epsilon'
+    \dfrac{t}{n-t} < \dfrac{  (1- \epsilon)g[ (1-\epsilon)f(1-f) - \dfrac{\delta'}{\lvert U \rvert} ] }  { 3 \dfrac{f}{1-f}} - \epsilon'
+\end{equation*} or
+\begin{equation}\label{eq:lemma_eq1}
+    \dfrac{t}{n-t} < \dfrac{g}{3} \cdot \dfrac{(1-\epsilon)^2 f(1-f) - \dfrac{(1-\epsilon)\delta'}{\lvert U \rvert} }{\dfrac{f}{1-f}} - \epsilon'
+\end{equation}
+
+In order to show Equation~\ref{eq:lemma_eq1} we use typical bound values for the parameters in our setting. We use $\delta > \dfrac{2}{3}$ since we assume a (1/4) adversary and $f \leq \dfrac{1}{10}$. We also need to estimate the value of $\dfrac{\delta'}{\lvert U \rvert}$. Because all blocks in $\chain$ were generated during $U$ and $\lvert \chain \rvert > k $, $\lvert U \rvert$ follows negative binomial distribution with probability $pq(n-t)$ and number of successes $k$.
+Applying a Chernoff bound we have that $\lvert U \rvert > (1-\epsilon) \dfrac{k}{pq(n-t)}$. Using the inequalities $k \geq 2\lambda f$ and $pq(n-t) < \dfrac{f}{1-f}$, we deduce that $\lvert U \rvert > (1-\epsilon)2\lambda(1-f)$. So we have that
+\begin{equation*}
+    \dfrac{\delta'}{\lvert U \rvert} < \dfrac{2\lambda f (\dfrac{t}{n-t} \dfrac{1}{1-f} + \epsilon)}{(1-\epsilon)2\lambda (1-f)}
 \end{equation*} or
 \begin{equation}\label{eq:lemma_eq2}
-    \dfrac{t}{n-t} < g \cdot \dfrac{(1-\epsilon)^2 f(1-f) - \dfrac{(1-\epsilon)\delta'}{\lvert U \rvert} }{(1+\dfrac{\delta}{2})f\alpha_z} - \epsilon'
+    \dfrac{\delta'}{\lvert U \rvert} < \dfrac{t}{n-t} \cdot \dfrac{f}{(1-\epsilon)(1-f)^2} + \epsilon < 0.1 + \epsilon
 \end{equation}
 
-In order to show Equation~\ref{eq:lemma_eq2} we use typical bound values for the parameters in our setting. We use $\delta > \dfrac{2}{3}$ since we assume a (1/4) adversary and $f \leq \dfrac{1}{10}$. We also need to estimate the value of $\dfrac{\delta'}{\lvert U \rvert}$. Because all blocks in $\chain'$ were generated during $U$ and $\lvert \chain' \rvert > k $, $\lvert U \rvert$ follows negative binomial distribution with probability $pqt$ and number of successes $k$.
-Applying a Chernoff bound we have that $\lvert U \rvert > (1-\epsilon) \dfrac{k}{pqt}$. Using the inequalities $k \geq 2\lambda f$ and $pqt < \dfrac{t}{n-t} \dfrac{f}{1-f}$, we deduce that $\lvert U \rvert > (1-\epsilon)[\dfrac{2\lambda (n-t)(1-f)}{t}]$. So we have that
-\begin{equation*}
-    \dfrac{\delta'}{\lvert U \rvert} < \dfrac{2\lambda f (\dfrac{t}{n-t} \dfrac{1}{1-f} + \epsilon)}{(1-\epsilon)[\dfrac{2\lambda (n-t)(1-f)}{t}]}
-\end{equation*} or
-\begin{equation}\label{eq:lemma_eq3}
-    \dfrac{\delta'}{\lvert U \rvert} < \left( \dfrac{t}{n-t} \right)^2 \dfrac{f}{(1-\epsilon)(1-f)^2} + \epsilon < 0.06 + \epsilon
-\end{equation}
-
-By substituting (\ref{eq:lemma_eq3}) and the typical parameter bounds in Equation (\ref{eq:lemma_eq2}) we conclude that it suffices to show that
+By substituting (\ref{eq:lemma_eq2}) and the typical parameter bounds in Equation (\ref{eq:lemma_eq1}) we conclude that it suffices to show that
 \begin{equation}\label{eq:lemma_final_eq}
     \dfrac{t}{n-t} < \dfrac{1-\epsilon''}{3}g
 \end{equation}
