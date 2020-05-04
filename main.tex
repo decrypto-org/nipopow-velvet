@@ -41,10 +41,10 @@ number of blocks.
 For proof-of-work blockchains % they implement the so-called NIPoPoW primitive, for which there exist 
 two known constructions exist: Superblock and FlyClient. 
 %
-Unfortunately, none of them can be deployed as they require consensus changes to the existing blockchains and at least a soft fork to implement.
+Unfortunately, none of them can be deployed to existing blockchains as  they require consensus changes  and at least a soft fork to implement.
 
 In this paper, we %discuss
-investigate how a blockchain can be upgraded to support superblock clients without a soft fork. We show that it is possible to implement the needed changes without modifying the consensus protocol and by requiring only a minority of miners to upgrade, an upgrade termed a ``velvet fork'' in the literature. While previous work conjectured that superblock clients can be safely deployed using velvet forks as-is, we show that previous constructions are insecure, and that using velvet techniques to interlink a blockchain can pose insidious security risks. We describe a novel class of attacks, called  ``chain-sewing'', which arise in the velvet fork setting: An adversary can cut-and-paste portions of various chains from independent forks, sewing them together to 
+investigate how a blockchain can be upgraded to support superblock clients without a soft fork. We show that it is possible to implement the needed changes without modifying the consensus protocol and by requiring only a minority of miners to upgrade, a process termed a ``velvet fork'' in the literature. While previous work conjectured that superblock clients can be safely deployed using velvet forks as-is, we show that previous constructions are insecure, and that using velvet techniques to interlink a blockchain can pose insidious security risks. We describe a novel class of attacks, called  ``chain-sewing'', which arise in the velvet fork setting: an adversary can cut-and-paste portions of various chains from independent forks, sewing them together to 
 %form a proof that looks like a chain but is not.
 fool a superlight client into accepting a false claim.
 %A minority stake is sufficient for the attack and hence previous velvet-fork constructions ...   % with non-negligible probability. 
