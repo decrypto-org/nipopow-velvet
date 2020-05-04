@@ -34,6 +34,7 @@ $Y(U) > (1 - \epsilon)\Ex[Y(U)]$.
 From the above we can conclude to
 $Y(U) > (1 - \epsilon)f(1-f) \lvert U \rvert$ and
 $Z(U) < \dfrac{t}{n-t} \cdot \dfrac{f}{1-f} \lvert U \rvert + \epsilon f \lvert U \rvert $ which will be used in our proofs.
+We consider $f < \dfrac{1}{20}$ a typical bound for parameter $f$. This is because in our (1/4)-bounded adversary assumption we need to reach about 75\% of the network, which requires about 20 seconds~\cite{Wattenhofer}. Considering also that in Bitcoin the block generation time is in expectation 600 seconds, we conclude to an estimate $f = \dfrac{18}{600}$ or $f = 0.03$.
 
 The following definition and lemma are known~\cite{dionyziz} results and will
 allow us to argue that some smooth superblocks will survive in all honestly
