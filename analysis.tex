@@ -136,6 +136,24 @@ By substituting (\ref{eq:lemma_eq2}) and (\ref{eq:lemma_eq3}) and the typical $f
 But equation (\ref{eq:lemma_final_eq}) is equivalent to $\dfrac{t}{n-t} < \dfrac{1-\delta_v}{3}g$ for $\epsilon'' = \delta_v$, which is the (1/4) velvet honest majority assumption, so the claim is proven.
 \end{proof}
 
+\begin{lemma}\label{lem:claim1_lemma}
+    Consider Algorithm \ref{alg:updateInterlink} under velvet fork with parameter $g$ and (1/4)-bounded velvet honest majority. Consider the  property $Q$ for blocks of level $\mu$. Let $U$ be a set of consecutive rounds and $\chain$ the chain of an honest party at the end of $U$ of a typical execution and $\chain_U = \{ b \in \chain: \text{b was generated during U} \}$. Suppose that no block in $\chain_U$ is of level $\mu$. Then $\lvert U \rvert \leq \delta_1$ where 
+    $\delta_1 = \dfrac{(2+\epsilon) 2^{\mu} + \delta'}{(1-\epsilon)f(1-f) - 2\dfrac{t}{n-t}\dfrac{f}{1-f} -3\epsilon f}$.
+\end{lemma}
+\begin{proof}
+    The statement results immediately form the Unsuppressibility Lemma. Suppose for contradiciton that
+    \begin{equation*}
+        \lvert U \rvert > \delta_1
+    \end{equation*} 
+    Then from the Unsuppressibility Lemma we have that there is a subset of consecutive rounds $S$ of $U$ for which it holds that
+    $\lvert S \rvert \geq Y(U) - 2Z(U) - \delta'$ where
+    $\delta' = 2 \lambda f (\dfrac{t}{n-t} \cdot \dfrac{1}{1-f} + \epsilon)$. By substituting 
+    $Y(U) > (1-\epsilon)f(1-f) \lvert U \rvert$ and
+    $Z(U) < \dfrac{t}{n-t} \dfrac{f}{1-f} +\epsilon f \lvert U \rvert$ we have that
+    \begin{equation*}
+        \lvert S \rvert > (2+\epsilon)2^{\mu}
+    \end{equation*}
+    but $Q$-blocks generated during $S$ follow the distribution as in a chain where no suppression attacks occur. Therefore at least one block of level $\mu$ would appear in $\chain_U$, thus we have reached a contradiction and the statement is proven.
 \end{proof}
 
 \begin{theorem}[Suffix Proofs Security under velvet fork]
