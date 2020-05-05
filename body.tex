@@ -8,11 +8,18 @@
 
 \newpage
 \appendix
+\iflncs
+\section*{Appendix}
+\fi
 \input{simulation}
 
 %\section{Location}
 %Note that in the new ACM style, the Appendices come before the References.
 
+\ifccs
 \begin{acks}
-% TODO: For the submission, don't include acknowledgments since they would most likely deanonymize you.
+\input{acknowledgments}
 \end{acks}
+\else
+\input{acknowledgments}
+\fi

@@ -7,7 +7,11 @@ different $0$-level chain. This is shown in Figure~\ref{fig:false_interlink}.
 
 \begin{figure}[h]
 	\begin{center}
-		\includegraphics[width=0.9\columnwidth]{figures/false_interlink.pdf}
+		\iftwocolumn
+			\includegraphics[width=0.9\columnwidth]{figures/false_interlink.pdf}
+		\else
+			\includegraphics[width=0.8\columnwidth]{figures/false_interlink.pdf}
+		\fi
 	\end{center}
     \caption{A thorny block, colored black, in an honest party's chain, uses its interlink to point to a fork chain.}
 	\label{fig:false_interlink}
@@ -20,7 +24,11 @@ resembles a thorny bush.
 
 \begin{figure}[h]
 	\begin{center}
-		\includegraphics[width=0.9\columnwidth]{figures/thorny_block.pdf}
+		\iftwocolumn
+			\includegraphics[width=0.9\columnwidth]{figures/thorny_block.pdf}
+		\else
+			\includegraphics[width=0.8\columnwidth]{figures/thorny_block.pdf}
+		\fi
 	\end{center}
 	\caption{A thorny block appended to an honest party's chain.
 	The dashed arrows are interlink pointers.}
@@ -67,4 +75,4 @@ produce few superblocks, but she can arrogate an arbitrarily large number of
 honestly produced blocks. Thus the attack succeeds with non-negligible
 probability.
 
-We illustrate simulation results\footnote{A link to the open source implementation of the attack simulation has been removed for anonymization purposes} for the success rate of our attack in Appendix~\ref{sec:simulation}. Our experiments find the attack with parameters $\mu_B = 10, \mu_A = 0, t = 1, n = 5, k = 15$ succeeds with a constant rate of success of approximately $0.26$, when the security parameter $m$ ranges from $3$ to $15$. This is in contrast to the best previously known attack (which does not make us of thorny blocks), which succeeds with probability less than $0.01$. Previous work recommends $m = 15$ for a $1/3$ adversary for a probability of failure bounded by $0.001$.
+We illustrate simulation results\footnote{\ifanonymous{A link to the open source implementation of the attack simulation has been removed for anonymization purposes}\else{The simulation implementation is available for reproduction purposes under an MIT license at \url{https://github.com/decrypto-org/nipopow-velvet/tree/master/chainsew}}\fi} for the success rate of our attack in Appendix~\ref{sec:simulation}. Our experiments find the attack with parameters $\mu_B = 10, \mu_A = 0, t = 1, n = 5, k = 15$ succeeds with a constant rate of success of approximately $0.26$, when the security parameter $m$ ranges from $3$ to $15$. This is in contrast to the best previously known attack (which does not make us of thorny blocks), which succeeds with probability less than $0.01$. Previous work recommends $m = 15$ for a $1/3$ adversary for a probability of failure bounded by $0.001$.
