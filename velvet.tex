@@ -15,7 +15,7 @@ section, this approach is flawed and susceptible to unexpected attacks. A
 surgical change in the way velvet blocks are produced is necessary to achieve
 proper security.
 
-Under velvet fork only a minority of honest parties needs to support the protocol
+In a velvet fork, only a minority of honest parties needs to support the protocol
 changes. We refer to this percentage as the ``velvet parameter''.
 
 \begin{definition}[Velvet Parameter]
@@ -26,13 +26,16 @@ changes. We refer to this percentage as the ``velvet parameter''.
 	\label{defn:velvet_honest_majority}
 \end{definition}
 
+Velvet forks maintain backwards and forwards compatibility. This requires any
+block produced by upgraded miners to be accepted by unupgraded nodes (as in a
+soft fork), but also blocks produced by unupgraded miners to be accepted by
+upgraded nodes. For the particular case of superblock NIPoPoWs under velvet
+forks, upgraded miners must include the interlink data structure within their
+blocks, but must also accept blocks missing the interlink structure or
 %Velvet forks maintain backwards and forwards compatibility. This requires any
 %block produced by upgraded miners to be accepted by unupgraded nodes (as in a
 %soft fork), but also blocks produced by unupgraded miners to be accepted by
-%upgraded nodes. 
-For the case of superblock NIPoPoWs under velvet
-forks, upgraded miners must include the interlink data within their
-blocks, but must also accept blocks missing the interlink or
+%upgraded nodes.
 containing an invalid interlink. Unupgraded honest nodes will produce blocks
 that contain no interlink, while upgraded honest nodes will produce blocks that
 contain truthful interlinks. Therefore, any block with invalid interlinks will
