@@ -89,9 +89,7 @@ Lastly, the Verify algorithm for the NIPoPoW suffix protocol remains the same as
 				\EndWhile
 				\State\Return{$\chain_S$}
 			\EndFunction
-	\end{algorithmic}
-	\vspace{4mm}
-	\begin{algorithmic}[1]
+
 			\Function{\sf isSmoothBlock}{$B$}
 				\If{$B = \mathcal{G}$}
 					\State\Return{$\true$}
@@ -103,9 +101,7 @@ Lastly, the Verify algorithm for the NIPoPoW suffix protocol remains the same as
 				\EndFor
 				\State\Return{$\true$}
 			\EndFunction
-	\end{algorithmic}
-	\vspace{4mm}
-	\begin{algorithmic}[1]
+
 			\Function{\sf isSmoothPointer}{$B, p$}
 				\Let{b}{\textsf{Block}(B.\textsf{prevId})}
 				\While{$b \neq p$}
@@ -121,7 +117,7 @@ Lastly, the Verify algorithm for the NIPoPoW suffix protocol remains the same as
 			\EndFunction
 	\end{algorithmic}
 \end{algorithm}
-\vspace{-2em}
+
 \begin{algorithm}[h]
 		\caption{\label{alg:updateInterlink}Velvet updateInterlink}
 		\begin{algorithmic}[1]

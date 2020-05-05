@@ -1,5 +1,23 @@
-\section{Analysis}\label{sec:analysis}
-In this section, we prove the security of our scheme. We use the techniques
+\section{Analysis}
+In this section, we prove the security of our scheme. Before we delve in detail into the formal
+details of the proof, let us first observe why the $1/4$ bound is necessary through a combined attack
+on our construction.
+
+After the suggested protocol update the honest prover cannot include any thorny blocks in his suffix NIPoPoW even if these blocks are part of his chain $\chain_B$. The adversary may exploit this fact as follows. She tries to suppress high-level honestly generated blocks in $\chain_B$, in order to reduce the blocks that can represent the honest chain in a proof. This can be done by mining a \emph{suppressive block} on the parent of an honest superblock on the honest chain and hoping that she will be faster than the honest parties. In parallel, while she mines suppressive thorny blocks on $\chain_B$ she can still use her blocks in her NIPoPoW proofs, by chainsewing them. Consequently, even if a suppression attempt does not succeed, in case for example a second honestly generated block is published soon enough, she does not lose the mining power spent but can still utilize it by including the block in her proof.
+
+In more detail, consider the adversary who wishes to attack a specific block level $\mu_B$ and generates a NIPoPoW proof containing a block $b$ of a fork chain which contains a double spending transaction. Then she acts as follows. She mines on her fork chain $\chain_\mathcal{A}$ but when she observes a $\mu_B$-level block in $\chain_B$ she tries to mine a thorny block on $\chain_B$ in order to suppress this $\mu_B$ block. This thorny block contains an interlink pointer which jumps onto her fork chain, but a previd pointer to the honest chain. If the suppression succeeds she has managed to damage the distribution of $\mu_B$-superblocks within the honest chain, at the same time, to mine a block that she can afterwards use in her proof. If the suppression does not succeed she can still use the thorny block in her proof. The above are illustrated in Figure~\ref{fig:attack_after_update}.
+
+\begin{figure}[h!]
+	\begin{center}
+    \includegraphics[width=0.95\columnwidth]{figures/attack_after_update-crop.pdf}
+	\end{center}
+	\caption{The adversary suppresses honestly generated blocks and chainsews thorny blocks in $\chain_B$. Blue blocks are honestly generated blocks of some level of attack. The adversary tries to suppress them. If the suppression is not successful, the adversary can still use the block she mined in her proof.}
+	\label{fig:attack_after_update}
+\end{figure}
+
+The described attack is a combined attack which combines both superblock suppression (initially described in~\cite{nipopows}) and chainsewing (introduced in this work). This combined attack forces us to consider the Velvet Honest Majority Assumption of (1/4)-bounded adversary, so as to guarantee that the unsuppressed blocks in $\chain_B$ suffice for constructing winning NIPoPoW proofs against the adversarial ones.
+
+For the analysis, we use the techniques
 developed in the Backbone line of work~\cite{backbone}. Towards that end, we
 follow their definitions and call a round \emph{successful} if at least one
 honest party made a successful random oracle query during the round, i.e., a
@@ -42,8 +60,8 @@ adopted chains. With foresight, we remark that we will take $Q$ to be the
 property of a block being both smooth and having attained some superblock level
 $\mu \in \mathbb{N}$.
 
-\begin{definition}[Block property, $Q$-block]
-    A \emph{block property} is a predicate $Q$ defined on a hash output $h \in \{ 0, 1 \}^\kappa$. Given a block property $Q$, a valid block with hash $h$ is called a $Q$-block if $Q(h)$ is true.
+\begin{definition}[$Q$-block]
+    A \emph{block property} is a predicate $Q$ defined on a hash output $h \in \{ 0, 1 \}^\kappa$. Given a block property $Q$, a valid block with hash $h$ is called a $Q$-block if $Q(h)$ holds.
 \end{definition}
 
 \begin{lemma}[Unsuppressibility]
@@ -115,14 +133,14 @@ which is equivalent to $\dfrac{t}{n-t} < \dfrac{1-\delta_v}{3}g$ for $\epsilon''
 \end{proof}
 
 \begin{lemma}\label{lem:claim1_lemma}
-    Consider Algorithm \ref{alg:updateInterlink} under velvet fork with parameter $g$ and (1/4)-bounded velvet honest majority. Consider the  property $Q$ for blocks of level $\mu$. Let $U$ be a set of consecutive rounds and $\chain$ the chain of an honest party at the end of $U$ of a typical execution and $\chain_U = \{ b \in \chain: \text{b was generated during U} \}$. Suppose that no block in $\chain_U$ is of level $\mu$. Then $\lvert U \rvert \leq \delta_1$ where 
+    Consider Algorithm \ref{alg:updateInterlink} under velvet fork with parameter $g$ and (1/4)-bounded velvet honest majority. Consider the  property $Q$ for blocks of level $\mu$. Let $U$ be a set of consecutive rounds and $\chain$ the chain of an honest party at the end of $U$ of a typical execution and $\chain_U = \{ b \in \chain: \text{b was generated during U} \}$. Suppose that no block in $\chain_U$ is of level $\mu$. Then $\lvert U \rvert \leq \delta_1$ where
     $\delta_1 = \dfrac{(2+\epsilon) 2^{\mu} + \delta'}{(1-\epsilon)f(1-f) - 2\dfrac{t}{n-t}\dfrac{f}{1-f} -3\epsilon f}$.
 \end{lemma}
 \begin{proof}
     The statement results immediately form the Unsuppressibility Lemma. Suppose for contradiciton that $\lvert U \rvert > \delta_1 $.
     Then from the Unsuppressibility Lemma we have that there is a subset of consecutive rounds $S$ of $U$ for which it holds that
     $\lvert S \rvert \geq Y(U) - 2Z(U) - \delta'$ where
-    $\delta' = 2 \lambda f (\dfrac{t}{n-t} \cdot \dfrac{1}{1-f} + \epsilon)$. By substituting 
+    $\delta' = 2 \lambda f (\dfrac{t}{n-t} \cdot \dfrac{1}{1-f} + \epsilon)$. By substituting
     $Y(U) > (1-\epsilon)f(1-f) \lvert U \rvert$ and
     $Z(U) < \dfrac{t}{n-t} \dfrac{f}{1-f} +\epsilon f \lvert U \rvert$ we have that $\lvert S \rvert > (2+\epsilon)2^{\mu}$ but $Q$-blocks generated during $S$ follow the distribution as in a chain where no suppression attacks occur. Therefore at least one block of level $\mu$ would appear in $\chain_U$, thus we have reached a contradiction and the statement is proven.
 \end{proof}
@@ -131,7 +149,7 @@ which is equivalent to $\dfrac{t}{n-t} < \dfrac{1-\delta_v}{3}g$ for $\epsilon''
 	Assuming honest majority under velvet fork conditions (\ref{defn:velvet_honest_majority}) such that $t \leq (1 - \delta_v) \dfrac{n_h}{3}$ where $n_h$ the number of upgraded honest parties, the Non-Interactive Proofs of Proof-of-Work construction for computable $k$-stable monotonic suffix-sensitive predicates under velvet fork conditions in a typical execution is secure.
 \end{theorem}
 \begin{proof}
-By contradiction. Let $Q$ be a $k$-stable monotonic suffix-sensitive chain predicate. Assume for contradiction that NIPoPoWs under velvet fork on $Q$ is insecure. Then, during an execution at some round  $r_3$, $Q(\chain)$ is defined and the verifier $V$ disagrees with some honest participant. $V$ communicates with adversary $\mathcal{A}$ and honest prover $B$. The verifier receives proofs $\pi_\mathcal{A}, \pi_B$ which are of valid structure. Because $B$ is honest, $\pi_B$ is a proof constructed based on underlying blockchain $\chain_B$ (with $\pi_B \subseteq \chain_B$), which $B$ has adopted during round $r_3$ at which $\pi_B$ was generated. Consider $\widetilde{\chain}_\mathcal{A}$ the set of blocks defined as $\widetilde{C}_\mathcal{A} = \pi_\mathcal{A} \cup \{ \bigcup \{\chain_h^r\{{:}b_\mathcal{A}\}:  b_\mathcal{A} \in \pi_\mathcal{A}, \exists h,r : b_\mathcal{A} \in \chain_{h}^{r}\}  \}$ where $\chain_h^r$ the chain that the honest party $h$ has at round $r$. Consider also $\chain^S_B$ the set of smooth blocks of honest chain $\chain_B$. We apply security parameter 
+By contradiction. Let $Q$ be a $k$-stable monotonic suffix-sensitive chain predicate. Assume for contradiction that NIPoPoWs under velvet fork on $Q$ is insecure. Then, during an execution at some round  $r_3$, $Q(\chain)$ is defined and the verifier $V$ disagrees with some honest participant. $V$ communicates with adversary $\mathcal{A}$ and honest prover $B$. The verifier receives proofs $\pi_\mathcal{A}, \pi_B$ which are of valid structure. Because $B$ is honest, $\pi_B$ is a proof constructed based on underlying blockchain $\chain_B$ (with $\pi_B \subseteq \chain_B$), which $B$ has adopted during round $r_3$ at which $\pi_B$ was generated. Consider $\widetilde{\chain}_\mathcal{A}$ the set of blocks defined as $\widetilde{C}_\mathcal{A} = \pi_\mathcal{A} \cup \{ \bigcup \{\chain_h^r\{{:}b_\mathcal{A}\}:  b_\mathcal{A} \in \pi_\mathcal{A}, \exists h,r : b_\mathcal{A} \in \chain_{h}^{r}\}  \}$ where $\chain_h^r$ the chain that the honest party $h$ has at round $r$. Consider also $\chain^S_B$ the set of smooth blocks of honest chain $\chain_B$. We apply security parameter
 \begin{equation*}
     m = 2k + \dfrac{2+\epsilon + \delta'}{\dfrac{t}{n-t}\dfrac{f}{1-f}[f(1-f) - \dfrac{2}{3}\dfrac{f}{1-f}]}
 \end{equation*}
@@ -139,7 +157,7 @@ By contradiction. Let $Q$ be a $k$-stable monotonic suffix-sensitive chain predi
 Suppose for contradiction that the verifier outputs $\neg Q(\chain_B)$. Thus it is necessary that $\pi_\mathcal{A} {\geq}_m \pi_B$. We show that $\pi_\mathcal{A} {\geq}_m \pi_B$ is a negligible event.
 Let the levels of comparison decided by the verifier be $\mu_\mathcal{A}$ and $\mu_B$ respectively. Let $b_0 = LCA(\pi_\mathcal{A}, \pi_B)$. Call $\alpha_\mathcal{A} = \pi_\mathcal{A} \upchain^{\mu_\mathcal{A}}\{b_0{:}\}$, $\alpha_B = \pi_B \upchain^{\mu_B}\{b_0{:}\}$.
 
-From Corollary \ref{cor:adversarial_proof_scheme} we have that the adversarial proof consists of a smooth interlink subchain followed by a thorny interlink subchain. We will refer to the smooth part of $\alpha_\mathcal{A}$ as $\alpha^{\mathcal{S}}_\mathcal{A}$ and to the thorny part as $\alpha^{\mathcal{T}}_\mathcal{A}$.
+From Corollary \ref{cor:adversarial_proof_scheme} we have that the adversarial proof consists of a smooth interlink subchain followed by a thorny interlink subchain. We refer to the smooth part of $\alpha_\mathcal{A}$ as $\alpha^{\mathcal{S}}_\mathcal{A}$ and to the thorny part as $\alpha^{\mathcal{T}}_\mathcal{A}$.
 
 Our proof construction is based on the following intuition: we consider that $\alpha_\mathcal{A}$ consists of three distinct parts $\alpha_\mathcal{A}^1, \alpha_\mathcal{A}^2, \alpha_\mathcal{A}^3$ with the following properties.
 Block $b_0 = LCA(\pi_\mathcal{A}, \pi_B)$ is the fork point between $\pi_\mathcal{A} \upchain^{\mu_\mathcal{A}}, \pi_B \upchain^{\mu_B}$. Let block $b_1 = LCA (\alpha^{\mathcal{S}}_\mathcal{A}, \chain^S_B)$ be the fork point between $\pi^{\mathcal{S}}_\mathcal{A} \upchain^{\mu_\mathcal{A}}, \chain_B $ as an honest prover could observe. Part $\alpha_\mathcal{A}^1$ contains the blocks between $b_0$ exclusive and $b_1$ inclusive generated during the set of consecutive rounds $\mathcal{S}_1$ and $\lvert  \alpha_\mathcal{A}^1 \rvert = k_1$. Consider $b_2$ the last block in $\alpha_\mathcal{A}$ generated by an honest party. Part $\alpha_{\mathcal{A}}^2$ contains the blocks between $b_1$ exclusive and $b_2$ inclusive generated during the set of consecutive rounds $\mathcal{S}_2$ and $\vert  \alpha_\mathcal{A}^2 \vert = k_2$. Consider $b_3$ the next block of $b_2$ in $\alpha_\mathcal{A}$. Then $\alpha_{\mathcal{A}}^3 = \alpha_\mathcal{A}[b_3{:}]$ and $\vert  \alpha_\mathcal{A}^3 \vert = k_3$ consisting of adversarial blocks generated during the set of consecutive rounds $\mathcal{S}_3$. Therefore $\vert \alpha_\mathcal{A} \vert = k_1 + k_2 + k_3$ and we will show that $\vert \alpha_\mathcal{A} \vert < \vert \alpha_B \vert$.
@@ -154,7 +172,7 @@ The above are illustrated, among other, in Parts I, II of Figure \ref{fig:proof_
     \label{fig:proof_velvet}
 \end{figure}
 
-We will now show three successive claims: First that $\alpha_\mathcal{A}^1$ contains only a few blocks. Second,  $\alpha_\mathcal{A}^2$ contains only a few blocks. And third, the adversary is able to produce a winning $a_\mathcal{A}$ with negligible probability.
+We now show three successive claims: First that $\alpha_\mathcal{A}^1$ contains few blocks. Second, $\alpha_\mathcal{A}^2$ contains few blocks. And third, the adversary can produce a winning $a_\mathcal{A}$ with negligible probability.
 
 \textbf{Claim 1:} \textit{$\alpha_\mathcal{A}^1 = (\alpha_\mathcal{A}\{b_0 : b_1\} \cup b_1)$ contains only a few blocks.} Let $\lvert \alpha^1_\mathcal{A} \rvert = k_1$. We have defined the blocks $b_0 = LCA(\pi_\mathcal{A}, \pi_B)$ and $b_1 = LCA(\alpha^{\mathcal{S}}_\mathcal{A}, \chain^S_B)$. First observe that because of the Corollary \ref{cor:adversarial_proof_scheme} there are no thorny blocks in $\alpha_\mathcal{A}^1$ since $\alpha_\mathcal{A}^1[-1] = b_1$ is a smooth block. This means that if $b_1$ was generated at round $r_{b_1}$ and $\alpha^{\mathcal{S}}_\mathcal{A}[-1]$ in round $r$ then $r \geq r_{b_1}$. Therefore, $\alpha_\mathcal{A}^1$ contains smooth blocks of $\chain_B$. We show the claim by considering the two possible cases for the relation of $\mu_\mathcal{A}, \mu_B$.
 
