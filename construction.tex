@@ -12,13 +12,13 @@ We describe a protocol patch that operates as follows. The superblock NIPoPoW pr
 At the same time, thorny blocks cannot participate in an honestly generated suffix proof except for some blocks in the proof's suffix $(\chi)$. This argument holds because thorny blocks do not form a valid chain along with honestly mined blocks anymore. Consequently, as far as the blocks included in a suffix proof is concerned, we can think of thorny blocks as belonging in the adversary's fork chain for the $\pi$ part of the proof,  which is the comparing part between proofs. Figure~
 \ref{fig:injection} illustrates this remark.
 
-\begin{figure}[h!]
+\begin{figure*}[h!]
 	\begin{center}
-		\includegraphics[width=0.9\columnwidth]{figures/injection.pdf}
+		\includegraphics[width=0.8 \textwidth]{figures/injection.pdf}
 	\end{center}
 	\caption{The adversarial fork chain $\chain_A$ and chain $\chain_B$ of an honest party. Thorny blocks are colored black. Dashed arrows represent interlink pointers. Wavy lines imply one or more blocks. After the protocol update, when an adversarially generated block is sewed from $\chain_B$ into the adversary's suffix proof the verifier conceives $\chain_A$ as longer and $\chain_B$ as shorter. \textbf{I:} The real picture of the chains. \textbf{II:} Equivalent picture from the verifier's perspective considering the blocks included in the corresponding suffix proof for each chain.}
 	\label{fig:injection}
-\end{figure}
+\end{figure*}
 
 With this protocol patch we conclude that the adversary cannot usurp honest mining power to her fork chain. This comes with the cost that the honest prover cannot utilize thorny blocks despite belonging in the honest chain. Due to this fact we define the Velvet Honest Majority Assumption for (1/4)-bounded adversary under which the security of the protocol is guaranteed.
 
