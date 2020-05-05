@@ -16,7 +16,7 @@ At the same time, thorny blocks cannot participate in an honestly generated suff
 	\begin{center}
 		\includegraphics[width=0.9\columnwidth]{figures/injection.pdf}
 	\end{center}
-	\caption{The adversarial fork chain $\chain_A$ and chain $\chain_B$ of an honest party. Thorny blocks are colored black. Dashed arrows represent interlink pointers. Wavy lines imply one or more blocks. After the protocol update, when an adversarially generated block is sewed from $\chain_B$ into the adversary's suffix proof the verifier conceives $\chain_A$ as longer and $\chain_B$ as shorter. \textbf{I:} The real picture of the chains. \textbf{II:} Equivalent picture from the verifier's perspective considering the blocks included in the corresponding suffix proof for each chain.}
+	\caption{The adversarial fork chain $\chain_\mathcal{A}$ and chain $\chain_B$ of an honest party. Thorny blocks are colored black. An adversarially generated block is sewed from $\chain_B$ into the adversary's suffix proof. \textbf{I:} the real picture of the chains, \textbf{II:} picture corresponding to the verifier's perspective considering the blocks included in the suffix proofs.}
 	\label{fig:injection}
 \end{figure}
 
@@ -34,9 +34,9 @@ update.
 	A velvet suffix proof constructed by an honest party cannot contain any thorny block.
 	\label{lemm:smooth_honest_suffix}
 \end{lemma}
-\begin{proof}
-	The statement holds by construction.
-\end{proof}
+%\begin{proof}
+%	The statement holds by construction.
+%\end{proof}
 
 \begin{lemma}
 	Let $\mathcal{P_A} = (\pi_\mathcal{A}, \chi_\mathcal{A})$ be a velvet suffix proof constructed by the adversary and block $b_s$, generated at round $r_s$, be the most recent smooth block in the proof. Then $\forall r:r < r_s$ no thorny blocks generated at round $r$ can be included in $\mathcal{P_A}$.
@@ -65,7 +65,7 @@ The following corollary emerges immediately from Lemmas \ref{lemm:smooths_before
 	\begin{center}
 		\includegraphics[width=0.9\columnwidth]{figures/adversarial_velvet_proof.pdf}
 	\end{center}
-	\caption{In the general case the adversarial velvet suffix proof $\mathcal{P_A} = (\pi_\mathcal{A}, \chi_\mathcal{A})$ consists of an initial part of smooth blocks followed by thorny blocks.}
+	\caption{General case of the adversarial velvet suffix proof $\mathcal{P_A} = (\pi_\mathcal{A}, \chi_\mathcal{A})$ consisting of an initial part of smooth blocks followed by thorny blocks.}
 	\label{fig:adversarial_velvet_proof}
 \end{figure}
 We now describe the algorithms needed by the upgraded miner, prover and verifier. The upgraded miner acts as usual except for including the interlink of the newborn block in the coinbase transaction. In order to construct an interlink containing only the smooth blocks, the miner keeps a copy of the ``smooth chain'' ($\chain_S$) which consists of the smooth blocks existing in the original chain $\chain$. The algorithm for extracting the smooth chain out of $\chain$ is given in Algorithm \ref{alg:smooth_chain_suffix}. Function \textit{isSmoothBlock(B)} checks whether a block \textit{B} is a smooth velvet by calling \textit{isSmoothPointer(B,p)} for every pointer \textit{p} in \textit{B}'s interlink. Function \textit{isSmoothPointer(B,p)} returns \emph{true} if $p$ is a valid pointer, in essence a pointer to the most recent \emph{smooth velvet} for the level denoted by the pointer itself. The \textit{updateInterlink} algorithm is given in Algorithm \ref{alg:updateInterlink}, which is essentially the same as in the case of a hard/soft fork, except for working on the smooth chain $\chain_S$ instead of $\chain$.
@@ -74,7 +74,7 @@ The construction of the velvet suffix prover is given in Algorithm \ref{alg:velv
 
 In conclusion the Verify algorithm for the NIPoPoW suffix protocol remains the same as in the case of hard or soft fork.
 
-\begin{algorithm}[H]
+\begin{algorithm}[h]
 	\caption{\label{alg:smooth_chain_suffix}Smooth chain for suffix proofs}
 	\begin{algorithmic}[1]
 			\Function{\sf smoothChain}{$\chain$}
@@ -121,7 +121,7 @@ In conclusion the Verify algorithm for the NIPoPoW suffix protocol remains the s
 	\end{algorithmic}
 \end{algorithm}
 
-\begin{algorithm}[h!]
+\begin{algorithm}[h]
 		\caption{\label{alg:updateInterlink}Velvet updateInterlink}
 		\begin{algorithmic}[1]
 				\Function{\sf updateInterlinkVelvet}{$\chain_S$}
@@ -135,7 +135,7 @@ In conclusion the Verify algorithm for the NIPoPoW suffix protocol remains the s
 		\end{algorithmic}
 \end{algorithm}
 
-\begin{algorithm}[h!]
+\begin{algorithm}[h]
 		\caption{\label{alg:velvet_suffix_prover}Velvet Suffix Prover}
 		\begin{algorithmic}
 				\Function{\sf ProveVelvet$_{m,k}$}{$\chain_S$}
