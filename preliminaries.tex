@@ -3,7 +3,7 @@
 We consider a setting where the blockchain network consists of two different
 types of nodes: The first kind, \emph{full nodes}, are responsible for the
 maintenance of the chain including verifying it and mining new blocks. The
-second kind, \emph{verifiers} connect to full nodes and wish to learn facts
+second kind, \emph{verifiers}, connect to full nodes and wish to learn facts
 about the blockchain without downloading it, for example whether a particular
 transaction is confirmed. The full nodes therefore also function as
 \emph{provers} for the verifiers. Each verifier connects to multiple provers, at
@@ -191,7 +191,7 @@ a leaf in the interlink Merkle Tree root included in the block header of $b$.
 The verifier has the additional job of verifying the veracity of these Merkle
 inclusion proofs.
 
-In a \emph{soft forks}, blocks created by unupgraded miners are not accepted by
+In a \emph{soft fork}, blocks created by unupgraded miners are not accepted by
 upgraded miners, but blocks created by upgraded miners are accepted by
 unupgraded miners. As such, any additional data introduced by the upgrade must
 be included in a field that is treated like a comment by an unupgraded miner.
