@@ -8,24 +8,24 @@ chain, if it does not wish to rely on a trusted third party~\cite{taxonomy}. Whi
 node (SPV) can avoid downloading and validating transactions beyond their
 interest, it must still download the block headers that contain the
 proof-of-work~\cite{pow} of each block in order to determine which chain contains
-the most proof-of-work. The block header data, while smaller by a significant constant
+the most work. The block headers, while smaller by a significant constant
 factor, still grow linearly with time. An Ethereum node synchronizing for the
 first time must download more than $4$ GB of block header data for the purpose
-of proof-of-work verification, even if it elects not to download any
+of proof-of-work verification, even if it does not download any
 transactions. This has become a central problem to the usability of blockchain
-systems, especially for vendors who are using mobile phones to accept payments
-or sit behind limited internet bandwidth. They are forced to make a difficult
+systems, especially for vendors who use mobile phones to accept payments
+and sit behind limited internet bandwidth. They are forced to make a difficult
 choice between decentralization and the ability to start accepting payments in a
 timely manner.
 
 Towards the goal of alleviating the burden of this download for SPV clients, a
-number of \emph{superlight} clients has emerged. 
+number of \emph{superlight} clients has emerged.
 %These clients are able to
 %choose the best proof-of-work chain by only requesting a small number of
-%\emph{sample} block headers instead of all the block headers. 
+%\emph{sample} block headers instead of all the block headers.
 These protocols give rise to  Non-Interactive Proofs of Proof-of-Work (NIPoPoW)
 ~\cite{nipopows}, which are short strings
- that ``compress'' the proof-of-work information of the underlying chain. 
+ that ``compress'' the proof-of-work information of the underlying chain by sending a carefully selected sample of block headers.
 %It has been shown
 %that the block headers in these proofs are secure representatives of the
 %proof-of-work of the underlying chain:
@@ -38,20 +38,19 @@ There are two general directions for superlight client implementations: In the
 \emph{superblock}~\cite{nipopows,compactsuperblocks} approach, the client
 relies on \emph{superblocks}, blocks that have achieved much better
 proof-of-work than required for block validity. In the
-\emph{FlyClient}~\cite{flyclient} approach, blocks are sampled and committed at random as in a $\Sigma$-protocol (e.g. Schnorr's discrete-log protocol~\cite{schnorr}) and then using 
+\emph{FlyClient}~\cite{flyclient} approach, blocks are sampled and committed at random as in a $\Sigma$-protocol (e.g., Schnorr's discrete-log protocol~\cite{schnorr}) and then using
 the Fiat--Shamir heuristic~\cite{fiatshamir} a non-interactive proof is calculated. The number of block headers
 that need to be sent then grows only logarithmically with time. The NIPoPoW
 client, which is the proof \emph{verifier} in this context, still relies on a connection to full nodes,
 who, acting as \emph{provers},  perform the sampling of blocks from the full
-blockchain. 
+blockchain.
 No trust assumptions are made for these provers, as the
 verifier can check the veracity of their claims. As long as the verifier is
 connected to at least one honest prover (an assumption also made in the SPV
-protocol~\cite{eclipse,eclipse-ethereum}), they are able to arrive at the correct claim.
+protocol~\cite{eclipse,eclipse-ethereum}), they can arrive at the correct claim.
 
-In both approaches, it is essential for the verifier to check that the blocks
-sampled one way or another have been generated in the same order as they have
-been presented by the prover. As such, each block in the proof must contain a
+In both approaches, the verifier must check that the blocks
+sampled one way or another were generated in the same order as presented by the prover. As such, each block in the proof must contain a
 pointer to the previous block in the proof. As blocks in these proofs are far
 apart in the underlying blockchain, the legacy \emph{previous block pointer},
 which typically appears within block headers, does not suffice.
@@ -66,8 +65,7 @@ whose root is stored in the block header. The inclusion of extra pointers within
 blocks is termed \emph{interlinking the chain}~\cite{popow}.
 
 The modified block format, which includes the extra pointers, must be respected
-and validated by all full nodes and thus requires either a hard fork or at least
-a soft fork. However, even soft forks require the approval of a supermajority of
+and validated by full nodes and thus requires a hard or soft fork. However, even soft forks require the approval of a supermajority of
 miners, and new features that are considered non-essential by the community have
 taken years to receive approval~\cite{segwit}. Towards the goal of implementing
 superlight clients sooner, we study the question of whether it is possible to
@@ -124,14 +122,15 @@ more digestible. In Section~\ref{sec:velvet}, we discuss the velvet model and
 some initial definitions, and we present a first attempt towards a velvet
 NIPoPoW scheme which was presented in previous work. We discuss the informal
 argument of why it seems to be secure, which we \emph{refute} with an attack explored
-in Section~\ref{sec:attack}. In Section~\ref{sec:construction}, we patch the
+in Section~\ref{sec:attack} (we give simulation results and concrete parameters
+for our attack in Appendix~\ref{sec:simulation}). In Section~\ref{sec:construction}, we patch the
 scheme and put forth our more elaborate and novel Velvet NIPoPoW construction.
 We analyze it and formally prove it secure in Section~\ref{sec:analysis} (this
 technical section can be omitted without loss of continuity). Our scheme at this
 point allows verifiers to decide which blocks form a \emph{suffix} of the
 longest blockchain and thus the protocol supports \emph{suffix proofs}. We
 extend our scheme to allow any block of interest within the blockchain to be
-demonstrated to a prover in a straight forward manner in
+demonstrated to a prover in a straightforward manner in
 Section~\ref{sec:infix}, giving a full \emph{infix proof} protocol. The latter
 protocol can be used in practice and can be deployed today in real blockchains,
 including Bitcoin, to confirm payments achieving both decentralization and
