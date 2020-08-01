@@ -4,7 +4,7 @@ Ethereum~\cite{buterin,wood} have a predetermined expected rate of block
 production and maintain chains of blocks that are growing linearly
 with time. A node synchronizing with the rest of the blockchain
 network for the first time therefore has to download and validate the whole
-chain, if it does not wish to rely on a trusted third party. While a lightweight
+chain, if it does not wish to rely on a trusted third party~\cite{taxonomy}. While a lightweight
 node (SPV) can avoid downloading and validating transactions beyond their
 interest, it must still download the block headers that contain the
 proof-of-work~\cite{pow} of each block in order to determine which chain contains
@@ -89,26 +89,28 @@ A summary of our contributions in this paper is as follows:
         clients designed to work in a soft fork cannot be readily plugged into a velvet fork and expected to work. We present a novel and insidious
         attack termed the \emph{chain-sewing} attack which thwarts the defenses of previous proposals and allows even a minority adversary to cause
         catastrophic failures.
-  \item We propose the first \emph{backwards-compatible superlight client}. We put forth an interlinking mechanism implementable through a velvet fork. We then construct a superblock NIPoPoW protocol on top of the velvet forked chain and show it allows to build superlight clients for various statements regarding the blockchain state via both ``suffix'' and ``infix'' proofs. 
-  \item We prove our construction secure in the synchronous static difficulty model against adversaries bounded to $1/4$ of the mining power of the honest upgraded nodes. As such, our protocol works even if a constant minority of miners adopts it.
+  \item We propose the first \emph{backwards-compatible superlight client}. We put forth an interlinking mechanism implementable through a velvet fork. We then construct a superblock NIPoPoW protocol on top of the velvet forked chain and show it allows to build superlight clients for various statements regarding the blockchain state via both ``suffix'' and ``infix'' proofs.
+  \item We prove our construction secure in the synchronous static difficulty model against adversaries bounded to $1/3$ of the mining power of the honest upgraded nodes. As such, our protocol works even if a constant minority of miners adopts it.
 \end{enumerate}
 
 \noindent
 \textbf{Previous work.} Proofs of Proof-of-Work have been proposed in the
-context of superlight clients~\cite{pow,nipopows,flyclient},
+context of superlight clients~\cite{nipopows,flyclient},
 cross-chain communication~\cite{pow-sidechains,burn,crosschain-sok}, as well as
-local data consumption by smart contracts~\cite{derivatives}. Superblock
-NIPoPoWs have been deployed in production using hard forks~\cite{ergo} and have
+local data consumption by smart contracts~\cite{derivatives}. Chain interlinking
+has been deployed in production both since genesis~\cite{ergo,nimiq} and using
+hard forks~\cite{heartwood-flyclient}, and relevant verifiers have been
+implemented~\cite{gglou,nipopow-gas}. They have
 been conjectured to work in velvet fork conditions~\cite{nipopows} (we show
 here that these conjectures are ill-informed in the light of our chain-sewing
 attack). Velvet forks~\cite{velvet} have been studied for a variety of other
-applications and have been deployed in practice, e.g., see~\cite{gtklocker}. In this work,
+applications and have been deployed in practice~\cite{gtklocker}. In this work,
 we focus on consensus state compression. Such compression has been explored in
 the hard-fork setting using zk-SNARKS~\cite{coda} as well as in the
 Proof-of-Stake setting~\cite{pos-sidechains}. Complementary to consensus state
 compression (i.e., the compression of block headers and their ancestry) is
-compression of application state (namely the State Trie, the UTXO, or
-transaction history). There is a series of works complementary and composable with ours that
+compression of application state, namely the State Trie, the UTXO, or
+transaction history. There is a series of works complementary and composable with ours that
 discusses the compression of application state~\cite{edrax,ethanos}.
 
 \noindent
