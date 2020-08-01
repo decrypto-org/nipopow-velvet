@@ -10,7 +10,7 @@ different $0$-level chain. This is shown in Figure~\ref{fig:false_interlink}.
 		\iftwocolumn
 			\includegraphics[width=0.9\columnwidth]{figures/false_interlink.pdf}
 		\else
-			\includegraphics[width=0.8\columnwidth]{figures/false_interlink.pdf}
+			\includegraphics[width=0.7\columnwidth]{figures/false_interlink.pdf}
 		\fi
 	\end{center}
     \caption{A thorny block, colored black, in an honest party's chain, uses its interlink to point to a fork chain.}
@@ -27,7 +27,7 @@ resembles a thorny bush.
 		\iftwocolumn
 			\includegraphics[width=0.9\columnwidth]{figures/thorny_block.pdf}
 		\else
-			\includegraphics[width=0.8\columnwidth]{figures/thorny_block.pdf}
+			\includegraphics[width=0.7\columnwidth]{figures/thorny_block.pdf}
 		\fi
 	\end{center}
 	\caption{A thorny block appended to an honest party's chain.
@@ -49,7 +49,7 @@ The general form of this attack for an adversary sewing blocks to one forked cha
 
 \begin{figure}[h]
 	\begin{center}
-		\includegraphics[width=0.95\columnwidth
+		\includegraphics[width=0.9\columnwidth
 		]{figures/generic_chainsewing_attack.pdf}
 	\end{center}
 	\caption{Generic Chainsewing Attack. $\chain_B$ is the chain of an honest party and $\chain_\mathcal{A}$ the adversary's chain. Adversarially generated blocks are 	colored black. Dashed arrows represent interlink pointers included in the	adversary's suffix proof. Wavy lines imply one or more blocks.}
@@ -61,7 +61,7 @@ The adversary chooses to attack at some level $\mu_\mathcal{A} \in \mathbb{N}$ (
 
 \begin{figure}[h!]
 	\begin{center}
-		\includegraphics[width=\columnwidth]{figures/chainsew-concrete.pdf}
+		\includegraphics[width=0.8\columnwidth]{figures/chainsew-concrete.pdf}
 	\end{center}
 	\caption{A portion of the concrete Chainsewing Attack. The adversary's blocks are shown in black, while the honestly generated blocks are shown in white. Block $b'$ contains a double spend, while block $a'$ sews it in place. The blue block $c$ is a block included in the honest NIPoPoW, but it is bypassed by the adversary by introducing block $d$ which, while part of the honest chain, points to $c$'s parent. After a point, the adversary forks off and creates $k = 3$ of their own blocks.}
 	\label{fig:attack}
