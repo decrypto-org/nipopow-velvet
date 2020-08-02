@@ -19,10 +19,10 @@ At the same time, thorny blocks cannot participate in an honestly generated suff
 		\iftwocolumn
 			\includegraphics[width=0.8 \textwidth]{figures/injection.pdf}
 		\else
-			\includegraphics[width=\textwidth]{figures/injection.pdf}
+			\includegraphics[width=0.8 \textwidth]{figures/injection.pdf}
 		\fi
 	\end{center}
-	\caption{The adversarial fork chain $\chain_A$ and chain $\chain_B$ of an honest party. Thorny blocks are colored black. Dashed arrows represent interlink pointers. Wavy lines imply one or more blocks. After the protocol update, when an adversarially generated block is sewed from $\chain_B$ into the adversary's suffix proof the verifier conceives $\chain_A$ as longer and $\chain_B$ as shorter. \textbf{I:} The real picture of the chains. \textbf{II:} Equivalent picture from the verifier's perspective considering the blocks included in the corresponding suffix proof for each chain.}
+	\caption{The adversarial fork chain $\chain_\mathcal{A}$ and chain $\chain_B$ of an honest party. Thorny blocks are colored black. Dashed arrows represent interlink pointers. Wavy lines imply one or more blocks. After the protocol update, when an adversarially generated block is sewed from $\chain_B$ into the adversary's suffix proof the verifier perceives $\chain_\mathcal{A}$ as longer and $\chain_B$ as shorter. \textbf{I:} The real picture of the chains. \textbf{II:} Equivalent picture from the verifier's perspective considering the blocks included in the corresponding suffix proof for each chain.}
 	\label{fig:injection}
 \end{figure*}
 
@@ -72,7 +72,7 @@ The following corollary emerges immediately from Lemmas \ref{lemm:smooths_before
 		\iftwocolumn
 			\includegraphics[width=0.9\columnwidth]{figures/adversarial_velvet_proof.pdf}
 		\else
-			\includegraphics[width=0.7\columnwidth]{figures/adversarial_velvet_proof.pdf}
+			\includegraphics[width=0.5\columnwidth]{figures/adversarial_velvet_proof.pdf}
 		\fi
 	\end{center}
 	\caption{General case of the adversarial velvet suffix proof $\mathcal{P_A} = (\pi_\mathcal{A}, \chi_\mathcal{A})$ consisting of an initial part of smooth blocks followed by thorny blocks.}
