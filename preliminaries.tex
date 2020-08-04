@@ -38,7 +38,7 @@ where $T$ is a constant \emph{target}, a small value signifying the difficulty
 of proof-of-work. We assume $T$ is constant throughout the execution\footnote{A
 treatment of variable difficulty NIPoPoWs has been explored in the soft fork
 case~\cite{dionyziz}, but we leave the treatment of velvet fork NIPoPoWs in the
-variable difficulty model for future work.}. $H(B)$ is
+variable difficulty model for future work.}. $H(b)$ is
 known as the \emph{block id}.
 
 Blockchains are finite block sequences obeying the \emph{blockchain property}:
@@ -131,7 +131,7 @@ header.
 The exact NIPoPoW protocol works like this: The prover holds a full chain
 $\chain$. When the verifier requests a proof, the prover sends the last $k$
 blocks of their chain, the suffix $\chi = \chain[-k{:}]$, in full. From the
-larger prefix $\chain[{:}-k]$, the prover constructs a proof $\pi$ by selecting
+larger prefix $\chain[{:}{-k}]$, the prover constructs a proof $\pi$ by selecting
 certain superblocks as representative samples of the proof-of-work that took
 place. The blocks are picked as follows. The prover selects the \emph{highest}
 level $\mu^*$ that has at least $m$ blocks in it and includes all these blocks
