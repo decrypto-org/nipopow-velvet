@@ -58,7 +58,7 @@ By contradiction. Let $b_t$ be a thorny block generated at some round $r_t < r_s
 	\label{lemm:thorny_after_thorny}
 \end{lemma}
 \begin{proof}
-By contradiction. Suppose for contradiciton that $b_s$ is a smooth block generated at round $r_s > r_t$. Then from Lemma \ref{lemm:smooths_before_smooth} any block generated at round $r < r_s$ is smooth. But $b_t$ is generated at round $r_t < r_s$ and is thorny, thus we have reached a contradiction.
+Suppose for contradiction that $b_s$ is the most recent smooth block in $\mathcal{P_A}$ and it was generated at round $r_s > r_t$. Then from Lemma \ref{lemm:smooths_before_smooth} any block generated at round $r < r_s$ is smooth. But $b_t$ is generated at round $r_t < r_s$ and is thorny, thus we have reached a contradiction.
 \qed
 \end{proof}
 
