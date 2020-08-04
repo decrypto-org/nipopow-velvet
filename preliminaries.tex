@@ -27,11 +27,12 @@ Each honest full node locally maintains a \emph{chain} $\chain$, a sequence of
 blocks. As we are developing an improvement on top of SPV, we
 use the term \emph{block} to mean a
 \emph{block header}. Each block contains the Merkle Tree root~\cite{merkle} of
-transaction data $\overline{x}$, the hash $s$ of the previous block in the chain
-known as the \emph{previd}, as well as a nonce value $ctr$. As discussed in the
-Introduction, the compression of application data $\overline{x}$ is orthogonal
-to our goals in this paper and has been explored in independent
-work~\cite{edrax} which can be composed with ours. Each block $b = s \conc
+transaction data\footnote{The compression of
+$\overline{x}$ is beyond the scope of our work. Vendors verifying a small number
+of transactions benefit exponentially from a superlight client even without
+compressing $\overline{x}$.}
+$\overline{x}$, the hash $s$ of the previous block in the chain
+known as the \emph{previd}, and a nonce $ctr$. Each block $b = s \conc
 \overline{x} \conc ctr$ must satisfy the proof-of-work~\cite{pow} equation $H(b) \leq T$
 where $T$ is a constant \emph{target}, a small value signifying the difficulty
 of proof-of-work. We assume $T$ is constant throughout the execution\footnote{A
