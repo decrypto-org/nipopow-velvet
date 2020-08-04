@@ -29,7 +29,7 @@ Figure~\ref{fig:injection} illustrates this remark. The velvet NIPoPoW verifier 
 With this protocol patch we conclude that the adversary cannot usurp honest mining power for use in her fork chain. This change has an undesired side effect: the honest prover cannot utilize thorny blocks belonging in the honest chain. Thus, contrary to the na\"ive protocol, the honest prover can only depend on \emph{honestly} mined blocks in the honestly adopted chain. Due to this fact, to ensure security in the velvet model, we introduce the assumption that the adversary is bound by $1/3$ of the honest \emph{upgraded} mining power.
 
 \begin{definition}[Velvet Honest Majority]
-	Let $n_h$ be the number of upgraded honest miners. Then $t$ out of total $n$ parties are corrupted such that $\dfrac{t}{n_h} < \dfrac{1 - \delta_v}{3} $.
+	Let $n_h$ be the number of upgraded honest miners. Then $t$ out of total $n$ parties are corrupted such that $\dfrac{t}{n_h} < \dfrac{1 - \delta_v}{3}$, for some $\delta_v > 0$.
 	\label{defn:velvet_honest_majority}
 \end{definition}
 
