@@ -49,7 +49,7 @@ update.
 	\label{lemm:smooths_before_smooth}
 \end{lemma}
 \begin{proof}
-By contradiction. Let $b_t$ be a thorny block generated at some round $r_t < r_s$. Suppose for contradiction that $b_t$ is included in the proof. Then, because $\mathcal{P_A}$ is a valid chain as for interlink pointers, there exist a block path made by interlink pointers starting from $b_s$ and resulting to $b_t$. Let $b'$ be the most recently generated thorny block after $b_t$ and before $b_s$ included in $\mathcal{P_A}$. Then $b'$ has been generated at a round $r'$ such that $r_t \leq r' < r_s$. Then the block right after block $b'$ in $\mathcal{P_A}$ must be a thorny block since it points to $b'$ which is thorny. But $b'$ is the most recent thorny block after $b_t$, thus we have reached a contradiction.
+By contradiction. Let $b_t$ be a thorny block generated at some round $r_t < r_s$. Suppose for contradiction that $b_t$ is included in the proof. Then, because $\mathcal{P_A}$ is a valid chain in terms of interlink pointers, there exists an interlink path from $b_s$ to $b_t$ (the blocks must appear in the proof in this order, because $b_t$ cannot contain a pointer path to $b_s$, as $b_t$ was generated prior to $b_s$). Let $b'$ be the most recently generated thorny block after $b_t$ and before $b_s$ included in $\mathcal{P_A}$ (if no such block exists, then let $b' = b_t$). Then $b'$ has been generated at a round $r'$ such that $r_t \leq r' < r_s$. Then the block right after $b'$ in $\mathcal{P_A}$ must be thorny since it points to $b'$ which is thorny. But $b'$ is the most recent thorny block after $b_t$, thus we have reached a contradiction.
 \qed
 \end{proof}
 
