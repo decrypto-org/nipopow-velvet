@@ -54,7 +54,7 @@ By contradiction. Let $b_t$ be a thorny block generated at some round $r_t < r_s
 \end{proof}
 
 \begin{lemma}
-	Let $\mathcal{P_A} = (\pi_\mathcal{A}, \chi_\mathcal{A})$ be a velvet suffix proof constructed by the adversary. Let $b_t$ be the oldest thorny bock included in $\mathcal{P_A}$ which is generated at round $r_t$. Then any block $b = \{b: b \in \mathcal{P_A} \wedge \text{b generated at }r \geq r_t \}$ is thorny.
+	Let $\mathcal{P_A} = (\pi_\mathcal{A}, \chi_\mathcal{A})$ be a velvet suffix proof constructed by the adversary. Let $b_t$ be the oldest thorny bock included in $\mathcal{P_A}$ which is generated at round $r_t$. Then any block in $\mathcal{P_A}$ generated at $r > r_t$ is thorny.
 	\label{lemm:thorny_after_thorny}
 \end{lemma}
 \begin{proof}
