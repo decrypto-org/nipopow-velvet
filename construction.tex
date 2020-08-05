@@ -80,80 +80,11 @@ The following corollary emerges immediately from Lemmas~\ref{lemm:smooths_before
 	\caption{General case of the adversarial velvet suffix proof $\mathcal{P_A} = (\pi_\mathcal{A}, \chi_\mathcal{A})$ consisting of an initial part of smooth blocks followed by thorny blocks.}
 	\label{fig:adversarial_velvet_proof}
 \end{figure}
+
+\import{./}{algorithms/alg.velvet-protocol.tex}
+
 We now describe the algorithms needed by the upgraded miner, prover and verifier. In order to construct an interlink containing only the smooth blocks, the miner keeps a copy of the ``smooth chain'' ($\chain_S$) which consists of the smooth blocks in his adopted chain $\chain$. The algorithm for extracting the smooth chain out of $\chain$ is given in Algorithm~\ref{alg:smooth_chain_suffix}. Function \emph{isSmoothBlock($B$)} checks whether a block $B$ is smooth by calling \textit{isSmoothPointer($B,p$)} for every pointer $p$ in $B$'s interlink. Function \emph{isSmoothPointer($B,p$)} returns \emph{true} if $p$ is a valid pointer, i.e., a pointer to the most recent smooth block for the level denoted by the pointer itself. The \emph{updateInterlink} algorithm is given in Algorithm~\ref{alg:updateInterlink}. It is the same as in the case of a soft fork, but works on the smooth chain $\chain_S$ instead of $\chain$.
 
 The construction of the velvet suffix prover is given in Algorithm~\ref{alg:velvet_suffix_prover}. Again it deviates from the soft fork case by working on the smooth chain $\chain_S$ instead of $\chain$.
 Lastly, the Verify algorithm for the NIPoPoW suffix protocol remains the same as in the case of a hard or soft fork, keeping in mind that no \emph{previd} links can be followed when verifying the ancestry of the chain to avoid hitting any thorny blocks.
 
-\begin{algorithm}[h]
-	\caption{\label{alg:smooth_chain_suffix}Smooth chain for suffix proofs}
-	\begin{algorithmic}[1]
-			\Function{\sf smoothChain}{$\chain$}
-				\Let{\chain_S}{\{\mathcal{G}\}}
-				\Let{k}{1}
-				\While{$\chain[-k] \neq \mathcal{G}$}
-						\If{$\textsf{isSmoothBlock}(\chain[-k])$}
-							\Let{\chain_S}{\chain_S \cup \chain[-k]}
-						\EndIf
-						\Let{k}{k + 1}
-				\EndWhile
-				\State\Return{$\chain_S$}
-			\EndFunction
-
-			\Function{\sf isSmoothBlock}{$B$}
-				\If{$B = \mathcal{G}$}
-					\State\Return{$\true$}
-				\EndIf
-				\For{$p \in B.\textsf{interlink}$}
-						\If{$\lnot \textsf{isSmoothPointer}(B, p)$}
-							\State\Return{$\false$}
-						\EndIf
-				\EndFor
-				\State\Return{$\true$}
-			\EndFunction
-
-			\Function{\sf isSmoothPointer}{$B, p$}
-				\Let{b}{\textsf{Block}(B.\textsf{prevId})}
-				\While{$b \neq p$}
-						\If{$\textsf{level}(b) \geq \textsf{level}(p) \land \textsf{isSmoothBlock}(b)$}
-							\State\Return{$\false$}
-						\EndIf
-						\If{$b = \mathcal{G}$}
-							\State\Return{$\false$}
-						\EndIf
-						\Let{b}{\textsf{Block}(b.\textsf{prevId})}
-				\EndWhile
-				\State\Return{$\textsf{isSmoothBlock}(b)$}
-			\EndFunction
-	\end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}[h]
-		\caption{\label{alg:updateInterlink}Velvet updateInterlink}
-		\begin{algorithmic}[1]
-				\Function{\sf updateInterlinkVelvet}{$\chain_S$}
-						\Let{B'}{\chain_S[-1]}
-						\Let{\textsf{interlink}}{B'.\textsf{interlink}}
-						\For{$\mu = 0$ to $\textsf{level}(B')$}
-								\Let{\textsf{interlink}[\mu]}{\textsf{id}(B')}
-						\EndFor
-						\State\Return$\textsf{interlink}$
-				\EndFunction
-		\end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}[h]
-		\caption{\label{alg:velvet_suffix_prover}Velvet Suffix Prover}
-		\begin{algorithmic}
-				\Function{\sf ProveVelvet$_{m,k}$}{$\chain_S$}
-					\Let{B}{\chain_S[0]}
-					\For{$\mu = \lvert \chain_S[-k].\textsf{interlink} \rvert$ down to $0$}
-						\Let{\alpha}{\chain_S[{:}-k]\{B{:}\}\upchain^\mu}
-						\Let{\pi}{\pi \cup \alpha}
-						\Let{B}{\alpha[-m]}
-					\EndFor
-					\Let{\chi}{\chain_S[-k{:}]}
-					\State\Return$\pi\chi$
-				\EndFunction
-		\end{algorithmic}
-\end{algorithm}

@@ -1,0 +1,72 @@
+\begin{algorithm}[h]
+	\caption{\label{alg:smooth_chain_suffix}Smooth chain for suffix proofs}
+	\begin{algorithmic}[1]
+			\Function{\sf smoothChain}{$\chain$}
+				\Let{\chain_S}{\{\mathcal{G}\}}
+				\Let{k}{1}
+				\While{$\chain[-k] \neq \mathcal{G}$}
+						\If{$\textsf{isSmoothBlock}(\chain[-k])$}
+							\Let{\chain_S}{\chain_S \cup \chain[-k]}
+						\EndIf
+						\Let{k}{k + 1}
+				\EndWhile
+				\State\Return{$\chain_S$}
+			\EndFunction
+
+			\Function{\sf isSmoothBlock}{$B$}
+				\If{$B = \mathcal{G}$}
+					\State\Return{$\true$}
+				\EndIf
+				\For{$p \in B.\textsf{interlink}$}
+						\If{$\lnot \textsf{isSmoothPointer}(B, p)$}
+							\State\Return{$\false$}
+						\EndIf
+				\EndFor
+				\State\Return{$\true$}
+			\EndFunction
+
+			\Function{\sf isSmoothPointer}{$B, p$}
+				\Let{b}{\textsf{Block}(B.\textsf{prevId})}
+				\While{$b \neq p$}
+						\If{$\textsf{level}(b) \geq \textsf{level}(p) \land \textsf{isSmoothBlock}(b)$}
+							\State\Return{$\false$}
+						\EndIf
+						\If{$b = \mathcal{G}$}
+							\State\Return{$\false$}
+						\EndIf
+						\Let{b}{\textsf{Block}(b.\textsf{prevId})}
+				\EndWhile
+				\State\Return{$\textsf{isSmoothBlock}(b)$}
+			\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[h]
+    \caption{\label{alg:updateInterlink}Velvet updateInterlink}
+    \begin{algorithmic}[1]
+            \Function{\sf updateInterlinkVelvet}{$\chain_S$}
+                    \Let{B'}{\chain_S[-1]}
+                    \Let{\textsf{interlink}}{B'.\textsf{interlink}}
+                    \For{$\mu = 0$ to $\textsf{level}(B')$}
+                            \Let{\textsf{interlink}[\mu]}{\textsf{id}(B')}
+                    \EndFor
+                    \State\Return$\textsf{interlink}$
+            \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[h]
+    \caption{\label{alg:velvet_suffix_prover}Velvet Suffix Prover}
+    \begin{algorithmic}[1]
+            \Function{\sf ProveVelvet$_{m,k}$}{$\chain_S$}
+                \Let{B}{\chain_S[0]}
+                \For{$\mu = \lvert \chain_S[-k].\textsf{interlink} \rvert$ down to $0$}
+                    \Let{\alpha}{\chain_S[{:}-k]\{B{:}\}\upchain^\mu}
+                    \Let{\pi}{\pi \cup \alpha}
+                    \Let{B}{\alpha[-m]}
+                \EndFor
+                \Let{\chi}{\chain_S[-k{:}]}
+                \State\Return$\pi\chi$
+            \EndFunction
+    \end{algorithmic}
+\end{algorithm}
