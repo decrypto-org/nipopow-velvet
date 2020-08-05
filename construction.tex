@@ -44,30 +44,7 @@ update.
 %	The statement holds by construction.
 %\end{proof}
 
-\begin{lemma}
-	Let $\mathcal{P_A} = (\pi_\mathcal{A}, \chi_\mathcal{A})$ be a velvet suffix proof constructed by the adversary and block $b_s$, generated at round $r_s$, be the most recent smooth block in the proof. Then no thorny blocks generated at round $r < r_s$ can be included in $\mathcal{P_A}$.
-	\label{lemm:smooths_before_smooth}
-\end{lemma}
-\begin{proof}
-By contradiction. Let $b_t$ be a thorny block generated at some round $r_t < r_s$. Suppose for contradiction that $b_t$ is included in the proof. Then, because $\mathcal{P_A}$ is a valid chain in terms of interlink pointers, there exists an interlink path from $b_s$ to $b_t$ (the blocks must appear in the proof in this order, because $b_t$ cannot contain a pointer path to $b_s$, as $b_t$ was generated prior to $b_s$). Let $b'$ be the most recently generated thorny block after $b_t$ and before $b_s$ included in $\mathcal{P_A}$ (if no such block exists, then let $b' = b_t$). Then $b'$ has been generated at a round $r'$ such that $r_t \leq r' < r_s$. Then the block right after $b'$ in $\mathcal{P_A}$ must be thorny since it points to $b'$ which is thorny. But $b'$ is the most recent thorny block after $b_t$, thus we have reached a contradiction.
-\qed
-\end{proof}
-
-\begin{lemma}
-	Let $\mathcal{P_A} = (\pi_\mathcal{A}, \chi_\mathcal{A})$ be a velvet suffix proof constructed by the adversary. Let $b_t$ be the oldest thorny bock included in $\mathcal{P_A}$ which is generated at round $r_t$. Then any block in $\mathcal{P_A}$ generated at $r > r_t$ is thorny.
-	\label{lemm:thorny_after_thorny}
-\end{lemma}
-\begin{proof}
-Suppose for contradiction that $b_s$ is the most recent smooth block in $\mathcal{P_A}$ and it was generated at round $r_s > r_t$. Then from Lemma \ref{lemm:smooths_before_smooth} any block generated at round $r < r_s$ is smooth. But $b_t$ is generated at round $r_t < r_s$ and is thorny, thus we have reached a contradiction.
-\qed
-\end{proof}
-
-The following corollary emerges immediately from Lemmas~\ref{lemm:smooths_before_smooth} and~\ref{lemm:thorny_after_thorny}. This result is illustrated in Figure~\ref{fig:adversarial_velvet_proof}.
-
-\begin{corollary}
-	Any adversarial proof $\mathcal{P_A} = (\pi_\mathcal{A}, \chi_\mathcal{A})$ containing both smooth and thorny blocks consists of a prefix smooth subchain followed by a suffix thorny subchain.
-	\label{cor:adversarial_proof_scheme}
-\end{corollary}
+The following lemma discusses the structure of valid adversarial proofs, i.e., adversarial proofs that pass the honest verifier validation process. The structure is illustrated in Figure~\ref{fig:adversarial_velvet_proof}.
 
 \begin{figure}[h!]
 	\begin{center}
@@ -80,6 +57,15 @@ The following corollary emerges immediately from Lemmas~\ref{lemm:smooths_before
 	\caption{General case of the adversarial velvet suffix proof $\mathcal{P_A} = (\pi_\mathcal{A}, \chi_\mathcal{A})$ consisting of an initial part of smooth blocks followed by thorny blocks.}
 	\label{fig:adversarial_velvet_proof}
 \end{figure}
+
+\begin{lemma}
+	Any valid adversarial proof $\mathcal{P_A} = (\pi_\mathcal{A}, \chi_\mathcal{A})$ containing both smooth and thorny blocks consists of a prefix smooth subchain followed by a suffix thorny subchain.
+	\label{lem:adversarial_proof_scheme}
+\end{lemma}
+\begin{proof}
+	Suppose for contradiction that there was a thorny block immediately preceding a smooth block. Then the smooth block would contain a pointer to a thorny block, contradicting the definition of smoothness.
+	\qed
+\end{proof}
 
 \import{./}{algorithms/alg.velvet-protocol.tex}
 
