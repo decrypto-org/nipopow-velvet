@@ -74,3 +74,4 @@ We now describe the algorithms needed by the upgraded miner, prover and verifier
 The construction of the velvet suffix prover is given in Algorithm~\ref{alg:velvet_suffix_prover}. Again it deviates from the soft fork case by working on the smooth chain $\chain_S$ instead of $\chain$.
 Lastly, the Verify algorithm for the NIPoPoW suffix protocol remains the same as in the case of a hard or soft fork, keeping in mind that no \emph{previd} links can be followed when verifying the ancestry of the chain to avoid hitting any thorny blocks.
 
+We provide an in-depth analysis and formal proof of our construction's security in Appendix~\ref{sec:analysis}.
