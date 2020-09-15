@@ -8,7 +8,7 @@ After the suggested protocol update the honest prover cannot include any thorny 
 
 In more detail, consider the adversary who wishes to attack a specific block level $\mu_B$ and generates a NIPoPoW proof containing a block $b$ of a fork chain which contains a double spending transaction. Then she acts as follows. She mines on her fork chain $\chain_\mathcal{A}$ but when she observes a $\mu_B$-level block in $\chain_B$ she tries to mine a thorny block on $\chain_B$ in order to suppress this $\mu_B$ block. This thorny block contains an interlink pointer which jumps onto her fork chain, but a previd pointer to the honest chain. If the suppression succeeds she has managed to damage the distribution of $\mu_B$-superblocks within the honest chain, at the same time, to mine a block that she can afterwards use in her proof. If the suppression does not succeed she can still use the thorny block in her proof. The above are illustrated in Figure~\ref{fig:attack_after_update}.
 
-\begin{figure}[h!]
+\begin{figure}
     \begin{center}
         \iftwocolumn
             \includegraphics[width=0.95\columnwidth]{figures/attack_after_update-crop.pdf}
@@ -170,7 +170,7 @@ Block $b_0 = LCA(\pi_\mathcal{A}, \pi_B)$ is the fork point between $\pi_\mathca
 
 The above are illustrated, among other, in Parts I, II of Figure \ref{fig:proof_velvet}.
 
-\begin{figure}[h!]
+\begin{figure}
     \begin{center}
         \includegraphics[width=0.9 \columnwidth]{figures/proof_velvet-crop.pdf}
     \end{center}
