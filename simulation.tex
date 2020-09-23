@@ -4,13 +4,12 @@
 To measure the success rate of the chainsewing attack against the na\"ive NIPoPoW construction described in Section~\ref{sec:attack}, we implemented a simulation to estimate the probability of the adversary generating a winning NIPoPoW against the honest party. Our experimental setting is as follows. We fix $\mu_A = 0$ and $\mu_B = 10$ as well as the required length of the suffix $k = 15$. We fix the adversarial mining power to $t = 1$ and $n = 5$ which gives a $20\%$ adversary. We then vary the NIPoPoW security parameter for the $\pi$ portion from $m = 3$ to $m = 30$. We then run $100$ Monte Carlo simulations and measure whether the adversary was successful in generating a competing NIPoPoW which compares favourably against the adversarial NIPoPoW.
 
 \begin{figure}
-	\begin{center}
-		\iftwocolumn
-			\includegraphics[width=\columnwidth]{figures/attack-confidence.pdf}
-		\else
-			\includegraphics[width=0.7 \columnwidth]{figures/attack-confidence.pdf}
-		\fi
-	\end{center}
+	\centering
+	\iftwocolumn
+		\includegraphics[width=\columnwidth]{figures/attack-confidence.pdf}
+	\else
+		\includegraphics[width=0.7 \columnwidth]{figures/attack-confidence.pdf}
+	\fi
 	\caption{The measured probability of success of the Chainsewing attack mounted under our parameters for varying values of the security parameter $m$. Confidence intervals at $95\%$.}
 	\label{fig:confidence}
 \end{figure}
