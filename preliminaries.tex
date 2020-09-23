@@ -27,10 +27,11 @@ Each honest full node locally maintains a \emph{chain} $\chain$, a sequence of
 blocks. As we are developing an improvement on top of SPV, we
 use the term \emph{block} to mean a
 \emph{block header}. Each block contains the Merkle Tree root~\cite{merkle} of
-transaction data\footnote{The compression of
-$\overline{x}$ is beyond the scope of our work. Vendors verifying a small number
-of transactions benefit exponentially from a superlight client even without
-compressing $\overline{x}$.}
+transaction data
+%\footnote{The compression of
+%$\overline{x}$ is beyond the scope of our work. Vendors verifying a small number
+%of transactions benefit exponentially from a superlight client even without
+%compressing $\overline{x}$.}
 $\overline{x}$, the hash $s$ of the previous block in the chain
 known as the \emph{previd}, and a nonce $ctr$. Each block $b = s \conc
 \overline{x} \conc ctr$ must satisfy the proof-of-work~\cite{pow} equation $H(b) \leq T$
@@ -128,25 +129,12 @@ header.
     \label{fig.hierarchy}
 \end{figure}
 
-The exact NIPoPoW protocol works like this: The prover holds a full chain
+The NIPoPoW protocol can be in short described like this: The prover holds a full chain
 $\chain$. When the verifier requests a proof, the prover sends the last $k$
 blocks of their chain, the suffix $\chi = \chain[-k{:}]$, in full. From the
-larger prefix $\chain[{:}{-k}]$, the prover constructs a proof $\pi$ by selecting
+prefix $\chain[{:}{-k}]$, the prover constructs a proof $\pi$ by selecting
 certain superblocks as representative samples of the proof-of-work that took
-place. The blocks are picked as follows. The prover selects the \emph{highest}
-level $\mu^*$ that has at least $m$ blocks in it and includes all these blocks
-in their proof (if no such level exists, the chain is small and can be sent in
-full). The prover then iterates from level $\mu = \mu^* - 1$ down to $0$. For
-every level $\mu$, it includes sufficient $\mu$-superblocks to cover the last
-$m$ blocks of level $\mu + 1$, as illustrated in
-Algorithm~\ref{alg.nipopow-prover}. Because the density of blocks doubles as
-levels are descended, the proof will contain in expectation $2m$ blocks for each
-level below $\mu^*$. As such, the total proof size $\pi \chi$ will be
-$\Theta(m\log|\chain| + k)$. Such proofs that are polylogarithmic in the chain
-size constitute an exponential improvement over traditional SPV clients and are
-called \emph{succinct}.
-
-\import{./}{algorithms/alg.nipopow-prover.tex}
+place. For each superblock level he adds at least $m$ superblocks.
 
 Upon receiving two proofs $\pi_1\chi_1, \pi_2\chi_2$ of this form, the NIPoPoW verifier
 first checks that $\lvert \chi_1 \rvert = \lvert \chi_2 \rvert = k$ and that
@@ -155,25 +143,7 @@ valid chains, the verifier ensures every block in the
 proof contains a pointer to its previous block inside the proof through either
 the \emph{previd} pointer in the block header, or in the interlink vector. If
 any of these checks fail, the proof is rejected. It then
-compares $\pi_1$ against $\pi_2$ using
-the $\leq_m$ operator, which works as follows. It finds the
-lowest common ancestor block $b = (\pi_1 \cap \pi_2)[-1]$; that is, $b$ is the
-most recent block shared among the two proofs. Subsequently, it
-chooses the level $\mu_1$ for $\pi_1$ such that
-$\lvert \pi_1\{b{:}\}\upchain^{\mu_1} \rvert \geq m$
-(i.e., $\pi_1$ has at least $m$ superblocks of level $\mu_1$ following block
-$b$) and the value
-$2^{\mu_1} \lvert \pi_1\{b{:}\}\upchain^{\mu_1} \rvert$
-is maximized.
-It chooses a level $\mu_2$ for $\pi_2$ in the same fashion. The two proofs are
-compared
-by checking whether
-$2^{\mu_1} \lvert \pi_1\{b{:}\}\upchain^{\mu_1} \rvert \geq
- 2^{\mu_2} \lvert \pi_2\{b{:}\}\upchain^{\mu_2} \rvert$
-and the proof with the largest score is deemed the winner. The comparison is
-illustrated in Algorithm~\ref{alg.nipopow-maxchain}.
-
-\import{./}{algorithms/alg.nipopow-maxchain.tex}
+compares $\pi_1$ against $\pi_2$ as follows: for each proof he chooses the superblock level containing the most PoW in comparison to all other levels in the proof. Finally, he compares these two selected superblock levels in terms of the aggregate PoW included and the proof of the one with more PoW is accepted. The exact NIPoPoW protocol is in depth described in Appendix~\ref{sec:nipopows_protocol}.
 
 Blockchain protocols can be upgraded using hard or soft
 forks~\cite{buterinforks}. In a \emph{hard fork}, blocks produced by
