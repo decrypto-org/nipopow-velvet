@@ -17,10 +17,13 @@
 %\section{Location}
 %Note that in the new ACM style, the Appendices come before the References.
 
-\ifccs
-\begin{acks}
-\input{acknowledgments}
-\end{acks}
+\ifanonymous{}
 \else
-\input{acknowledgments}
+    \ifccs
+    \begin{acks}
+    \input{acknowledgments}
+    \end{acks}
+    \else
+    \input{acknowledgments}
+    \fi
 \fi
