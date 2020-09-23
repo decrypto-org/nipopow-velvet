@@ -113,15 +113,17 @@ discusses the compression of application state~\cite{edrax,ethanos}.
 
 \noindent
 \textbf{Organization.}
-The structure of the paper is as follows. In Section~\ref{sec:preliminaries}, we
-give a brief overview of the \emph{backbone model} and its notation; as we
-heavily leverage the machinery of the model, the section is a necessary
-prerequisite to follow the analysis. The rest of the paper is structured in the
-form of \emph{a proof and refutation}~\cite{lakatos}. We believe this form is
-more digestible. In Section~\ref{sec:velvet}, we discuss the velvet model and
+The structure of the paper is as follows. In Section~\ref{sec:preliminaries}, we describe the typical superblock NIPoPoW protocol as designed for a soft fork (for a detailed description refer to Appendix~\ref{sec:nipopows_protocol} and \cite{nipopows}).
+%give a brief overview of the \emph{backbone model} and its notation; as we
+%heavily leverage the machinery of the model, the section is a necessary
+%prerequisite to follow the analysis. The rest of the paper is structured in the
+%form of \emph{a proof and refutation}~\cite{lakatos}. We believe this form is
+%more digestible.
+In Section~\ref{sec:velvet}, we discuss the velvet model and
 some initial definitions, and we present a first attempt towards a velvet
-NIPoPoW scheme which was presented in previous work. We discuss the informal
-argument of why it seems to be secure, which we \emph{refute} with an attack explored
+NIPoPoW scheme which was presented in previous work. 
+%We discuss the informal argument of why it seems to be secure, which we \emph{refute} with 
+A concrete attack is explored
 in Section~\ref{sec:attack} (we give simulation results and concrete parameters
 for our attack in Appendix~\ref{sec:simulation}). In Section~\ref{sec:construction}, we patch the
 scheme and put forth our more elaborate and novel Velvet NIPoPoW construction.
