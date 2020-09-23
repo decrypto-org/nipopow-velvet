@@ -1,13 +1,14 @@
 \section{Infix Proofs}\label{sec:infix}
 NIPoPoW infix proofs answer any predicate which depends on blocks appearing anywhere in the chain, except for the $k$ suffix for stability reasons. For example, consider the case where a client has received a transaction inclusion proof for a block $b$ and requests an infix proof so as to verify that $b$ is included in the current chain.
-Because of the described protocol update for secure NIPoPoW suffix proofs, the infix proofs construction has to be altered as well. In order to construct secure infix proofs under velvet fork conditions, we suggest the following additional protocol patch: each upgraded miner constructs and updates an authenticated data structure for all the blocks in the chain. We suggest Merkle Mountain Ranges \emph{(MMR)} for this structure. Now a velvet block's header additionally includes the root of this MMR.
+Because of the already described protocol update for secure NIPoPoW suffix proofs, the infix proofs construction has to be altered as well. In order to construct secure infix proofs under velvet fork conditions, we suggest the following additional protocol patch: each upgraded miner constructs and updates an authenticated data structure keeping the ids of all the blocks in the chain in the correct order. We suggest Merkle Mountain Ranges \emph{(MMR)} for this structure. Now a velvet block's header additionally includes the root of this MMR.
 
-After this additional protocol change the notion of a smooth block changes as well. Smooth blocks are now considered the blocks that contain truthful interlinks and valid MMR root too. A valid MMR root denotes the MMR that contains all the blocks in the chain of an honest full node. Note that a valid MMR contains all the blocks of the longest valid chain, meaning both smooth and thorny. An invalid MMR constructed by the adversary may contain a block of a fork chain. Consequently an upgraded prover has to maintain a local copy of this MMR locally, in order to construct correct proofs. This is crucial for the security of infix proofs, since keeping the notion of a smooth block as before would allow an adversary to produce a block $b$ in an honest party's chain, with $b$ containing a smooth interlink but invalid MMR, so she could succeed in providing an infix proof about a block of a fork chain.
+After this additional protocol change the notion of a smooth block changes as well. Smooth blocks are now considered the blocks that contain truthful interlinks and valid MMR root too. A valid MMR root denotes the MMR that contains all the blocks in the chain of an honest full node. Note that a valid MMR contains all the blocks of the longest valid chain, meaning both smooth and thorny. An invalid MMR constructed by the adversary may contain a block of a fork chain. Consequently an upgraded prover has to maintain a local copy of this MMR locally, in order to construct correct proofs.% 
+%This is crucial for the security of infix proofs, since keeping the notion of a smooth block as before would allow an adversary to produce a block $b$ in an honest party's chain, with $b$ containing a smooth interlink but invalid MMR, so she could succeed in providing an infix proof about a block of a fork chain.
 
-Considering this addtional patch we can now define the final algorithms for the honest miner, infix and suffix prover, as well as for the infix verifier. Because of the new notion of smooth block, the function \textit{isSmoothBlock()} of Algorithm \ref{alg:smooth_chain_suffix} needs to be updated, so that the validity of the included MMR root is also checked. The updated function is given in Algorithm \ref{alg:isSmoothBlock_infix}. Considering that input $\chain_S$ is computed using Algorithm \ref{alg:smooth_chain_suffix} with the updated \textit{isSmoothBlock'()} function, \emph{Velvet updateInterlink} and \emph{Velvet Suffix Prover} algorithms remain the same as described in Algorithms \ref{alg:updateInterlink}, \ref{alg:velvet_suffix_prover} repsectively. The velvet infix prover and infix verifier algorithms are given in Algorithms \ref{alg:velvet_infix_prover}, \ref{alg:velvet_infix_verifier} respectively. Details about the construction and verification of an MMR and the respective inclusion proofs can be found in \cite{ct}.
+Considering this addtional patch we can now define the final algorithms for the honest miner, infix and suffix prover, as well as for the infix verifier. Because of the new notion of smooth block, the function \textit{isSmoothBlock()} of Algorithm \ref{alg:smooth_chain_suffix} needs to be updated, so that the validity of the included MMR root is also checked. The updated function is given in Algorithm \ref{alg:isSmoothBlock_infix}. Considering the updated \textit{isSmoothBlock'()} function in Algorithm \ref{alg:smooth_chain_suffix}, algorithms \emph{Velvet updateInterlink} and \emph{Velvet Suffix Prover} remain the same as described in Algorithms \ref{alg:updateInterlink}, \ref{alg:velvet_suffix_prover} repsectively. The velvet infix prover and infix verifier algorithms are given in Algorithms \ref{alg:velvet_infix_prover}, \ref{alg:velvet_infix_verifier} respectively. Details about the construction and verification of an MMR and the respective inclusion proofs can be found in \cite{ct}.
 Note that equivalent solution could be formed by using any authenticated data structure that provides inclusion proofs of size logarithmic to the length of the chain. We suggest MMRs because of they come with efficient update operations.
 
-\begin{algorithm}[H]
+\begin{algorithm}
 	\caption{\label{alg:isSmoothBlock_infix}Function isSmoothBlock'() for infix proof support}
 	\begin{algorithmic}[1]
 			\Function{\sf isSmoothBlock'}{$B$}
@@ -24,7 +25,7 @@ Note that equivalent solution could be formed by using any authenticated data st
 	\end{algorithmic}
 \end{algorithm}
 
-\begin{algorithm}[H]
+\begin{algorithm}
 	\caption{\label{alg:velvet_infix_prover}Velvet Infix Prover}
 	\begin{algorithmic}[1]
 			\Function{\sf ProveInfixVelvet}{$\chain_S, b$}
@@ -36,7 +37,7 @@ Note that equivalent solution could be formed by using any authenticated data st
 	\end{algorithmic}
 \end{algorithm}
 
-\begin{algorithm}[H]
+\begin{algorithm}
 	\caption{\label{alg:velvet_infix_verifier}Velvet Infix Verifier}
 	\begin{algorithmic}[1]
 			\Function{\sf VerifyInfixVelvet}{$b, (\pi_b,(\pi,\chi))$}

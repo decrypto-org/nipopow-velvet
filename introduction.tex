@@ -25,7 +25,7 @@ number of \emph{superlight} clients has emerged.
 %\emph{sample} block headers instead of all the block headers.
 These protocols give rise to  Non-Interactive Proofs of Proof-of-Work (NIPoPoW)
 ~\cite{nipopows}, which are short strings
- that ``compress'' the proof-of-work information of the underlying chain by sending a carefully selected sample of block headers.
+ that ``compress'' the proof-of-work information of the underlying chain by sending a selected sample of block headers.
 %It has been shown
 %that the block headers in these proofs are secure representatives of the
 %proof-of-work of the underlying chain:
@@ -38,7 +38,7 @@ There are two general directions for superlight client implementations: In the
 \emph{superblock}~\cite{nipopows,compactsuperblocks} approach, the client
 relies on \emph{superblocks}, blocks that have achieved much better
 proof-of-work than required for block validity. In the
-\emph{FlyClient}~\cite{flyclient} approach, blocks are sampled and committed at random as in a $\Sigma$-protocol (e.g., Schnorr's discrete-log protocol~\cite{schnorr}) and then using
+\emph{FlyClient}~\cite{flyclient} approach, blocks are randomly sampled and committed as in a $\Sigma$-protocol (e.g., Schnorr's discrete-log protocol~\cite{schnorr}) and then using
 the Fiat--Shamir heuristic~\cite{fiatshamir} a non-interactive proof is calculated. The number of block headers
 that need to be sent then grows only logarithmically with time. The NIPoPoW
 client, which is the proof \emph{verifier} in this context, still relies on a connection to full nodes,
@@ -125,8 +125,7 @@ argument of why it seems to be secure, which we \emph{refute} with an attack exp
 in Section~\ref{sec:attack} (we give simulation results and concrete parameters
 for our attack in Appendix~\ref{sec:simulation}). In Section~\ref{sec:construction}, we patch the
 scheme and put forth our more elaborate and novel Velvet NIPoPoW construction.
-We analyze it and formally prove it secure in Section~\ref{sec:analysis} (this
-technical section can be omitted without loss of continuity). Our scheme at this
+We analyze it and formally prove it secure in Appendix~\ref{sec:analysis}. Our scheme at this
 point allows verifiers to decide which blocks form a \emph{suffix} of the
 longest blockchain and thus the protocol supports \emph{suffix proofs}. We
 extend our scheme to allow any block of interest within the blockchain to be
