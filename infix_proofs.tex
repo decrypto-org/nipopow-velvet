@@ -9,6 +9,7 @@ Considering this addtional patch we can now define the final algorithms for the 
 Note that equivalent solution could be formed by using any authenticated data structure that provides inclusion proofs of size logarithmic to the length of the chain. We suggest MMRs because of they come with efficient update operations.
 
 \begin{algorithm}
+\begin{small}
 	\caption{\label{alg:isSmoothBlock_infix}Function isSmoothBlock'() for infix proof support}
 	\begin{algorithmic}[1]
 			\Function{\sf isSmoothBlock'}{$B$}
@@ -23,9 +24,11 @@ Note that equivalent solution could be formed by using any authenticated data st
 				\State\Return{$\textsf{containsValidMMR}(B)$}
 			\EndFunction
 	\end{algorithmic}
+\end{small}
 \end{algorithm}
 
 \begin{algorithm}
+\begin{small}
 	\caption{\label{alg:velvet_infix_prover}Velvet Infix Prover}
 	\begin{algorithmic}[1]
 			\Function{\sf ProveInfixVelvet}{$\chain_S, b$}
@@ -35,9 +38,11 @@ Note that equivalent solution could be formed by using any authenticated data st
 				\State\Return{$(\pi_b,(\pi, \chi))$}
 			\EndFunction
 	\end{algorithmic}
+\end{small}
 \end{algorithm}
 
 \begin{algorithm}
+\begin{small}
 	\caption{\label{alg:velvet_infix_verifier}Velvet Infix Verifier}
 	\begin{algorithmic}[1]
 			\Function{\sf VerifyInfixVelvet}{$b, (\pi_b,(\pi,\chi))$}
@@ -45,4 +50,5 @@ Note that equivalent solution could be formed by using any authenticated data st
 				\State\Return{\textsf{VerifyInclProof(tip.$root_{MMR}$, $\pi_b$, $b$)}}
 			\EndFunction
 	\end{algorithmic}
+\end{small}
 \end{algorithm}
