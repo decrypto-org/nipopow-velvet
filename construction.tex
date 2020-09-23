@@ -43,7 +43,16 @@ update.
 %	The statement holds by construction.
 %\end{proof}
 
-The following lemma discusses the structure of valid adversarial proofs, i.e., adversarial proofs that pass the honest verifier validation process. The structure is illustrated in Figure~\ref{fig:adversarial_velvet_proof}.
+\begin{lemma}
+	Any valid adversarial proof $\mathcal{P_A} = (\pi_\mathcal{A}, \chi_\mathcal{A})$ containing both smooth and thorny blocks consists of a prefix smooth subchain followed by a suffix thorny subchain.
+	\label{lem:adversarial_proof_scheme}
+\end{lemma}
+\begin{proof}
+	Suppose for contradiction that there was a thorny block immediately preceding a smooth block. Then the smooth block would contain a pointer to a thorny block, contradicting the definition of smoothness.
+	\qed
+\end{proof}
+
+Because of Lemma~\ref{lem:adversarial_proof_scheme} any adversarial proof that successfully passes the honest verifier validation process is of the form illustrated in Figure~\ref{fig:adversarial_velvet_proof}.
 
 \begin{figure}
 	\centering
@@ -56,20 +65,11 @@ The following lemma discusses the structure of valid adversarial proofs, i.e., a
 	\label{fig:adversarial_velvet_proof}
 \end{figure}
 
-\begin{lemma}
-	Any valid adversarial proof $\mathcal{P_A} = (\pi_\mathcal{A}, \chi_\mathcal{A})$ containing both smooth and thorny blocks consists of a prefix smooth subchain followed by a suffix thorny subchain.
-	\label{lem:adversarial_proof_scheme}
-\end{lemma}
-\begin{proof}
-	Suppose for contradiction that there was a thorny block immediately preceding a smooth block. Then the smooth block would contain a pointer to a thorny block, contradicting the definition of smoothness.
-	\qed
-\end{proof}
 
 \import{./}{algorithms/alg.velvet-protocol.tex}
 
-We now describe the algorithms needed by the upgraded miner, prover and verifier. In order to construct an interlink containing only the smooth blocks, the miner keeps a copy of the ``smooth chain'' ($\chain_S$) which consists of the smooth blocks in his adopted chain $\chain$. The algorithm for extracting the smooth chain out of $\chain$ is given in Algorithm~\ref{alg:smooth_chain_suffix}. Function \emph{isSmoothBlock($B$)} checks whether a block $B$ is smooth by calling \textit{isSmoothPointer($B,p$)} for every pointer $p$ in $B$'s interlink. Function \emph{isSmoothPointer($B,p$)} returns \emph{true} if $p$ is a valid pointer, i.e., a pointer to the most recent smooth block for the level denoted by the pointer itself. The \emph{updateInterlink} algorithm is given in Algorithm~\ref{alg:updateInterlink}. It is the same as in the case of a soft fork, but works on the smooth chain $\chain_S$ instead of $\chain$.
+We now describe the algorithms for the upgraded miner, prover and verifier. In order to construct an interlink containing only the smooth blocks, the miner keeps a copy of the ``smooth chain'' ($\chain_S$) which consists of the smooth blocks in his adopted chain $\chain$. The algorithm for extracting the smooth chain out of $\chain$ is given in Algorithm~\ref{alg:smooth_chain_suffix}. Function \emph{isSmoothBlock($B$)} checks whether a block $B$ is smooth by calling \textit{isSmoothPointer($B,p$)} for every pointer $p$ in $B$'s interlink. Function \emph{isSmoothPointer($B,p$)} returns \emph{true} if $p$ is a valid pointer, i.e., a pointer to the most recent smooth block for the level denoted by the pointer itself. The \emph{updateInterlink} algorithm is given in Algorithm~\ref{alg:updateInterlink}. It is of the same form as in the case of a soft fork, but works on the smooth chain $\chain_S$ instead of $\chain$.
 
 The construction of the velvet suffix prover is given in Algorithm~\ref{alg:velvet_suffix_prover}. Again it deviates from the soft fork case by working on the smooth chain $\chain_S$ instead of $\chain$.
 Lastly, the Verify algorithm for the NIPoPoW suffix protocol remains the same as in the case of a hard or soft fork, keeping in mind that no \emph{previd} links can be followed when verifying the ancestry of the chain to avoid hitting any thorny blocks.
-
 We provide an in-depth analysis and formal proof of our construction's security in Appendix~\ref{sec:analysis}.
