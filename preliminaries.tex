@@ -11,17 +11,18 @@ least one of which is assumed to be honest.
 
 We model full nodes according to the Backbone model~\cite{backbone}. There are
 $n$ full nodes, of which $t$ are adversarial and $n - t$ are honest. All $t$
-adversarial parties are controlled by one colluding adversary $\mathcal{A}$. The
-parties have access to a hash function $H$ modelled as a common Random
-Oracle~\cite{ro}. To each novel query, the random oracle outputs $\kappa$ bits
-of fresh randomness. Time is split into distinct \emph{rounds} numbered by the
-integers $1, 2, \cdots$. Our treatment is in the \emph{synchronous model}, so we
-assume messages \emph{diffused} (broadcast) by an honest party at the end of a
-round are received by all honest parties at the beginning of the next round.
-This is equivalent to a network connectivity assumption in which the round
-duration is taken to be the known time needed for a message to cross the
-diameter of the network. The adversary can inject messages, reorder them, sybil
-attack~\cite{sybil} by creating multiple messages, but not suppress messages.
+adversarial parties are controlled by one colluding adversary $\mathcal{A}$.
+%The
+%parties have access to a hash function $H$ modelled as a common Random
+%Oracle~\cite{ro}. To each novel query, the random oracle outputs $\kappa$ bits
+%of fresh randomness. Time is split into distinct \emph{rounds} numbered by the
+%integers $1, 2, \cdots$. Our treatment is in the \emph{synchronous model}, so we
+%assume messages \emph{diffused} (broadcast) by an honest party at the end of a
+%round are received by all honest parties at the beginning of the next round.
+%This is equivalent to a network connectivity assumption in which the round
+%duration is taken to be the known time needed for a message to cross the
+%diameter of the network. The adversary can inject messages, reorder them, sybil
+%attack~\cite{sybil} by creating multiple messages, but not suppress messages.
 
 Each honest full node locally maintains a \emph{chain} $\chain$, a sequence of
 blocks. As we are developing an improvement on top of SPV, we
