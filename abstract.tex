@@ -6,8 +6,7 @@ number of blocks.
 For proof-of-work blockchains,
 two known constructions exist: Superblock and FlyClient.
 %
-Unfortunately, none of them can be deployed to existing blockchains, as  they require consensus changes  and at least a soft fork to implement.
-
+None of them can be deployed to existing blockchains, as  they require consensus changes  and at least a soft fork to implement.
 In this paper, we
 investigate how a blockchain can be upgraded to support superblock clients without a soft fork. We show that it is possible to implement the needed changes without modifying the consensus protocol and by requiring only a minority of miners to upgrade, a process termed a ``velvet fork'' in the literature. While previous work conjectured that superblock clients can be safely deployed using velvet forks as-is, we show that previous constructions are insecure, and that using velvet techniques to interlink a blockchain can pose insidious security risks. We describe a novel class of attacks, called  ``chain-sewing'', which arise in the velvet fork setting: an adversary can cut-and-paste portions of various chains from independent temporary forks, sewing them together to
 fool a superlight client into accepting a false claim.
