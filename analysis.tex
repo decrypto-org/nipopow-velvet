@@ -136,7 +136,7 @@ which is equivalent to $\dfrac{t}{n-t} < \dfrac{1-\delta_v}{3}g$ for $\epsilon''
 \end{proof}
 
 \begin{lemma}\label{lem:claim1_lemma}
-    Consider Algorithm \ref{alg:updateInterlink} under velvet fork with parameter $g$ and (1/4)-bounded velvet honest majority. Consider the  property $Q$ for blocks of level $\mu$. Let $U$ be a set of consecutive rounds and $\chain$ the chain of an honest party at the end of $U$ of a typical execution and $\chain_U = \{ b \in \chain: \text{b was generated during U} \}$. Suppose that no block in $\chain_U$ is of level $\mu$. Then $\lvert U \rvert \leq \delta_1$ where
+    Consider Algorithm \ref{alg:updateInterlink} under velvet fork with parameter $g$ and (1/4)-bounded velvet honest majority. Consider the  property $Q$ for blocks of level $\mu$. Let $U$ be a set of consecutive rounds and $\chain$ the chain of an honest party at the end of $U$ of a typical execution and $\chain_U = \{ b \in \chain: \text{b was generated during U} \}$. Suppose that no block in $\chain_U$ is of level $\mu$. \\Then $\lvert U \rvert \leq \delta_1$ where
     $\delta_1 = \dfrac{(2+\epsilon) 2^{\mu} + \delta'}{(1-\epsilon)f(1-f) - 2\dfrac{t}{n-t}\dfrac{f}{1-f} -3\epsilon f}$.
 \end{lemma}
 \begin{proof}
