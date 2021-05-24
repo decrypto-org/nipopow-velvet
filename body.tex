@@ -7,12 +7,21 @@
 \input{analysis}
 \input{infix_proofs}
 
-%\newpage
-%\appendix
+
+\newpage
+\ifccs
+  \bibliographystyle{ACM-Reference-Format}
+\else
+  \bibliographystyle{abbrv}
+\fi
+\bibliography{refs}
+
+\newpage
+\appendix
 %\iflncs
-%\section*{Appendix}
+\section*{Appendix}
 %\fi
-%\input{analysis}
+\input{flyclient}
 %\input{simulation}
 
 %\section{Location}
