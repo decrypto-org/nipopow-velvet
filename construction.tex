@@ -17,12 +17,12 @@ Figure~\ref{fig:injection} illustrates this remark. The velvet NIPoPoW verifier 
 \begin{figure*}[h!]
 	\begin{center}
 		\iftwocolumn
-			\includegraphics[width=0.7 \textwidth]{figures/injection.pdf}
+			\includegraphics[width=0.6 \textwidth]{figures/injection.pdf}
 		\else
 			\includegraphics[width=0.8 \textwidth]{figures/injection.pdf}
 		\fi
 	\end{center}
-	\caption{The adversarial fork chain $\chain_\mathcal{A}$ and chain $\chain_B$ of an honest party. Thorny blocks are colored black. Dashed arrows represent interlink pointers. Wavy lines imply one or more blocks. After the protocol update, when an adversarially generated block is sewed from $\chain_B$ into the adversary's suffix proof the verifier perceives $\chain_\mathcal{A}$ as longer and $\chain_B$ as shorter. \textbf{I:} The real picture of the chains. \textbf{II:} Equivalent picture from the verifier's perspective considering the suffix proof for each chain.}
+	\caption{Adversarial fork chain $\chain_\mathcal{A}$ and chain $\chain_B$ of an honest party. Thorny blocks are colored black. Dashed arrows represent interlink pointers. After the protocol update when an adversarially generated block is sewed from $\chain_B$ into the adversary's suffix proof the verifier perceives $\chain_\mathcal{A}$ as longer and $\chain_B$ as shorter. \textbf{I:} The real picture of the chains. \textbf{II:} Equivalent picture from the verifier's perspective considering the suffix proof for each chain.}
 	\label{fig:injection}
 \end{figure*}
 
@@ -54,7 +54,7 @@ The following lemma discusses the structure of valid adversarial proofs, i.e., a
 			\includegraphics[width=0.5\columnwidth]{figures/adversarial_velvet_proof.pdf}
 		\fi
 	\end{center}
-	\caption{General case of the adversarial velvet suffix proof $\mathcal{P_A} = (\pi_\mathcal{A}, \chi_\mathcal{A})$ consisting of an initial part of smooth blocks followed by thorny blocks.}
+	\caption{After the protocol update the adversarial velvet suffix proof consists of an initial part of smooth blocks possibly followed by thorny blocks.}
 	\label{fig:adversarial_velvet_proof}
 \end{figure}
 

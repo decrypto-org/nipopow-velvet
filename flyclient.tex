@@ -85,14 +85,24 @@ This is essentially a kind of ``Chainsewing Attack''.
 	
 
 \subsection{The Attack}
-	The  velvet FlyClient description does not consider thorny blocks, i.e. blocks that contain only seemingly valid auxiliary data. 
-    More specifically, it remains unspecified whether blocks containing an MMR root but not the correct one are considered valid upgraded blocks or unpupgraded blocks. 
-    In the following, we work on the hypothesis that honest miners validate the MMR root of the blocks. We also consider that blocks found to contain 
-    invalid MMR roots are treated as unupgraded. 
-    This seems to be the only reasonable option. In the opposite case any block containing trash data in the place where the MMR root would be able to 
-    completely destroy the protocol making it impossible to deliver a valid proof. Note that this is the stricter assumption one can make in favor of the protocol. 
-    We will now describe the chainsewing attack against the velvet FlyClient protocol.
+	The  velvet FlyClient description has not examined the case of thorny blocks, i.e. blocks that contain only seemingly valid auxiliary data, and their impact on the protocol's overall security.
+	At this point we have to make two assumptions considering thorny blocks in FlyClient:
+	\begin{enumerate}
+		\item honest miners validate the MMR root of the blocks and treat thorny blocks as unupgraded
+		\item the number of random sampled \emph{upgraded} blocks is of importance for the verifier's decision regarding the valid chain. The verifier should accept the proof that delivers the most upgraded blocks.
+	\end{enumerate}
+    The first assumption is obviously reasonable. In the opposite case any block containing trash data in the place where the MMR root would be able to 
+    completely destroy the protocol making it impossible to deliver a valid proof.
+	Regarding the second assumption let us show that the protocol is trivially attackable in the opposite case. Consider an attacker who acts as follows.
+	Consider three consecutive blocks in the honest chain $b_i$, $b_{i+1}, b_{i+2}$ at height $i, i+1, i+2$ respectively. The attacker produces a thorny block $b'_{i+1}$ on top of $b_i$ containing a double spend transaction in conflict with $b_{i+1}$. 
+	Whenever she wants to convince a client that the honest chain contains $b'_{i+1}$ she produces another thorny block $b_j$ on top of the current chain's tip and sends her proof. Note that $b_j$ contains an MMR that considers 
+	$b'_{i+1}$, but also that her thorny blocks are the only possible upgraded blocks in her proof. More specifically $b_j$ will appear in the proof as it is the tip of the chain, while $b_{i+1}$ will be in the proof 
+	only if it is selected by the random sampler. Her proof will only be found invalid if the random sampler queries both blocks at heights $i+1, i+2$, so that the invalid prevId pointer shows up. The attacker can decrease this probability
+	by letting the chain grow enough before attempting to construct a proof, as the random sampler chooses older blocks with lower probability. It is now obvious that the verifier will most probably receive two valid proofs of the same length, one from the attacker and one from an honest node.
+	If the number of upgraded blocks appearing in the proof are not to be considered then this attack succeeds with high probability even for an adversary of low hashing power.
+	Note that the above assumptions are in favor of the protocol. 
 
+	We will now describe the chainsewing attack against the velvet FlyClient protocol under these asumptions.
 	Consider that the adversary utilizes more than one thorny blocks, in order to cut-and-paste portions from the chain adopted by honest parties to his fork chain. 
 	%Consider the attack illustrated in Figure~\ref{fig:simple_chainsewing_flyclient}. 
     The adversary acts as follows. 

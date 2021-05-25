@@ -25,7 +25,7 @@ resembles a thorny bush.
 \begin{figure}
 	\begin{center}
 		\iftwocolumn
-			\includegraphics[width=0.6\columnwidth]{figures/thorny_block.pdf}
+			\includegraphics[width=0.5\columnwidth]{figures/thorny_block.pdf}
 		\else
 			\includegraphics[width=0.4\columnwidth]{figures/thorny_block.pdf}
 		\fi
@@ -70,9 +70,12 @@ The adversary chooses to attack at some level $\mu_\mathcal{A} \in \mathbb{N}$ (
 In this attack the adversary uses thorny blocks to ``sew'' portions of the
 honestly adopted chain to her own forked chain. This justifies the name given to
 the attack.
-In order to make this attack successful, the adversary needs only
-produce few superblocks, but she can arrogate a large number of
-honestly produced blocks. Thus the attack succeeds with non-negligible
-probability.
+In order to make this attack successful, the adversary needs only to
+produce few superblocks, while she can arrogate a large number of
+honestly produced blocks. 
+%Thus the attack succeeds with non-negligible probability.
+
+We believe that the superlight-client protocol FlyClient\cite{flyclient} is also susceptible to Chainswewing attack under velvet fork conditions. 
+We give insight for the velvet FlyClient attack in Appendix~\ref{sec:flyclient}.
 
 %We illustrate simulation results for the success rate of our attack in Appendix~\ref{sec:simulation}. Our experiments find the attack with parameters $\mu_B = 10, \mu_A = 0, t = 1, n = 5, k = 15$ succeeds with a constant rate of success of approximately $0.26$, when the security parameter $m$ ranges from $3$ to $15$. This is in contrast to the best previously known attack (which does not make use of thorny blocks), which succeeds with probability less than $0.01$. Previous work recommends $m = 15$ for a $1/3$ adversary for a probability of failure bounded by $0.001$.
