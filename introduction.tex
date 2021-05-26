@@ -10,7 +10,7 @@ interest, it must still download the block headers that contain the
 proof-of-work~\cite{pow} of each block in order to determine which chain contains
 the most work. The block headers, while smaller by a significant constant
 factor, still grow linearly with time. An Ethereum node synchronizing for the
-first time must download more than $4$ GB of block header data for the purpose
+first time must download more than $5$ GB of block header data for the purpose
 of proof-of-work verification, even if it does not download any
 transactions. This has become a central problem to the usability of blockchain
 systems, especially for vendors who use mobile phones to accept payments
@@ -94,11 +94,14 @@ A summary of our contributions in this paper is as follows:
 \noindent
 \textbf{Previous work.} Proofs of Proof-of-Work have been proposed in the
 context of superlight clients~\cite{nipopows,flyclient},
-cross-chain communication~\cite{pow-sidechains,burn,crosschain-sok}, as well as
+cross-chain communication~\cite{pow-sidechains,burn,crosschain-sok}, mining~\cite{logspace}, as well as
 local data consumption by smart contracts~\cite{derivatives}. Chain interlinking
+has been proposed for both chains~\cite{compactsuperblocks} and DAGs~\cite{flydag}
 has been deployed in production both since genesis~\cite{ergo,nimiq} and using
 hard forks~\cite{heartwood-flyclient}, and relevant verifiers have been
-implemented~\cite{gglou,nipopow-gas}. They have
+implemented~\cite{gglou,nipopow-gas}.
+Deployability using soft forks has also been explored~\cite{soft-power}. 
+They have
 been conjectured to work in velvet fork conditions~\cite{nipopows} (we show
 here that these conjectures are ill-informed in the light of our chain-sewing
 attack). Velvet forks~\cite{velvet} have been studied for a variety of other
@@ -109,7 +112,7 @@ Proof-of-Stake setting~\cite{pos-sidechains}. Complementary to consensus state
 compression (i.e., the compression of block headers and their ancestry) is
 compression of application state, namely the State Trie, the UTXO, or
 transaction history. There is a series of works complementary and composable with ours that
-discusses the compression of application state~\cite{edrax,ethanos}.
+discusses the compression of application state~\cite{edrax,ethanos,mimblewimble}.
 
 \noindent
 \textbf{Organization.}

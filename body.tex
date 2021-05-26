@@ -2,16 +2,25 @@
 \input{preliminaries}
 \input{velvet}
 \input{attack}
+\input{simulation}
 \input{construction}
+\input{analysis}
 \input{infix_proofs}
+
+\newpage
+\ifccs
+  \bibliographystyle{ACM-Reference-Format}
+\else
+  \bibliographystyle{abbrv}
+\fi
+\bibliography{refs}
 
 \newpage
 \appendix
 \iflncs
 \section*{Appendix}
+\input{flyclient}
 \fi
-\input{analysis}
-\input{simulation}
 
 %\section{Location}
 %Note that in the new ACM style, the Appendices come before the References.
