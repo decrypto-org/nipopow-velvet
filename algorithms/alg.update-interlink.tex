@@ -1,0 +1,13 @@
+\begin{algorithm}[H]
+    \caption{\label{alg:updateInterlink}Velvet updateInterlink}
+    \begin{algorithmic}[1]
+            \Function{\sf updateInterlinkVelvet}{$\chain_S$}
+                    \Let{B'}{\chain_S[-1]}
+                    \Let{\textsf{interlink}}{B'.\textsf{interlink}}
+                    \For{$\mu = 0$ to $\textsf{level}(B')$}
+                            \Let{\textsf{interlink}[\mu]}{\textsf{id}(B')}
+                    \EndFor
+                    \State\Return$\textsf{interlink}$
+            \EndFunction
+    \end{algorithmic}
+\end{algorithm}

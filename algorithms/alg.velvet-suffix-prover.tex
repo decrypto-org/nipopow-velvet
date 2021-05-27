@@ -1,0 +1,15 @@
+\begin{algorithm}[H]
+    \caption{\label{alg:velvet_suffix_prover}Velvet Suffix Prover}
+    \begin{algorithmic}[1]
+            \Function{\sf ProveVelvet$_{m,k}$}{$\chain_S$}
+                \Let{B}{\chain_S[0]}
+                \For{$\mu = \lvert \chain_S[-k].\textsf{interlink} \rvert$ down to $0$}
+                    \Let{\alpha}{\chain_S[{:}-k]\{B{:}\}\upchain^\mu}
+                    \Let{\pi}{\pi \cup \alpha}
+                    \Let{B}{\alpha[-m]}
+                \EndFor
+                \Let{\chi}{\chain_S[-k{:}]}
+                \State\Return$\pi\chi$
+            \EndFunction
+    \end{algorithmic}
+\end{algorithm}

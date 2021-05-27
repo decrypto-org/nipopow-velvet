@@ -26,12 +26,17 @@ Figure~\ref{fig:injection} illustrates this remark. The velvet NIPoPoW verifier 
 	\label{fig:injection}
 \end{figure*}
 
+\import{./}{algorithms/alg.smooth-chain-suffix}
+
 With this protocol patch we conclude that the adversary cannot usurp honest mining power for use in her fork chain. This change has an undesired side effect: the honest prover cannot utilize thorny blocks belonging in the honest chain. Thus, contrary to the na\"ive protocol, the honest prover can only depend on \emph{honestly} mined blocks in the honestly adopted chain. Due to this fact, to ensure security in the velvet model, we introduce the assumption that the adversary is bound by $1/3$ of the honest \emph{upgraded} mining power.
 
 \begin{definition}[Velvet Honest Majority]
 	Let $n_h$ be the number of upgraded honest miners. Then $t$ out of total $n$ parties are corrupted such that $\dfrac{t}{n_h} < \dfrac{1 - \delta_v}{3}$, for some $\delta_v > 0$.
 	\label{defn:velvet_honest_majority}
 \end{definition}
+
+\import{./}{algorithms/alg.update-interlink}
+\import{./}{algorithms/alg.velvet-suffix-prover}
 
 The following Lemmas come as immediate results from the suggested protocol
 update.
@@ -64,10 +69,8 @@ The following lemma discusses the structure of valid adversarial proofs, i.e., a
 \end{lemma}
 \begin{proof}
 	Suppose for contradiction that there was a thorny block immediately preceding a smooth block. Then the smooth block would contain a pointer to a thorny block, contradicting the definition of smoothness.
-	\qed
+	\Qed
 \end{proof}
-
-\import{./}{algorithms/alg.velvet-protocol.tex}
 
 We now describe the algorithms needed by the upgraded miner, prover and verifier. In order to construct an interlink containing only the smooth blocks, the miner keeps a copy of the ``smooth chain'' ($\chain_S$) which consists of the smooth blocks in his adopted chain $\chain$. The algorithm for extracting the smooth chain out of $\chain$ is given in Algorithm~\ref{alg:smooth_chain_suffix}. Function \emph{isSmoothBlock($B$)} checks whether a block $B$ is smooth by calling \textit{isSmoothPointer($B,p$)} for every pointer $p$ in $B$'s interlink. Function \emph{isSmoothPointer($B,p$)} returns \emph{true} if $p$ is a valid pointer, i.e., a pointer to the most recent smooth block for the level denoted by the pointer itself. The \emph{updateInterlink} algorithm is given in Algorithm~\ref{alg:updateInterlink}. It is the same as in the case of a soft fork, but works on the smooth chain $\chain_S$ instead of $\chain$.
 
