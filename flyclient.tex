@@ -71,10 +71,10 @@ This is a variation of our Chainsewing Attack of Section~\ref{sec:attack}.
     %The velvet protocol is susceptible to a chainsewing attack, succeeding with non-negligible probability.
     %We now give a high-level overview of this attack.
 
-	As already described so far, velvet fork requires any block to be accepted in the chain regardless of the validity of the auxiliary data coming with the protocol update.
-    In the case of FlyClient, an adversary may produce blocks which are compatible to the basic consensus rules but contain invalid MMR information.
+	%As already described so far, velvet fork requires any block to be accepted in the chain regardless of the validity of the auxiliary data coming with the protocol update.
+    Due to the velvet conditions, an adversary may append blocks in $\chain$ that contain invalid MMR information.
     As an example, consider an invalid MMR that omits blocks existing in $\chain$ or contains blocks which belong in temporary forks of $\chain$.
-    We will use the same terminology as in velvet superblocks and refer to blocks that contain invalid MMR as thorny, while to the ones with valid MMR as smooth.
+    We will use the same terminology as in velvet superblocks and refer to a blocks that contains an invalid MMR as \emph{thorny}, while to one with valid MMR as \emph{smooth}.
     Any upgraded block could be thorny or smooth.
 
 %\subsection{The Attack}
@@ -82,15 +82,15 @@ This is a variation of our Chainsewing Attack of Section~\ref{sec:attack}.
 	Due to the velvet FlyClient description being only partial, we
 	make a couple of assumptions considering how thorny blocks are treated by the velvet version of the protocol.
 
-	When an upgraded \emph{miner} creates a new block, he must include an MMR
-	commiting to all previous blocks (upgraded or not, thorny or not).
-	Our first assumption is that while constructing the new block's MMR, the honest miner should treat thorny blocks as unupgraded, 
+	First, when constructing a new block's MMR, the honest miner should treat thorny blocks as unupgraded, 
 	i.e. ignore invalid MMRs and build on top of the MMR of the most recent smooth block. 
-	If miners do not verify the 
+	%For this observe that when creating a new block, an upgraded \emph{miner} must include an MMR
+	%commiting to all previous blocks (upgraded or not, thorny or not). 
+	This rule is of great importance and, to our opinion, inevitable, since if miners do not verify the 
 	validity of previous blocks' MMRs, the adversary could trivially attack the protocol by mining a thorny block in $\chain$ and have all subsequent upgraded
 	blocks commit to an invalid chain history.  
-	In essence, a thorny block in $\chain$ could suggest an invalid chain and it is vital that, whereas such a block will be accepted in $\chain$, honest upgraded miners continue to 
-	produce valid MMR commitments in subsequent blocks.
+	%%%  In essence, a thorny block in $\chain$ could suggest an invalid chain and it is vital that, whereas such a block will be accepted in $\chain$, honest upgraded miners continue to 
+	%%% produce valid MMR commitments in subsequent blocks.
 	
 	A FlyClient proof contains the chain tip $C[-1]$, which must be an upgraded block because of its vital importance in the protocol in respect to MMR consistency checks of the sampled blocks. 
 	Upon receiving a proof the verifier interrogates the prover. During the interrogation, each sampled block $b$ may
@@ -100,7 +100,7 @@ This is a variation of our Chainsewing Attack of Section~\ref{sec:attack}.
 	In this case the verifier will search for the next closest upgraded descendant of $b$ and repeat the procedure until a consistent descendant is found or reject 
 	the proof\footnote{
 	In reality it is prover's responsibility to construct a proof so that the verifier can immediately select the first valid upgraded descendant. We continue 
-	with this description as it is more intuitive.
+	with this description as it is equivalent and more intuitive.
 	}.
 
 	Because of the velvet conditions, the verifier must accept that some consistency checks between $b$ and $C[-1]$ will fail.
@@ -144,9 +144,8 @@ This is a variation of our Chainsewing Attack of Section~\ref{sec:attack}.
     At some point, the adversary produces her proof.
     From the verifier's perspective the black colored blocks form a valid chain,
     since the tip contains consistent MMR commitments with all these blocks.
-	We conclude that the FlyClient protocol may be possible to work in velvet conditions through this construction,
-	but similar assumptions to our construction in Section~\ref{sec:construction} will be necessary to avoid such suppression attacks.
-	Therefore, a stronger velvet honest majority assumption is required.
+	As a conclusion, the FlyClient protocol is not secure to be deployed as-is under velvet conditions. We believe that it is possible to work through the construction we propose,
+	however further analysis regarding its security assumptions, i.e. a stronger velvet honest majority, is required.
 
 	\begin{figure}
 		\begin{center}
