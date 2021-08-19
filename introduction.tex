@@ -38,8 +38,8 @@ There are two general directions for superlight client implementations: In the
 \emph{superblock}~\cite{nipopows,compactsuperblocks} approach, the client
 relies on \emph{superblocks}, blocks that have achieved much better
 proof-of-work than required for block validity. In the
-\emph{FlyClient}~\cite{flyclient} approach, blocks are sampled and committed at random as in a $\Sigma$-protocol (e.g., Schnorr's discrete-log protocol~\cite{schnorr}) and then using
-the Fiat--Shamir heuristic~\cite{fiatshamir} a non-interactive proof is calculated. The number of block headers
+\emph{FlyClient}~\cite{flyclient} approach, blocks are sampled and committed at random as in a $\Sigma$-protocol (e.g., Schnorr's discrete-log protocol~\cite{schnorr}) and then, using
+the Fiat--Shamir heuristic~\cite{fiatshamir}, a non-interactive proof is calculated. The number of block headers
 that need to be sent then grows only logarithmically with time. The NIPoPoW
 client, which is the proof \emph{verifier} in this context, still relies on a connection to full nodes,
 who, acting as \emph{provers},  perform the sampling of blocks from the full
