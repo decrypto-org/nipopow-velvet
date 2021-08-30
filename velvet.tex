@@ -16,7 +16,7 @@ The
 na\"ive approach to interlink the chain with a velvet fork is to have
 upgraded miners include the interlink pointer in the coinbase of the blocks they produce, but
 accept blocks with missing or incorrect interlinks
-(this approach was suspected secure prior to this work~\cite{nipopows,flyclient}).
+(this approach was conjectured secure prior to this work~\cite{nipopows,flyclient}).
 As we show in this work, the approach is susceptible to unexpected attacks. A
 surgical change in the way velvet blocks are produced is necessary to achieve
 security.
@@ -94,7 +94,7 @@ $\pi[i]$, as $\pi[i]$ is also the most recent $\mu$-superblock ancestor of $b$.
 The blocks $\chain[j - 1], \chain[j - 2], \cdots, b$ are then included in the
 proof to illustrate that $\pi[i]$ is an ancestor of $\pi[i + 1]$.
 
-The argument for why the above scheme work is as follows. First of all, the
+The (flawed) argument   why the above scheme works is as follows. First of all, the
 scheme does not add many new blocks to the proof. In expectation, if a fully
 honestly generated chain is processed, after in expectation $\frac{1}{g}$ blocks
 have been traversed, a smooth block will be found and the connection to $\pi[i]$

@@ -16,7 +16,8 @@ parties have access to a hash function $H$ modelled as a common Random
 Oracle~\cite{ro}. To each novel query, the random oracle outputs $\kappa$ bits
 of fresh randomness. Time is split into distinct \emph{rounds} numbered by the
 integers $1, 2, \cdots$. Our treatment is in the \emph{synchronous model}, so we
-assume messages \emph{diffused} (broadcast) by an honest party at the end of a
+assume messages \emph{diffused} (``unreliable'' broadcast) 
+by an honest party at the end of a
 round are received by all honest parties at the beginning of the next round.
 This is equivalent to a network connectivity assumption in which the round
 duration is taken to be the known time needed for a message to cross the
@@ -159,7 +160,7 @@ the \emph{previd} pointer in the block header, or in the interlink vector. If
 any of these checks fail, the proof is rejected. It then
 compares $\pi_1$ against $\pi_2$ using
 the $\leq_m$ operator, which works as follows. It finds the
-lowest common ancestor block $b = (\pi_1 \cap \pi_2)[-1]$; that is, $b$ is the
+lowest common ancestor (LCA) block $b = (\pi_1 \cap \pi_2)[-1]$; that is, $b$ is the
 most recent block shared among the two proofs. Subsequently, it
 chooses the level $\mu_1$ for $\pi_1$ such that
 $\lvert \pi_1\{b{:}\}\upchain^{\mu_1} \rvert \geq m$
