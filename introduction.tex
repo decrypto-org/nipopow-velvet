@@ -47,8 +47,7 @@ blockchain.
 No trust assumptions are made for these provers, as the
 verifier can check the veracity of their claims. As long as the verifier is
 connected to at least one honest prover
-(this is a standard assumption in the
-analysis of all blockchain
+(a standard and necessary assumption in the analysis of all blockchain
 protocols~\cite{eclipse,ethereum-eclipse,backbone,backbone-new,varbackbone}),
 they can arrive at the correct claim.
 
@@ -68,9 +67,9 @@ whose root is stored in the block header. The inclusion of extra pointers within
 blocks is termed \emph{interlinking the chain}~\cite{popow}.
 
 The modified block format, which includes the extra pointers, must be respected
-and validated by full nodes and thus requires a hard or soft fork. However, even soft forks require the approval of a supermajority of
+and validated by full nodes and thus requires a hard or soft fork. However, even soft forks require the approval of a majority of
 miners, and new features that are considered non-essential by the community have
-taken years to receive approval~\cite{segwit}. Towards the goal of implementing
+taken years to receive approval~e.g.,\cite{segwit}. Towards the goal of implementing
 superlight clients sooner, we study the question of whether it is possible to
 deploy superlight clients without a soft fork. We propose a series of
 modifications to blocks that are \emph{helpful but untrusted}. These
@@ -83,14 +82,14 @@ do not contain this extra data that have been produced by unupgraded miners, or
 even blocks that contain invalid or malicious such extra data produced by a
 mining adversary. This acceptance is necessary in order to avoid causing a chain
 split with the unupgraded part of the network. Such a modification to the
-consensus layer is termed a \emph{velvet fork}~\cite{velvet}.
+consensus layer is termed a \emph{velvet fork}~\cite{nipopows,velvet}.
 A summary of our contributions in this paper is as follows:
 \begin{enumerate}
   \item We illustrate that, contrary to claims of previous work, superlight
         clients designed to work in a soft fork cannot be readily plugged into a velvet fork and expected to work. We present a novel and insidious
         attack termed the \emph{chain-sewing} attack which thwarts the defenses of previous proposals and allows even a minority adversary to cause
         catastrophic failures.
-  \item We propose the first \emph{backwards-compatible superlight client}. We put forth an interlinking mechanism implementable through a velvet fork. We then construct a superblock NIPoPoW protocol on top of the velvet forked chain and show it allows to build superlight clients for various statements regarding the blockchain state via both ``suffix'' and ``infix'' proofs.
+  \item Informed by the attack, we propose the first \emph{backwards-compatible superlight client}. We put forth an interlinking mechanism implementable through a velvet fork. We then construct a superblock NIPoPoW protocol on top of the velvet forked chain and show it allows to build superlight clients for various statements regarding the blockchain state via both ``suffix'' and ``infix'' proofs.
   \item We prove our construction secure in the synchronous static difficulty model against adversaries bounded to $1/3$ of the mining power of the honest upgraded nodes. As such, our protocol works even if a constant minority of miners adopts it.
 \end{enumerate}
 
