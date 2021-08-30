@@ -6,8 +6,9 @@
 \newif\iftwocolumn
 \todaytrue
 
-% pick one: \ccstrue or \lncstrue; don't forget to `make clean`
+%% uncomment next line for anonymization
 %\anonymoustrue
+% pick one: \ccstrue or \lncstrue; don't forget to `make clean`
 \ccstrue
 % \lncstrue
 
@@ -21,6 +22,7 @@
 \documentclass{llncs}
 \fi
 \ifccs
+%%% uncomment next line for anonymous template
 %\documentclass[sigconf, anonymous]{acmart}
 \documentclass[sigconf]{acmart}
 \fi
