@@ -46,8 +46,11 @@ who, acting as \emph{provers},  perform the sampling of blocks from the full
 blockchain.
 No trust assumptions are made for these provers, as the
 verifier can check the veracity of their claims. As long as the verifier is
-connected to at least one honest prover (an assumption also made in the SPV
-protocol~\cite{eclipse,eclipse-ethereum}), they can arrive at the correct claim.
+connected to at least one honest prover
+(this is a standard assumption in the
+analysis of all blockchain
+protocols~\cite{eclipse,ethereum-eclipse,backbone,backbone-new,varbackbone}),
+they can arrive at the correct claim.
 
 In both approaches, the verifier must check that the blocks
 sampled one way or another were generated in the same order as presented by the prover. As such, each block in the proof must contain a

@@ -1,13 +1,13 @@
 \section{Preliminaries}\label{sec:preliminaries}
 
-We consider a setting where the blockchain network consists of two
-types of nodes: The first kind, \emph{full nodes}, are responsible for the
+In our setting the chain network consists of two
+node types: The first, \emph{full nodes}, are responsible for the
 verifying the chain and mining new blocks. The
-second kind, \emph{verifiers}, connect to full nodes and wish to learn facts
-about the blockchain without downloading it, for example whether a particular
-transaction is confirmed. The full nodes therefore also function as
-\emph{provers} for the verifiers. Each verifier connects to multiple provers, at
-least one of which is assumed to be honest.
+second, \emph{verifiers}, connect to full nodes and wish to learn facts
+about the blockchain without downloading it, such as whether a particular
+transaction is confirmed. Full nodes therefore also function as
+\emph{provers} for the verifiers. A verifier connects to multiple provers, at
+least one of which is assumed honest.
 
 We model full nodes according to the Backbone model~\cite{backbone}. There are
 $n$ full nodes, of which $t$ are adversarial and $n - t$ are honest. All $t$
@@ -131,19 +131,21 @@ header.
 The exact NIPoPoW protocol works like this: The prover holds a full chain
 $\chain$. When the verifier requests a proof, the prover sends the last $k$
 blocks of their chain, the suffix $\chi = \chain[-k{:}]$, in full. From the
-larger prefix $\chain[{:}{-k}]$, the prover constructs a proof $\pi$ by selecting
-certain superblocks as representative samples of the proof-of-work that took
-place. The blocks are picked as follows. The prover selects the \emph{highest}
-level $\mu^*$ that has at least $m$ blocks in it and includes all these blocks
+larger prefix $\chain[{:}{-k}]$, the prover constructs a proof $\pi$ by sampling
+superblocks as representatives of the underlying proof-of-work.
+The blocks are picked as follows. The prover selects the \emph{highest}
+level $\mu^*$ with at least $m$ blocks and includes all these blocks
 in their proof (if no such level exists, the chain is small and can be sent in
 full). The prover then iterates from level $\mu = \mu^* - 1$ down to $0$. For
-every level $\mu$, it includes sufficient $\mu$-superblocks to cover the last
-$m$ blocks of level $\mu + 1$, as illustrated in
-Algorithm~\ref{alg.nipopow-prover}. Because the density of blocks doubles as
-levels are descended, the proof will contain in expectation $2m$ blocks for each
-level below $\mu^*$. As such, the total proof size $\pi \chi$ will be
-$\Theta(m\log|\chain| + k)$. Such proofs that are polylogarithmic in the chain
-size constitute an exponential improvement over traditional SPV clients and are
+every level $\mu+1$, it pinpoints the $m^\text{th}$ most recent $(\mu+1)$-superblock.
+It includes all $\mu$-superblocks after it, as
+illustrated in
+Algorithm~\ref{alg.nipopow-prover}. Because the density of blocks roughly doubles as
+levels are descended, the proof contains in expectation $2m$ blocks for each
+level below $\mu^*$. As such, the total proof size $\pi \chi$, called a \emph{suffix proof},
+will be
+$\Theta(m\log|\chain| + k)$. Such proofs polylogarithmic in the chain
+size constitute an exponential improvement over SPV clients and are
 called \emph{succinct}.
 
 \import{./}{algorithms/alg.nipopow-prover.tex}

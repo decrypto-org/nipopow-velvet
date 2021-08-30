@@ -1,17 +1,23 @@
 \section{Velvet Interlinks}\label{sec:velvet}
-Velvet forks were recently introduced~\cite{velvet}. In a
+Velvet forks, introduced by Kiayias et al.~\cite{nipopows},
+were explored in depth by Zamyatin et al.~\cite{velvet}. In a
 velvet fork, blocks created by upgraded miners (called \emph{velvet blocks}) are
 accepted by unupgraded miners as in a soft fork. Additionally, blocks created by
 unupgraded miners are also accepted by upgraded miners. This allows the protocol
 to upgrade even if only a minority of miners upgrade. To maintain
-backwards compatibility and to avoid causing a permanent fork, the additional data included
+backwards compatibility and avoid causing a permanent fork, the additional data included
 in a block is \emph{advisory} and must be accepted whether it exists or not.
-Even if the additional data is invalid or malicious, upgraded nodes (in this
-context also called \emph{velvet nodes}) are forced to accept the blocks. The
-simplest approach to interlink the chain with a velvet fork is to have
+Even if the additional data is invalid or malicious, upgraded nodes
+(called \emph{velvet nodes}) are \emph{forced} to accept the blocks.
+It has been posited~\cite{nipopows,flyclient} that,
+among other protocols, superlight client interlinking
+can be deployed using a velvet fork.
+The
+na\"ive approach to interlink the chain with a velvet fork is to have
 upgraded miners include the interlink pointer in the coinbase of the blocks they produce, but
-accept blocks with missing or incorrect interlinks. As we show in the next
-section, this approach is flawed and susceptible to unexpected attacks. A
+accept blocks with missing or incorrect interlinks
+(this approach was suspected secure prior to this work~\cite{nipopows,flyclient}).
+As we show in this work, the approach is susceptible to unexpected attacks. A
 surgical change in the way velvet blocks are produced is necessary to achieve
 security.
 
@@ -56,7 +62,7 @@ of the interlink Merkle Tree root.
 \textbf{A na\"ive velvet scheme.}
 In previous work~\cite{nipopows}, it was conjectured that superblock NIPoPoWs
 remain secure under a velvet fork. We call this scheme the \emph{Na\"ive Velvet
-NIPoPoW} protocol. It is not dissimilar from the NIPoPoW protocol in the
+NIPoPoW} protocol. It is similar to the NIPoPoW protocol in the
 soft fork case. The na\"ive velvet NIPoPoW protocol works as follows.
 Each upgraded honest miner attempts to mine a block $b$
 that includes interlink pointers in the form of a Merkle Tree included in its
