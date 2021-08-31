@@ -74,8 +74,7 @@ keep mining blocks on the chain as usual; because the status of a block as
 superblock does not require it to be mined by an upgraded miner, the unupgraded
 miners contribute mining power to the creation of superblocks.
 
-The prover in the na\"ive velvet NIPoPoWs works as follows. The honest
-prover constructs the proof $\pi \chi$ as in Algorithm~\ref{alg.nipopow-maxchain}.
+The  honest prover in the na\"ive velvet NIPoPoWs constructs the proof $\pi \chi$ as in Algorithm~\ref{alg.nipopow-maxchain}.
 The outstanding issue is that
 $\pi$ does not form a chain because some of
 its blocks may not be upgraded and they may not contain any pointers (or may
@@ -83,23 +82,27 @@ contain invalid pointers).
 Suppose $\pi[i]$ is the most recent $\mu$-superblock preceding $\pi[i + 1]$.
 The prover must provide a connection between $\pi[i + 1]$ and $\pi[i]$.
 The block $\pi[i + 1]$ is a superblock and exists at some position $j$ in the
-underlying chain $\chain$ of the prover, i.e., $\pi[i + 1] = \chain[j]$. If
+underlying chain $\chain$, i.e., $\pi[i + 1] = \chain[j]$. If
 $\chain[j]$ is smooth, then the interlink pointer at level $\mu$ within
 it can be used. Otherwise, the prover uses the \emph{previd} pointer of
 $\pi[i + 1] = \chain[j]$ to repeatedly reach the parents of $\chain[j]$, namely
 $\chain[j - 1], \chain[j - 2], \cdots$ until a smooth block $b$ between $\pi[i]$
-and $\pi[i + 1]$ is found in $\chain$, or until $\pi[i]$ is reached.
+and $\pi[i + 1]$ is found, or until $\pi[i]$ is reached.
 The block $b$ contains a pointer to
 $\pi[i]$, as $\pi[i]$ is also the most recent $\mu$-superblock ancestor of $b$.
 The blocks $\chain[j - 1], \chain[j - 2], \cdots, b$ are then included in the
 proof to illustrate that $\pi[i]$ is an ancestor of $\pi[i + 1]$.
 
-The (flawed) argument   why the above scheme works is as follows. First of all, the
-scheme does not add many new blocks to the proof. In expectation, if a fully
-honestly generated chain is processed, after in expectation $\frac{1}{g}$ blocks
-have been traversed, a smooth block will be found and the connection to $\pi[i]$
-will be made. Thus, the number of blocks needed in the proof increases by a
-factor of $\frac{1}{g}$. Security was argued as follows: An honest party
+The (flawed) security argument why the above scheme works is as follows. 
+%First of all, the
+%scheme does not add many new blocks to the proof. In expectation, if a fully
+%honestly generated chain is processed, after in expectation $\frac{1}{g}$ blocks
+%have been traversed, a smooth block will be found and the connection to $\pi[i]$
+%will be made. 
+%Thus, the number of blocks needed in the proof increases by a
+%factor of $\frac{1}{g}$. 
+%Security was argued as follows: 
+An honest party
 includes in their proof as many blocks as in a soft forked NIPoPoW, albeit by
 using an indirect connection. The crucial feature is that it is not missing any
 superblocks. Even if the adversary creates interlinks that skip over some honest

@@ -3,7 +3,6 @@
 We now describe an explicit attack against
 the FlyClient protocol under velvet fork deployment.
 This is a variation of our Chainsewing Attack of Section~\ref{sec:attack}.
-
 %\subsection{The FlyClient Protocol}
 %	The FlyClient protocol suggests that block headers additionaly include an MMR root of all the blocks in the chain. The protocol uses this root hash in multiple ways, both for chain synchronization and specific block queries. Consider a block $b$ which is appended to the chain $\chain$ at height $h_b$:
 %	\begin{itemize}
@@ -63,14 +62,12 @@ This is a variation of our Chainsewing Attack of Section~\ref{sec:attack}.
 %	Once the longest chain has been chosen, the infix validation is similar to the previous algorithm.
 %	The verifier is synchronized to a chain $\chain$ and already has the tip of the chain $\chain[-1]$. He then queries the prover and receives the header of the specific block of interest $B$ in $\chain$ and the inclusion proof $\Pi_{B \in \chain}$. Then the verifier checks the validity of $B$ in the same way as already described for the random sampled blocks in the synchronization protocol.
 %	The prover/verifier single-query protocol is given in Algorithm~\ref{alg:flyclient_iinfix_protocol}.
-
 %\subsection{Velvet MMRs}
 	For the FlyClient protocol upgraded miners additionally include an MMR root in each block's header.
     The claim made in the paper is that an honest prover could produce proofs
     by utilizing only the upgraded blocks and that the velvet proofs remain secure even if only a small fraction of miners upgrade. 
     %The velvet protocol is susceptible to a chainsewing attack, succeeding with non-negligible probability.
     %We now give a high-level overview of this attack.
-
 	%As already described so far, velvet fork requires any block to be accepted in the chain regardless of the validity of the auxiliary data coming with the protocol update.
     Due to the velvet conditions, an adversary may append blocks in $\chain$ that contain invalid MMR information.
     As an example, consider an invalid MMR that omits blocks existing in $\chain$ or contains blocks which belong in temporary forks of $\chain$.
@@ -101,7 +98,6 @@ This is a variation of our Chainsewing Attack of Section~\ref{sec:attack}.
 	In reality it is prover's responsibility to construct a proof so that the verifier can immediately select the first valid upgraded descendant. We continue 
 	with this description as it is equivalent and more intuitive.
 	}.
-
 	Because of the velvet conditions, the verifier must accept that some consistency checks between $b$ and $C[-1]$ will fail.
 	On the other hand, and this denotes the second assumption, the verifier cannot allow any number of inconsinstencies freely. To see why,
 	consider the following attack. Let the honest chain have three consecutive blocks $b_i$, $b_{i+1}, b_{i+2}$ at heights $i, i+1, i+2$ respectively. The attacker 
