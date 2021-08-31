@@ -10,15 +10,15 @@ transaction is confirmed. Full nodes therefore also function as
 least one of which is assumed honest.
 
 We model full nodes according to the Backbone model~\cite{backbone}. There are
-$n$ full nodes, of which $t$ are adversarial and $n - t$ are honest. All $t$
+$n$ full nodes, of which $t$ are adversarial and $n - t$ honest. All
 adversarial parties are controlled by one colluding adversary $\mathcal{A}$. The
-parties have access to a hash function $H$ modelled as a common Random
+parties have access to a hash function $H$ modelled as a Random
 Oracle~\cite{ro}. To each novel query, the random oracle outputs $\kappa$ bits
-of fresh randomness. Time is split into distinct \emph{rounds} numbered by the
-integers $1, 2, \cdots$. Our treatment is in the \emph{synchronous model}, so we
+of fresh randomness. Time is split into distinct \emph{rounds} numbered
+$1, 2, \cdots$. Our treatment is in the \emph{synchronous model}, so we
 assume messages \emph{diffused} (``unreliable'' broadcast) 
 by an honest party at the end of a
-round are received by all honest parties at the beginning of the next round.
+round are received by all honest parties at the beginning of the next.
 This is equivalent to a network connectivity assumption in which the round
 duration is taken to be the known time needed for a message to cross the
 diameter of the network. The adversary can inject messages, reorder them, sybil
@@ -102,8 +102,8 @@ the verifier and security is proven with overwhelming probability in $m$.
 
 The prover selects various levels $\mu$ and for each such level sends a
 carefully chosen portion of its $\mu$-level \emph{superchain}
-$\chain\upchain^\mu$ to the verifier. In standard blockchain protocols such as
-Bitcoin and Ethereum, each block $\chain[i + 1]$ in $\chain$ points to its
+$\chain\upchain^\mu$ to the verifier. In standard chain protocols,
+each block $\chain[i + 1]$ in $\chain$ points to its
 previous block $\chain[i]$, but each $\mu$-superblock $\chain\upchain^\mu[i +
 1]$ does not point to its previous $\mu$-superblock $\chain\upchain^\mu[i]$. It
 is imperative that an adversarial prover does not reorder the blocks within a
@@ -115,7 +115,7 @@ integrity, this pointer must be included in the block header and verified by
 proof-of-work. However, the miner does not know which level a candidate block
 will attain prior to mining it. Therefore, each block is proposed to
 include a pointer to the most recently preceding $\mu$-superblock, for every
-$\mu$, as illustrated in Figure~\ref{fig.hierarchy}. As these levels are only
+$\mu$, as illustrated in Figure~\ref{fig.hierarchy}. As these levels are
 $\log|\chain|$, this only adds $\log|\chain|$ extra pointers to each block
 header.
 
@@ -151,6 +151,10 @@ called \emph{succinct}.
 
 \import{./}{algorithms/alg.nipopow-prover.tex}
 
+\vspace{-2em}
+
+\import{./}{algorithms/alg.nipopow-maxchain.tex}
+
 Upon receiving two proofs $\pi_1\chi_1, \pi_2\chi_2$ of this form, the NIPoPoW verifier
 first checks that $\lvert \chi_1 \rvert = \lvert \chi_2 \rvert = k$ and that
 $\pi_1 \chi_1$ and $\pi_2 \chi_2$ form valid chains. To check that they are
@@ -175,8 +179,6 @@ $2^{\mu_1} \lvert \pi_1\{b{:}\}\upchain^{\mu_1} \rvert \geq
  2^{\mu_2} \lvert \pi_2\{b{:}\}\upchain^{\mu_2} \rvert$
 and the proof with the largest score is deemed the winner. The comparison is
 illustrated in Algorithm~\ref{alg.nipopow-maxchain}.
-
-\import{./}{algorithms/alg.nipopow-maxchain.tex}
 
 Blockchain protocols can be upgraded using hard or soft
 forks~\cite{buterinforks}. In a \emph{hard fork}, blocks produced by

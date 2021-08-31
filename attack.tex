@@ -1,11 +1,4 @@
-\section{The Chainsewing Attack}\label{sec:attack}
-We now make the critical observation that a thorny block can include interlink
-pointers to blocks that are not its own ancestors in the $0$-level chain.
-Because it must contain a pointer to the hash of the block it points to, they
-must be older blocks, but they may belong to a
-different $0$-level chain. This is shown in Figure~\ref{fig:false_interlink}.
-
-\begin{figure}
+\begin{figure}[H]
 	\begin{center}
 		\iftwocolumn
 			\includegraphics[width=0.6\columnwidth]{figures/false_interlink.pdf}
@@ -17,6 +10,12 @@ different $0$-level chain. This is shown in Figure~\ref{fig:false_interlink}.
 	\label{fig:false_interlink}
 \end{figure}
 
+\section{The Chainsewing Attack}\label{sec:attack}
+We now make the critical observation that a thorny block can include interlink
+pointers to blocks that are not its own ancestors in the $0$-level chain.
+Because it must contain a pointer to the hash of the block it points to, they
+must be older blocks, but they may belong to a
+different $0$-level chain. This is shown in Figure~\ref{fig:false_interlink}.
 In fact, as the interlink vector contains multiple pointers, each pointer may
 belong to a different fork. This is illustrated in
 Figure~\ref{fig:thorny_block}. The interlink pointing to arbitrary directions
