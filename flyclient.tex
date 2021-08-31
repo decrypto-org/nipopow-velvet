@@ -119,7 +119,7 @@ This is a variation of our Chainsewing Attack of Section~\ref{sec:attack}.
 	will pass more consistency checks among the samples performed
 	by the verifier, as compared to the adversarial proof (ending in a thorny block).
 	We conclude that an appropriately designed velvet variant of the FlyClient protocol must compare proofs depending on how many
-	consistency checks pass or, put in another way, depending on the relevant upgraded hashing power included in the proofs. 
+	consistency checks pass or, put in another way, compare the upgraded hashing power included in the proofs. 
 
 	Now, considering this favourable version of the FlyClient protocol, we give a sketch of a more sophisticated attack which works
 	even when the adversary is bounded to $1/2$ of the upgraded mining power.
@@ -137,7 +137,8 @@ This is a variation of our Chainsewing Attack of Section~\ref{sec:attack}.
     At some point, the adversary produces her proof.
     From the verifier's perspective the black colored blocks form a valid chain,
     since the tip contains consistent MMR commitments with all these blocks.
-	In conclusion, FlyClient is not secure as-is under velvet conditions. We believe it can be made secure through the construction we propose,
+	
+    In conclusion, FlyClient is not secure as-is under velvet conditions. We believe it can be made secure through the construction we propose,
 	but further analysis regarding its security assumptions, i.e. a \emph{velvet} honest majority assumption, is required.
 
 	\begin{figure}
