@@ -1,6 +1,21 @@
-%\section{Acknowledgements}
+\section{Acknowledgements}
 
 The authors wish to thank Kostis Karantias for his valuable contributions with respect to
 the design of the protocol that uses Merkle Mountain Ranges to build infix proofs on top
-of velvet suffix proofs. We thank Tristan Nemoz and Alexei Zamyatin for fruitful discussions
-on the FlyClient attacks.
+of velvet suffix proofs.
+
+We also thank Tristan Nemoz and Alexei Zamyatin
+for fruitful discussions pertaining to the interplay of
+velvet forks and FlyClient.
+After the first version of this paper was
+published~\cite{velvet-nipopows-old}, where
+we introduced chainsewing attacks against NIPoPoWs,
+they observed that similar attacks
+might apply to FlyClient too.
+An in depth exploration of these attacks and potential mitigations
+is put forth in their follow up work~\cite{velvet-flyclient}.
+Concurrently, we extended the present paper to include
+our combined attack involving both suppression and chainsewing,
+which amounts to a more fundamental attack against FlyClient,
+as its analysis highlights the necessity for stricter adversarial bounds
+and the fact that some of the recommended mitigations are insufficient.
